@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475953012346",
+    "project_id": "hangout-sales-app",
+    "storage_bucket": "hangout-sales-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475953012346:android:7b2d861ba14c365623a5c3",
+        "android_client_info": {
+          "package_name": "com.example.hangout_sales_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyK8g_jmSOcsGyBigvsMDdPxLo1f16ryA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
