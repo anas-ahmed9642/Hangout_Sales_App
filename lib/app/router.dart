@@ -1,0 +1,77 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../core/constants/app_routes.dart';
+import '../features/auth/providers/auth_state_provider.dart';
+import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/splash_screen.dart';
+import '../features/customers/screens/customer_screen.dart';
+import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/expenses/screens/expense_screen.dart';
+import '../features/orders/screens/new_order_screen.dart';
+import '../features/reports/screens/report_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
+
+final routerProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authStateProvider);
+
+  return GoRouter(
+    initialLocation: AppRoutes.splash,
+
+    redirect: (context, state) {
+      final isAuthenticated = authState.valueOrNull != null;
+
+      final isGoingToLogin = state.matchedLocation == AppRoutes.login;
+      final isGoingToSplash = state.matchedLocation == AppRoutes.splash;
+
+      if (authState.isLoading) {
+        return AppRoutes.splash;
+      }
+
+      if (!isAuthenticated && !isGoingToLogin) {
+        return AppRoutes.login;
+      }
+
+      if (isAuthenticated && (isGoingToLogin || isGoingToSplash)) {
+        return AppRoutes.dashboard;
+      }
+
+      return null;
+    },
+
+    routes: [
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.dashboard,
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.orders,
+        builder: (context, state) => const NewOrderScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.customers,
+        builder: (context, state) => const CustomerScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.expenses,
+        builder: (context, state) => const ExpenseScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.reports,
+        builder: (context, state) => const ReportScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+    ],
+  );
+});
