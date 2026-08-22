@@ -1,0 +1,4425 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: ios/, macos/, windows/, linux/, web/, pubspec.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+android/
+  app/
+    src/
+      debug/
+        AndroidManifest.xml
+      main/
+        kotlin/
+          com/
+            example/
+              hangout_sales_app/
+                MainActivity.kt
+        res/
+          drawable/
+            launch_background.xml
+          drawable-v21/
+            launch_background.xml
+          mipmap-hdpi/
+            ic_launcher.png
+          mipmap-mdpi/
+            ic_launcher.png
+          mipmap-xhdpi/
+            ic_launcher.png
+          mipmap-xxhdpi/
+            ic_launcher.png
+          mipmap-xxxhdpi/
+            ic_launcher.png
+          values/
+            styles.xml
+          values-night/
+            styles.xml
+        AndroidManifest.xml
+      profile/
+        AndroidManifest.xml
+    build.gradle.kts
+  gradle/
+    wrapper/
+      gradle-wrapper.properties
+  .gitignore
+  build.gradle.kts
+  gradle.properties
+  settings.gradle.kts
+lib/
+  app/
+    app.dart
+    router.dart
+    theme.dart
+  core/
+    constants/
+      app_routes.dart
+    services/
+      business_day_service.dart
+  features/
+    auth/
+      providers/
+        auth_provider.dart
+        auth_repository_provider.dart
+        auth_state_provider.dart
+        firebase_auth_provider.dart
+      repositories/
+        auth_repository.dart
+      screens/
+        login_screen.dart
+        splash_screen.dart
+    customers/
+      screens/
+        customer_screen.dart
+    dashboard/
+      screens/
+        dashboard_screen.dart
+    expenses/
+      screens/
+        expense_screen.dart
+    orders/
+      models/
+        deal.dart
+        flavor.dart
+        menu_data.dart
+        order_draft_entry.dart
+        order_draft.dart
+        order_item.dart
+        order.dart
+        pizza_size.dart
+        topping_selection.dart
+      providers/
+        order_draft_provider.dart
+      repositories/
+        firebase_order_repository.dart
+        order_repository.dart
+      screens/
+        new_order_screen.dart
+    reports/
+      screens/
+        report_screen.dart
+    settings/
+      screens/
+        settings_screen.dart
+  shared/
+    widgets/
+      marble_background_painter.dart
+  main.dart
+test/
+  order_draft_notifier_test.dart
+  widget_test.dart
+.gitignore
+.metadata
+analysis_options.yaml
+firebase.json
+pubspec.yaml
+README.md
+repomix-orders.xml
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="repomix-orders.xml">
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: lib/features/orders/**/*
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+lib/
+  features/
+    orders/
+      models/
+        deal.dart
+        flavor.dart
+        menu_data.dart
+        order_draft_entry.dart
+        order_draft.dart
+        order_item.dart
+        order.dart
+        pizza_size.dart
+        topping_selection.dart
+      providers/
+        order_draft_provider.dart
+      repositories/
+        firebase_order_repository.dart
+        order_repository.dart
+      screens/
+        new_order_screen.dart
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="lib/features/orders/models/deal.dart">
+import 'pizza_size.dart';
+class Deal {
+  final String id;
+  final String name;
+  final double price;
+  final List<PizzaSize> pizzaSizes;
+  final int dipSauceCount;
+  final String? drinkSize;
+
+  const Deal({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.pizzaSizes,
+    required this.dipSauceCount,
+    this.drinkSize,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/flavor.dart">
+class Flavor {
+  final String id;
+  final String name;
+  final double? priceExtra;
+
+  const Flavor({
+    required this.id,
+    required this.name,
+    this.priceExtra,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/menu_data.dart">
+import 'pizza_size.dart';
+import 'flavor.dart';
+import 'deal.dart';
+
+class MenuData {
+  static const Map<PizzaSize, double> pizzaPrices = {
+    PizzaSize.small: 330,
+    PizzaSize.regular: 550,
+    PizzaSize.large: 700,
+  };
+  static const List<Flavor> flavors = [
+  Flavor(
+    id: 'super_sicilian',
+    name: 'Super Sicilian',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'spicy_bbq',
+    name: 'Spicy BBQ',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'malai_boti',
+    name: 'Malai Boti',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_tikka',
+    name: 'Chicken Tikka',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'shawarma_red',
+    name: 'Shawarma Red',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'gypsy_euro',
+    name: 'Gypsy Euro',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_supreme',
+    name: 'Chicken Supreme',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'cheesy_bake',
+    name: 'Cheesy Bake',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'creamy_tikka',
+    name: 'Creamy Tikka',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_fajita',
+    name: 'Chicken Fajita',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_challenger',
+    name: 'Chicken Challenger',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'cheese_n_pepperoni',
+    name: 'Cheese N Pepperoni',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'afghani_feast',
+    name: 'Afghani Feast',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'veggie_lover',
+    name: 'Veggie Lover',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'creamy_que',
+    name: 'Creamy Que',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'ranch_blast',
+    name: 'Ranch Blast',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'hot_n_spicy_sriracha',
+    name: 'Hot N Spicy Sriracha',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'spicy_italian',
+    name: 'Spicy Italian',
+    priceExtra: null,
+  ),
+];
+static const Map<String, double> toppingPrices = {
+  'meat': 100,
+  'veggie': 50,
+};
+static const Map<PizzaSize, double> cheesePrices = {
+  PizzaSize.small: 70,
+  PizzaSize.regular: 100,
+  PizzaSize.large: 150,
+};
+static const Map<String, double> drinkPrices = {
+  'drink_1.5ltr': 220,
+  'drink_1ltr': 170,
+  'drink_345ml': 80,
+};
+
+static const double dipSaucePrice = 30;
+static const List<double> deliveryCharges = [
+  70,
+  100,
+  130,
+  150,
+  200,
+  250,
+  300,
+];
+
+static const double pickupCharge = 0;
+
+static const List<Deal> deals = [
+  Deal(
+    id: 'deal_1',
+    name: 'Deal 1',
+    price: 380,
+    pizzaSizes: [
+      PizzaSize.small,
+    ],
+    dipSauceCount: 0,
+    drinkSize: 'drink_345ml',
+  ),
+  Deal(
+  id: 'deal_2',
+  name: 'Deal 2',
+  price: 600,
+  pizzaSizes: [
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 0,
+  drinkSize: 'drink_345ml',
+),
+
+Deal(
+  id: 'deal_3',
+  name: 'Deal 3',
+  price: 800,
+  pizzaSizes: [
+    PizzaSize.large,
+  ],
+  dipSauceCount: 1,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'deal_4',
+  name: 'Deal 4',
+  price: 2200,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 3,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'deal_5',
+  name: 'Deal 5',
+  price: 1250,
+  pizzaSizes: [
+    PizzaSize.regular,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 2,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'deal_6',
+  name: 'Deal 6',
+  price: 1550,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 2,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'deal_7',
+  name: 'Deal 7',
+  price: 1350,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 0,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'party_deal_1',
+  name: 'Party Deal 1',
+  price: 2700,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.regular,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 4,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'party_deal_2',
+  name: 'Party Deal 2',
+  price: 3600,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 5,
+  drinkSize: 'drink_1.5ltr',
+),
+];
+
+
+}
+</file>
+
+<file path="lib/features/orders/models/order_draft_entry.dart">
+import 'deal.dart';
+import 'pizza_size.dart';
+import 'topping_selection.dart';
+
+class OrderDraftEntry {
+  final String id;
+
+  final Deal? deal;
+  final PizzaSize? standalonePizzaSize;
+
+  final List<String?> flavorIds;
+  final List<List<ToppingSelection>> toppings;
+
+  const OrderDraftEntry({
+    required this.id,
+    this.deal,
+    this.standalonePizzaSize,
+    this.flavorIds = const [],
+    this.toppings = const [],
+  });
+OrderDraftEntry copyWith({
+  Deal? deal,
+  PizzaSize? standalonePizzaSize,
+  List<String?>? flavorIds,
+  List<List<ToppingSelection>>? toppings,
+}) {
+  return OrderDraftEntry(
+    id: id,
+    deal: deal ?? this.deal,
+    standalonePizzaSize:
+        standalonePizzaSize ?? this.standalonePizzaSize,
+    flavorIds: flavorIds ?? this.flavorIds,
+    toppings: toppings ?? this.toppings,
+  );
+}
+
+}
+</file>
+
+<file path="lib/features/orders/models/order_draft.dart">
+import 'order_draft_entry.dart';
+
+class OrderDraft {
+  final List<OrderDraftEntry> entries;
+
+  final double deliveryCharge;
+
+  final String? customerName;
+  final String? customerPhone;
+  final String? customerAddress;
+  final Map<String, int> additionalDrinks;
+
+final int additionalDipSauceCount;
+
+  const OrderDraft({
+    this.entries = const [],
+    this.additionalDrinks = const {},
+    this.additionalDipSauceCount = 0,
+    this.deliveryCharge = 0,
+    this.customerName,
+    this.customerPhone,
+    this.customerAddress,
+  });
+
+  OrderDraft copyWith({
+  List<OrderDraftEntry>? entries,
+  Map<String, int>? additionalDrinks,
+  int? additionalDipSauceCount,
+  double? deliveryCharge,
+  String? customerName,
+  String? customerPhone,
+  String? customerAddress,
+}) {
+  return OrderDraft(
+    entries: entries ?? this.entries,
+    additionalDrinks: additionalDrinks ?? this.additionalDrinks,
+  additionalDipSauceCount:
+      additionalDipSauceCount ?? this.additionalDipSauceCount,
+    deliveryCharge: deliveryCharge ?? this.deliveryCharge,
+    customerName: customerName ?? this.customerName,
+    customerPhone: customerPhone ?? this.customerPhone,
+    customerAddress: customerAddress ?? this.customerAddress,
+  );
+}
+}
+</file>
+
+<file path="lib/features/orders/models/order_item.dart">
+import 'pizza_size.dart';
+import 'topping_selection.dart';
+
+class OrderItem {
+  final String flavorId;
+  final String flavorName;
+  final double? flavorPriceExtra;
+
+  final PizzaSize size;
+
+  final List<ToppingSelection>? toppings;
+
+  final int quantity;
+
+  final double unitPrice;
+
+  const OrderItem({
+    required this.flavorId,
+    required this.flavorName,
+    this.flavorPriceExtra,
+    required this.size,
+    this.toppings,
+    required this.quantity,
+    required this.unitPrice,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/order.dart">
+import 'order_item.dart';
+import 'deal.dart';
+
+enum OrderStatus {
+  pending,
+  completed,
+  cancelled,
+}
+
+class Order {
+  final String id;
+  final String orderNumber;
+
+  final DateTime createdAt;
+  final DateTime businessDate;
+
+  final String? customerName;
+  final String? customerPhone;
+  final String? customerAddress;
+
+  final List<OrderItem> items;
+  final List<Deal> deals;
+
+  final double deliveryCharge;
+  final double total;
+
+  final OrderStatus status;
+
+  const Order({
+    required this.id,
+    required this.orderNumber,
+    required this.createdAt,
+    required this.businessDate,
+    this.customerName,
+    this.customerPhone,
+    this.customerAddress,
+    required this.items,
+    required this.deals,
+    required this.deliveryCharge,
+    required this.total,
+    required this.status,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/pizza_size.dart">
+enum PizzaSize {
+  small,
+  regular,
+  large,
+}
+</file>
+
+<file path="lib/features/orders/models/topping_selection.dart">
+class ToppingSelection {
+  final String toppingId;
+  final String toppingName;
+  final double priceAtOrderTime;
+
+  const ToppingSelection({
+    required this.toppingId,
+    required this.toppingName,
+    required this.priceAtOrderTime,
+  });
+}
+</file>
+
+<file path="lib/features/orders/providers/order_draft_provider.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import '../models/deal.dart';
+import '../models/order_draft.dart';
+import '../models/order_draft_entry.dart';
+import '../models/pizza_size.dart';
+import '../models/topping_selection.dart';
+import '../models/menu_data.dart';
+
+final orderDraftProvider =
+    NotifierProvider<OrderDraftNotifier, OrderDraft>(
+  OrderDraftNotifier.new,
+);
+
+class OrderDraftNotifier extends Notifier<OrderDraft> {
+  static const _uuid = Uuid();
+  @override
+  OrderDraft build() {
+    return const OrderDraft();
+  }
+  void addStandalonePizza(PizzaSize size) {
+  final entry = OrderDraftEntry(
+    id: _uuid.v4(),
+    standalonePizzaSize: size,
+    flavorIds: [null],
+    toppings: const [
+      [],
+    ],    
+  );
+
+  final newEntries = [
+    ...state.entries,
+    entry,
+  ];
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+void addDeal(Deal deal) {
+  final entry = OrderDraftEntry(
+    id: _uuid.v4(),
+    deal: deal,
+    flavorIds: List<String?>.filled(
+      deal.pizzaSizes.length,
+      null,
+    ),
+    toppings: List<List<ToppingSelection>>.generate(
+      deal.pizzaSizes.length,
+      (_) => <ToppingSelection>[],
+    ),
+  );
+
+  final newEntries = [
+    ...state.entries,
+    entry,
+  ];
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void setFlavor(
+  String entryId,
+  int pizzaIndex,
+  String flavorId,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.flavorIds.length) {
+    return;
+  }
+
+  final updatedFlavorIds = [
+    ...entry.flavorIds,
+  ];
+
+  updatedFlavorIds[pizzaIndex] = flavorId;
+
+  final updatedEntry = entry.copyWith(
+    flavorIds: updatedFlavorIds,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void removeEntry(String entryId) {
+  final newEntries = state.entries
+      .where((entry) => entry.id != entryId)
+      .toList();
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void setDeliveryCharge(double charge) {
+  state = state.copyWith(
+    deliveryCharge: charge,
+  );
+}
+void setCustomerName(String? name) {
+  state = state.copyWith(
+    customerName: name,
+  );
+}
+
+void setCustomerPhone(String? phone) {
+  state = state.copyWith(
+    customerPhone: phone,
+  );
+}
+
+void setCustomerAddress(String? address) {
+  state = state.copyWith(
+    customerAddress: address,
+  );
+}
+void addTopping(
+  String entryId,
+  int pizzaIndex,
+  String toppingId,
+  String toppingName,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.toppings.length) {
+    return;
+  }
+
+  // 1. Determine the size of this specific pizza
+  final PizzaSize size = entry.deal != null
+      ? entry.deal!.pizzaSizes[pizzaIndex]
+      : entry.standalonePizzaSize!;
+
+  // 2. Calculate the price dynamically
+  final price = _getToppingPrice(toppingId, size);
+
+  // 3. Create the selection object
+  final topping = ToppingSelection(
+    toppingId: toppingId,
+    toppingName: toppingName,
+    priceAtOrderTime: price,
+  );
+
+  final updatedToppings = [
+    ...entry.toppings,
+  ];
+
+  updatedToppings[pizzaIndex] = [
+    ...updatedToppings[pizzaIndex],
+    topping,
+  ];
+
+  final updatedEntry = entry.copyWith(
+    toppings: updatedToppings,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+void removeTopping(
+  String entryId,
+  int pizzaIndex,
+  String toppingId,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.toppings.length) {
+    return;
+  }
+
+  final updatedToppings = [
+    ...entry.toppings,
+  ];
+
+  final updatedPizzaToppings = updatedToppings[pizzaIndex]
+      .where((topping) => topping.toppingId != toppingId)
+      .toList();
+
+  updatedToppings[pizzaIndex] = updatedPizzaToppings;
+
+  final updatedEntry = entry.copyWith(
+    toppings: updatedToppings,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+double _getToppingPrice(String toppingId, PizzaSize size) {
+  if (toppingId == 'cheese') {
+    return MenuData.cheesePrices[size] ?? 0;
+  }
+  return MenuData.toppingPrices[toppingId] ?? 0;
+}
+double _getPizzaExtras(
+  OrderDraftEntry entry,
+  int pizzaIndex,
+) {
+  double total = 0;
+
+  final flavorId = entry.flavorIds[pizzaIndex];
+
+  if (flavorId != null) {
+    final flavor = MenuData.flavors.firstWhere(
+      (flavor) => flavor.id == flavorId,
+    );
+
+    total += flavor.priceExtra ?? 0;
+  }
+
+  for (final topping in entry.toppings[pizzaIndex]) {
+    total += topping.priceAtOrderTime;
+  }
+
+  return total;
+}
+
+void addAdditionalDrink(String drinkId) {
+  final updatedDrinks = {
+    ...state.additionalDrinks,
+    drinkId: (state.additionalDrinks[drinkId] ?? 0) + 1,
+  };
+
+  state = state.copyWith(
+    additionalDrinks: updatedDrinks,
+  );
+}
+void setAdditionalDipSauceCount(int count) {
+  state = state.copyWith(
+    additionalDipSauceCount: count,
+  );
+}
+
+}
+</file>
+
+<file path="lib/features/orders/repositories/firebase_order_repository.dart">
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'order_repository.dart';
+import '../models/order_item.dart';
+import '../models/topping_selection.dart';
+import '../models/deal.dart';
+import '../models/order.dart' as order_model;
+
+Map<String, dynamic> _orderToMap(order_model.Order order) {
+  return {
+    'id': order.id,
+    'orderNumber': order.orderNumber,
+    'createdAt': Timestamp.fromDate(order.createdAt),
+    'businessDate': Timestamp.fromDate(order.businessDate),
+    'customerName': order.customerName,
+    'customerPhone': order.customerPhone,
+    'customerAddress': order.customerAddress,
+    'items': order.items.map(_orderItemToMap).toList(),
+    'deals': order.deals.map(_dealToMap).toList(),
+    'deliveryCharge': order.deliveryCharge,
+    'total': order.total,
+    'status': order.status.name,
+  };
+}
+
+Map<String, dynamic> _orderItemToMap(OrderItem item) {
+  return {
+    'flavorId': item.flavorId,
+    'flavorName': item.flavorName,
+    'flavorPriceExtra': item.flavorPriceExtra,
+    'size': item.size.name,
+    'toppings': item.toppings?.map(_toppingToMap).toList(),
+    'quantity': item.quantity,
+    'unitPrice': item.unitPrice,
+  };
+}
+
+Map<String, dynamic> _toppingToMap(ToppingSelection topping) {
+  return {
+    'toppingId': topping.toppingId,
+    'toppingName': topping.toppingName,
+    'priceAtOrderTime': topping.priceAtOrderTime,
+  };
+}
+
+Map<String, dynamic> _dealToMap(Deal deal) {
+  return {
+    'id': deal.id,
+    'name': deal.name,
+    'price': deal.price,
+    'pizzaSizes': deal.pizzaSizes.map((size) => size.name).toList(),
+    'dipSauceCount': deal.dipSauceCount,
+    'drinkSize': deal.drinkSize,
+  };
+}
+
+class FirebaseOrderRepository implements OrderRepository {
+  final FirebaseFirestore _firestore;
+
+  FirebaseOrderRepository({
+    FirebaseFirestore? firestore,
+  }) : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  CollectionReference<Map<String, dynamic>> get _ordersCollection =>
+      _firestore.collection('orders');
+
+  @override
+  Future<void> createOrder(order_model.Order order) async {
+    await _ordersCollection
+        .doc(order.id)
+        .set(_orderToMap(order));
+  }
+}
+</file>
+
+<file path="lib/features/orders/repositories/order_repository.dart">
+import '../models/order.dart';
+
+abstract class OrderRepository {
+  /// Phase 4: Save a newly created order.
+  Future<void> createOrder(Order order);
+
+  // ---------------------------------------------------------------------------
+  // Future Contract Methods (Phase 8 & 9)
+  // ---------------------------------------------------------------------------
+  // Future<Order?> getOrder(String orderId);
+  // Stream<List<Order>> streamOrders(DateTime businessDate);
+  // Future<List<Order>> searchOrders(String query);
+}
+</file>
+
+<file path="lib/features/orders/screens/new_order_screen.dart">
+import 'package:flutter/material.dart';
+
+class NewOrderScreen extends StatelessWidget {
+  const NewOrderScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("New Order Screen"),
+      ),
+    );
+  }
+}
+</file>
+
+</files>
+</file>
+
+<file path="android/app/src/debug/AndroidManifest.xml">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The INTERNET permission is required for development. Specifically,
+         the Flutter tool needs it to communicate with the running application
+         to allow setting breakpoints, to provide hot reload, etc.
+    -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
+</file>
+
+<file path="android/app/src/main/kotlin/com/example/hangout_sales_app/MainActivity.kt">
+package com.example.hangout_sales_app
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
+</file>
+
+<file path="android/app/src/main/res/drawable/launch_background.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+</file>
+
+<file path="android/app/src/main/res/drawable-v21/launch_background.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="?android:colorBackground" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+</file>
+
+<file path="android/app/src/main/res/values/styles.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+</file>
+
+<file path="android/app/src/main/res/values-night/styles.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+</file>
+
+<file path="android/app/src/main/AndroidManifest.xml">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="hangout_sales_app"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
+</file>
+
+<file path="android/app/src/profile/AndroidManifest.xml">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The INTERNET permission is required for development. Specifically,
+         the Flutter tool needs it to communicate with the running application
+         to allow setting breakpoints, to provide hot reload, etc.
+    -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
+</file>
+
+<file path="android/app/build.gradle.kts">
+plugins {
+    id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
+    id("kotlin-android")
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("dev.flutter.flutter-gradle-plugin")
+}
+
+android {
+    namespace = "com.example.hangout_sales_app"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.hangout_sales_app"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+</file>
+
+<file path="android/gradle/wrapper/gradle-wrapper.properties">
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.14-all.zip
+</file>
+
+<file path="android/.gitignore">
+gradle-wrapper.jar
+/.gradle
+/captures/
+/gradlew
+/gradlew.bat
+/local.properties
+GeneratedPluginRegistrant.java
+.cxx/
+
+# Remember to never publicly share your keystore.
+# See https://flutter.dev/to/reference-keystore
+key.properties
+**/*.keystore
+**/*.jks
+</file>
+
+<file path="android/build.gradle.kts">
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+val newBuildDir: Directory =
+    rootProject.layout.buildDirectory
+        .dir("../../build")
+        .get()
+rootProject.layout.buildDirectory.value(newBuildDir)
+
+subprojects {
+    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    project.layout.buildDirectory.value(newSubprojectBuildDir)
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}
+</file>
+
+<file path="android/gradle.properties">
+org.gradle.jvmargs=-Xmx8G -XX:MaxMetaspaceSize=4G -XX:ReservedCodeCacheSize=512m -XX:+HeapDumpOnOutOfMemoryError
+android.useAndroidX=true
+</file>
+
+<file path="android/settings.gradle.kts">
+pluginManagement {
+    val flutterSdkPath =
+        run {
+            val properties = java.util.Properties()
+            file("local.properties").inputStream().use { properties.load(it) }
+            val flutterSdkPath = properties.getProperty("flutter.sdk")
+            require(flutterSdkPath != null) { "flutter.sdk not set in local.properties" }
+            flutterSdkPath
+        }
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("dev.flutter.flutter-plugin-loader") version "1.0.0"
+    id("com.android.application") version "8.11.1" apply false
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services") version("4.3.15") apply false
+    // END: FlutterFire Configuration
+    id("org.jetbrains.kotlin.android") version "2.2.20" apply false
+}
+
+include(":app")
+</file>
+
+<file path="lib/app/theme.dart">
+import 'package:flutter/material.dart';
+
+class AppTheme {
+  AppTheme._();
+
+  // Brand Colors
+  static const Color primaryColor = Color(0xFFD4AF37); // Gold
+  static const Color backgroundColor = Color(0xFFF8F8F8);
+  static const Color surfaceColor = Colors.white;
+  static const Color textColor = Colors.black87;
+  static const Color errorColor = Colors.red;
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
+
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: primaryColor,
+        brightness: Brightness.light,
+      ),
+
+      scaffoldBackgroundColor: backgroundColor,
+
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+      ),
+
+      cardTheme: const CardThemeData(
+        color: surfaceColor,
+        elevation: 2,
+        margin: EdgeInsets.all(8),
+      ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.black,
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/core/constants/app_routes.dart">
+class AppRoutes {
+  AppRoutes._();
+
+  static const String splash = '/';
+  static const String login = '/login';
+  static const String dashboard = '/dashboard';
+
+  static const String orders = '/orders';
+  static const String expenses = '/expenses';
+  static const String customers = '/customers';
+  static const String reports = '/reports';
+  static const String settings = '/settings';
+}
+</file>
+
+<file path="lib/core/services/business_day_service.dart">
+class BusinessDayService {
+  static const int closingHour = 5;
+
+  const BusinessDayService();
+
+  DateTime businessDate(DateTime dateTime) {
+    if (dateTime.hour < closingHour) {
+      return DateTime(
+        dateTime.year,
+        dateTime.month,
+        dateTime.day - 1,
+      );
+    }
+
+    return DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+    );
+  }
+}
+</file>
+
+<file path="lib/features/auth/providers/auth_provider.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'auth_repository_provider.dart';
+
+final authProvider = NotifierProvider<AuthNotifier, bool>(
+  AuthNotifier.new,
+);
+
+class AuthNotifier extends Notifier<bool> {
+  @override
+  bool build() {
+    return false;
+  }
+
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
+    state = true;
+
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+
+      await authRepository.signIn(
+        email: email,
+        password: password,
+      );
+    } finally {
+      state = false;
+    }
+  }
+
+  Future<void> signOut() async {
+    state = true;
+
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+
+      await authRepository.signOut();
+    } finally {
+      state = false;
+    }
+  }
+}
+</file>
+
+<file path="lib/features/auth/providers/auth_repository_provider.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../repositories/auth_repository.dart';
+import 'firebase_auth_provider.dart';
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final auth = ref.read(firebaseAuthProvider);
+
+  return AuthRepository(auth);
+});
+</file>
+
+<file path="lib/features/auth/providers/auth_state_provider.dart">
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'auth_repository_provider.dart';
+
+final authStateProvider = StreamProvider<User?>((ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+
+  return authRepository.authStateChanges();
+});
+</file>
+
+<file path="lib/features/auth/providers/firebase_auth_provider.dart">
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
+  return FirebaseAuth.instance;
+});
+</file>
+
+<file path="lib/features/auth/repositories/auth_repository.dart">
+import 'package:firebase_auth/firebase_auth.dart';
+class AuthRepository {
+  final FirebaseAuth _auth;
+  AuthRepository(this._auth);
+    /// Returns the currently logged-in user (if any)
+  User? get currentUser => _auth.currentUser;
+  
+  /// Stream that notifies whenever the authentication state changes
+  Stream<User?> authStateChanges(){
+    return _auth.authStateChanges();
+  }
+  /// Login using email and password
+Future<UserCredential> signIn ({
+  required String email,
+  required String password,
+}) async{
+  return await _auth.signInWithEmailAndPassword(email: email, password: password);
+}
+/// logout
+Future<void> signOut() async{
+  await _auth.signOut();
+}
+}
+</file>
+
+<file path="lib/features/customers/screens/customer_screen.dart">
+import 'package:flutter/material.dart';
+
+class CustomerScreen extends StatelessWidget {
+  const CustomerScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Customer Screen"),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/features/expenses/screens/expense_screen.dart">
+import 'package:flutter/material.dart';
+
+class ExpenseScreen extends StatelessWidget {
+  const ExpenseScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Expense Screen"),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/features/orders/models/deal.dart">
+import 'pizza_size.dart';
+class Deal {
+  final String id;
+  final String name;
+  final double price;
+  final List<PizzaSize> pizzaSizes;
+  final int dipSauceCount;
+  final String? drinkSize;
+
+  const Deal({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.pizzaSizes,
+    required this.dipSauceCount,
+    this.drinkSize,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/flavor.dart">
+class Flavor {
+  final String id;
+  final String name;
+  final double? priceExtra;
+
+  const Flavor({
+    required this.id,
+    required this.name,
+    this.priceExtra,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/menu_data.dart">
+import 'pizza_size.dart';
+import 'flavor.dart';
+import 'deal.dart';
+
+class MenuData {
+  static const Map<PizzaSize, double> pizzaPrices = {
+    PizzaSize.small: 330,
+    PizzaSize.regular: 550,
+    PizzaSize.large: 700,
+  };
+  static const List<Flavor> flavors = [
+  Flavor(
+    id: 'super_sicilian',
+    name: 'Super Sicilian',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'spicy_bbq',
+    name: 'Spicy BBQ',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'malai_boti',
+    name: 'Malai Boti',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_tikka',
+    name: 'Chicken Tikka',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'shawarma_red',
+    name: 'Shawarma Red',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'gypsy_euro',
+    name: 'Gypsy Euro',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_supreme',
+    name: 'Chicken Supreme',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'cheesy_bake',
+    name: 'Cheesy Bake',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'creamy_tikka',
+    name: 'Creamy Tikka',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_fajita',
+    name: 'Chicken Fajita',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'chicken_challenger',
+    name: 'Chicken Challenger',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'cheese_n_pepperoni',
+    name: 'Cheese N Pepperoni',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'afghani_feast',
+    name: 'Afghani Feast',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'veggie_lover',
+    name: 'Veggie Lover',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'creamy_que',
+    name: 'Creamy Que',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'ranch_blast',
+    name: 'Ranch Blast',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'hot_n_spicy_sriracha',
+    name: 'Hot N Spicy Sriracha',
+    priceExtra: null,
+  ),
+  Flavor(
+    id: 'spicy_italian',
+    name: 'Spicy Italian',
+    priceExtra: null,
+  ),
+];
+static const Map<String, double> toppingPrices = {
+  'meat': 100,
+  'veggie': 50,
+};
+static const Map<PizzaSize, double> cheesePrices = {
+  PizzaSize.small: 70,
+  PizzaSize.regular: 100,
+  PizzaSize.large: 150,
+};
+static const Map<String, double> drinkPrices = {
+  'drink_1.5ltr': 220,
+  'drink_1ltr': 170,
+  'drink_345ml': 80,
+};
+
+static const double dipSaucePrice = 30;
+static const List<double> deliveryCharges = [
+  70,
+  100,
+  130,
+  150,
+  200,
+  250,
+  300,
+];
+
+static const double pickupCharge = 0;
+
+static const List<Deal> deals = [
+  Deal(
+    id: 'deal_1',
+    name: 'Deal 1',
+    price: 380,
+    pizzaSizes: [
+      PizzaSize.small,
+    ],
+    dipSauceCount: 0,
+    drinkSize: 'drink_345ml',
+  ),
+  Deal(
+  id: 'deal_2',
+  name: 'Deal 2',
+  price: 600,
+  pizzaSizes: [
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 0,
+  drinkSize: 'drink_345ml',
+),
+
+Deal(
+  id: 'deal_3',
+  name: 'Deal 3',
+  price: 800,
+  pizzaSizes: [
+    PizzaSize.large,
+  ],
+  dipSauceCount: 1,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'deal_4',
+  name: 'Deal 4',
+  price: 2200,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 3,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'deal_5',
+  name: 'Deal 5',
+  price: 1250,
+  pizzaSizes: [
+    PizzaSize.regular,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 2,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'deal_6',
+  name: 'Deal 6',
+  price: 1550,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 2,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'deal_7',
+  name: 'Deal 7',
+  price: 1350,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 0,
+  drinkSize: 'drink_1ltr',
+),
+
+Deal(
+  id: 'party_deal_1',
+  name: 'Party Deal 1',
+  price: 2700,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.regular,
+    PizzaSize.regular,
+  ],
+  dipSauceCount: 4,
+  drinkSize: 'drink_1.5ltr',
+),
+
+Deal(
+  id: 'party_deal_2',
+  name: 'Party Deal 2',
+  price: 3600,
+  pizzaSizes: [
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+    PizzaSize.large,
+  ],
+  dipSauceCount: 5,
+  drinkSize: 'drink_1.5ltr',
+),
+];
+
+
+}
+</file>
+
+<file path="lib/features/orders/models/order_draft_entry.dart">
+import 'deal.dart';
+import 'pizza_size.dart';
+import 'topping_selection.dart';
+
+class OrderDraftEntry {
+  final String id;
+
+  final Deal? deal;
+  final PizzaSize? standalonePizzaSize;
+
+  final List<String?> flavorIds;
+  final List<List<ToppingSelection>> toppings;
+
+  const OrderDraftEntry({
+    required this.id,
+    this.deal,
+    this.standalonePizzaSize,
+    this.flavorIds = const [],
+    this.toppings = const [],
+  });
+OrderDraftEntry copyWith({
+  Deal? deal,
+  PizzaSize? standalonePizzaSize,
+  List<String?>? flavorIds,
+  List<List<ToppingSelection>>? toppings,
+}) {
+  return OrderDraftEntry(
+    id: id,
+    deal: deal ?? this.deal,
+    standalonePizzaSize:
+        standalonePizzaSize ?? this.standalonePizzaSize,
+    flavorIds: flavorIds ?? this.flavorIds,
+    toppings: toppings ?? this.toppings,
+  );
+}
+
+}
+</file>
+
+<file path="lib/features/orders/models/order_draft.dart">
+import 'order_draft_entry.dart';
+
+class OrderDraft {
+  final List<OrderDraftEntry> entries;
+
+  final double deliveryCharge;
+
+  final String? customerName;
+  final String? customerPhone;
+  final String? customerAddress;
+  final Map<String, int> additionalDrinks;
+
+final int additionalDipSauceCount;
+
+  const OrderDraft({
+    this.entries = const [],
+    this.additionalDrinks = const {},
+    this.additionalDipSauceCount = 0,
+    this.deliveryCharge = 0,
+    this.customerName,
+    this.customerPhone,
+    this.customerAddress,
+  });
+
+  OrderDraft copyWith({
+  List<OrderDraftEntry>? entries,
+  Map<String, int>? additionalDrinks,
+  int? additionalDipSauceCount,
+  double? deliveryCharge,
+  String? customerName,
+  String? customerPhone,
+  String? customerAddress,
+}) {
+  return OrderDraft(
+    entries: entries ?? this.entries,
+    additionalDrinks: additionalDrinks ?? this.additionalDrinks,
+  additionalDipSauceCount:
+      additionalDipSauceCount ?? this.additionalDipSauceCount,
+    deliveryCharge: deliveryCharge ?? this.deliveryCharge,
+    customerName: customerName ?? this.customerName,
+    customerPhone: customerPhone ?? this.customerPhone,
+    customerAddress: customerAddress ?? this.customerAddress,
+  );
+}
+}
+</file>
+
+<file path="lib/features/orders/models/order_item.dart">
+import 'pizza_size.dart';
+import 'topping_selection.dart';
+
+class OrderItem {
+  final String flavorId;
+  final String flavorName;
+  final double? flavorPriceExtra;
+
+  final PizzaSize size;
+
+  final List<ToppingSelection>? toppings;
+
+  final int quantity;
+
+  final double unitPrice;
+
+  const OrderItem({
+    required this.flavorId,
+    required this.flavorName,
+    this.flavorPriceExtra,
+    required this.size,
+    this.toppings,
+    required this.quantity,
+    required this.unitPrice,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/order.dart">
+import 'order_item.dart';
+import 'deal.dart';
+
+enum OrderStatus {
+  pending,
+  completed,
+  cancelled,
+}
+
+class Order {
+  final String id;
+  final String orderNumber;
+
+  final DateTime createdAt;
+  final DateTime businessDate;
+
+  final String? customerName;
+  final String? customerPhone;
+  final String? customerAddress;
+
+  final List<OrderItem> items;
+  final List<Deal> deals;
+
+  final double deliveryCharge;
+  final double total;
+
+  final OrderStatus status;
+
+  const Order({
+    required this.id,
+    required this.orderNumber,
+    required this.createdAt,
+    required this.businessDate,
+    this.customerName,
+    this.customerPhone,
+    this.customerAddress,
+    required this.items,
+    required this.deals,
+    required this.deliveryCharge,
+    required this.total,
+    required this.status,
+  });
+}
+</file>
+
+<file path="lib/features/orders/models/pizza_size.dart">
+enum PizzaSize {
+  small,
+  regular,
+  large,
+}
+</file>
+
+<file path="lib/features/orders/models/topping_selection.dart">
+class ToppingSelection {
+  final String toppingId;
+  final String toppingName;
+  final double priceAtOrderTime;
+
+  const ToppingSelection({
+    required this.toppingId,
+    required this.toppingName,
+    required this.priceAtOrderTime,
+  });
+}
+</file>
+
+<file path="lib/features/orders/providers/order_draft_provider.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import '../models/deal.dart';
+import '../models/order_draft.dart';
+import '../models/order_draft_entry.dart';
+import '../models/pizza_size.dart';
+import '../models/topping_selection.dart';
+import '../models/menu_data.dart';
+
+final orderDraftProvider =
+    NotifierProvider<OrderDraftNotifier, OrderDraft>(
+  OrderDraftNotifier.new,
+);
+
+class OrderDraftNotifier extends Notifier<OrderDraft> {
+  static const _uuid = Uuid();
+  @override
+  OrderDraft build() {
+    return const OrderDraft();
+  }
+  void addStandalonePizza(PizzaSize size) {
+  final entry = OrderDraftEntry(
+    id: _uuid.v4(),
+    standalonePizzaSize: size,
+    flavorIds: [null],
+    toppings: const [
+      [],
+    ],    
+  );
+
+  final newEntries = [
+    ...state.entries,
+    entry,
+  ];
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+void addDeal(Deal deal) {
+  final entry = OrderDraftEntry(
+    id: _uuid.v4(),
+    deal: deal,
+    flavorIds: List<String?>.filled(
+      deal.pizzaSizes.length,
+      null,
+    ),
+    toppings: List<List<ToppingSelection>>.generate(
+      deal.pizzaSizes.length,
+      (_) => <ToppingSelection>[],
+    ),
+  );
+
+  final newEntries = [
+    ...state.entries,
+    entry,
+  ];
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void setFlavor(
+  String entryId,
+  int pizzaIndex,
+  String flavorId,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.flavorIds.length) {
+    return;
+  }
+
+  final updatedFlavorIds = [
+    ...entry.flavorIds,
+  ];
+
+  updatedFlavorIds[pizzaIndex] = flavorId;
+
+  final updatedEntry = entry.copyWith(
+    flavorIds: updatedFlavorIds,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void removeEntry(String entryId) {
+  final newEntries = state.entries
+      .where((entry) => entry.id != entryId)
+      .toList();
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+
+void setDeliveryCharge(double charge) {
+  state = state.copyWith(
+    deliveryCharge: charge,
+  );
+}
+void setCustomerName(String? name) {
+  state = state.copyWith(
+    customerName: name,
+  );
+}
+
+void setCustomerPhone(String? phone) {
+  state = state.copyWith(
+    customerPhone: phone,
+  );
+}
+
+void setCustomerAddress(String? address) {
+  state = state.copyWith(
+    customerAddress: address,
+  );
+}
+void addTopping(
+  String entryId,
+  int pizzaIndex,
+  String toppingId,
+  String toppingName,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.toppings.length) {
+    return;
+  }
+
+  // 1. Determine the size of this specific pizza
+  final PizzaSize size = entry.deal != null
+      ? entry.deal!.pizzaSizes[pizzaIndex]
+      : entry.standalonePizzaSize!;
+
+  // 2. Calculate the price dynamically
+  final price = _getToppingPrice(toppingId, size);
+
+  // 3. Create the selection object
+  final topping = ToppingSelection(
+    toppingId: toppingId,
+    toppingName: toppingName,
+    priceAtOrderTime: price,
+  );
+
+  final updatedToppings = [
+    ...entry.toppings,
+  ];
+
+  updatedToppings[pizzaIndex] = [
+    ...updatedToppings[pizzaIndex],
+    topping,
+  ];
+
+  final updatedEntry = entry.copyWith(
+    toppings: updatedToppings,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+void removeTopping(
+  String entryId,
+  int pizzaIndex,
+  String toppingId,
+) {
+  final entryIndex = state.entries.indexWhere(
+    (entry) => entry.id == entryId,
+  );
+
+  if (entryIndex == -1) {
+    return;
+  }
+
+  final entry = state.entries[entryIndex];
+
+  if (pizzaIndex < 0 || pizzaIndex >= entry.toppings.length) {
+    return;
+  }
+
+  final updatedToppings = [
+    ...entry.toppings,
+  ];
+
+  final updatedPizzaToppings = updatedToppings[pizzaIndex]
+      .where((topping) => topping.toppingId != toppingId)
+      .toList();
+
+  updatedToppings[pizzaIndex] = updatedPizzaToppings;
+
+  final updatedEntry = entry.copyWith(
+    toppings: updatedToppings,
+  );
+
+  final newEntries = [
+    ...state.entries,
+  ];
+
+  newEntries[entryIndex] = updatedEntry;
+
+  state = state.copyWith(
+    entries: newEntries,
+  );
+}
+double _getToppingPrice(String toppingId, PizzaSize size) {
+  if (toppingId == 'cheese') {
+    return MenuData.cheesePrices[size] ?? 0;
+  }
+  return MenuData.toppingPrices[toppingId] ?? 0;
+}
+double _getPizzaExtras(
+  OrderDraftEntry entry,
+  int pizzaIndex,
+) {
+  double total = 0;
+
+  final flavorId = entry.flavorIds[pizzaIndex];
+
+  if (flavorId != null) {
+    final flavor = MenuData.flavors.firstWhere(
+      (flavor) => flavor.id == flavorId,
+    );
+
+    total += flavor.priceExtra ?? 0;
+  }
+
+  for (final topping in entry.toppings[pizzaIndex]) {
+    total += topping.priceAtOrderTime;
+  }
+
+  return total;
+}
+
+void addAdditionalDrink(String drinkId) {
+  final updatedDrinks = {
+    ...state.additionalDrinks,
+    drinkId: (state.additionalDrinks[drinkId] ?? 0) + 1,
+  };
+
+  state = state.copyWith(
+    additionalDrinks: updatedDrinks,
+  );
+}
+void setAdditionalDipSauceCount(int count) {
+  state = state.copyWith(
+    additionalDipSauceCount: count,
+  );
+}
+
+}
+</file>
+
+<file path="lib/features/orders/repositories/firebase_order_repository.dart">
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'order_repository.dart';
+import '../models/order_item.dart';
+import '../models/topping_selection.dart';
+import '../models/deal.dart';
+import '../models/order.dart' as order_model;
+
+Map<String, dynamic> _orderToMap(order_model.Order order) {
+  return {
+    'id': order.id,
+    'orderNumber': order.orderNumber,
+    'createdAt': Timestamp.fromDate(order.createdAt),
+    'businessDate': Timestamp.fromDate(order.businessDate),
+    'customerName': order.customerName,
+    'customerPhone': order.customerPhone,
+    'customerAddress': order.customerAddress,
+    'items': order.items.map(_orderItemToMap).toList(),
+    'deals': order.deals.map(_dealToMap).toList(),
+    'deliveryCharge': order.deliveryCharge,
+    'total': order.total,
+    'status': order.status.name,
+  };
+}
+
+Map<String, dynamic> _orderItemToMap(OrderItem item) {
+  return {
+    'flavorId': item.flavorId,
+    'flavorName': item.flavorName,
+    'flavorPriceExtra': item.flavorPriceExtra,
+    'size': item.size.name,
+    'toppings': item.toppings?.map(_toppingToMap).toList(),
+    'quantity': item.quantity,
+    'unitPrice': item.unitPrice,
+  };
+}
+
+Map<String, dynamic> _toppingToMap(ToppingSelection topping) {
+  return {
+    'toppingId': topping.toppingId,
+    'toppingName': topping.toppingName,
+    'priceAtOrderTime': topping.priceAtOrderTime,
+  };
+}
+
+Map<String, dynamic> _dealToMap(Deal deal) {
+  return {
+    'id': deal.id,
+    'name': deal.name,
+    'price': deal.price,
+    'pizzaSizes': deal.pizzaSizes.map((size) => size.name).toList(),
+    'dipSauceCount': deal.dipSauceCount,
+    'drinkSize': deal.drinkSize,
+  };
+}
+
+class FirebaseOrderRepository implements OrderRepository {
+  final FirebaseFirestore _firestore;
+
+  FirebaseOrderRepository({
+    FirebaseFirestore? firestore,
+  }) : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  CollectionReference<Map<String, dynamic>> get _ordersCollection =>
+      _firestore.collection('orders');
+
+  @override
+  Future<void> createOrder(order_model.Order order) async {
+    await _ordersCollection
+        .doc(order.id)
+        .set(_orderToMap(order));
+  }
+}
+</file>
+
+<file path="lib/features/orders/repositories/order_repository.dart">
+import '../models/order.dart';
+
+abstract class OrderRepository {
+  /// Phase 4: Save a newly created order.
+  Future<void> createOrder(Order order);
+
+  // ---------------------------------------------------------------------------
+  // Future Contract Methods (Phase 8 & 9)
+  // ---------------------------------------------------------------------------
+  // Future<Order?> getOrder(String orderId);
+  // Stream<List<Order>> streamOrders(DateTime businessDate);
+  // Future<List<Order>> searchOrders(String query);
+}
+</file>
+
+<file path="lib/features/orders/screens/new_order_screen.dart">
+import 'package:flutter/material.dart';
+
+class NewOrderScreen extends StatelessWidget {
+  const NewOrderScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("New Order Screen"),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/features/reports/screens/report_screen.dart">
+import 'package:flutter/material.dart';
+
+class ReportScreen extends StatelessWidget {
+  const ReportScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Report Screen"),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/shared/widgets/marble_background_painter.dart">
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+/// Draws a procedural sun-warmed terracotta plaster wall texture —
+/// evoking an Italian pizzeria's exposed brick/plaster, with warm
+/// golden sunlight falling across it from one corner.
+/// Fully original — no images, no external assets.
+class CastleWallPainter extends CustomPainter {
+  final Color stoneColor;
+  final Color mortarColor;
+  final Color sunColor;
+  final int seed;
+
+  CastleWallPainter({
+    this.stoneColor = const Color(0xFFC97B4A), // warm terracotta
+    this.mortarColor = const Color(0xFF8C5A3B), // deeper clay/mortar
+    this.sunColor = const Color(0xFFD4AF37), // gold, unchanged
+    this.seed = 11,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final random = Random(seed);
+
+    // ---- 1. Terracotta block/brick pattern ----
+    const double blockHeight = 42;
+    const double blockWidthBase = 88;
+
+    final mortarPaint = Paint()
+      ..color = mortarColor.withOpacity(0.06)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.3;
+
+    final stonePaint = Paint()..style = PaintingStyle.fill;
+
+    int row = 0;
+    for (double y = 0; y < size.height; y += blockHeight) {
+      final rowOffset = (row.isEven) ? 0.0 : blockWidthBase / 2;
+      double x = -blockWidthBase + rowOffset;
+
+      while (x < size.width) {
+        final widthJitter = blockWidthBase + (random.nextDouble() - 0.5) * 18;
+        final rect = Rect.fromLTWH(x, y, widthJitter, blockHeight);
+
+        // Warmer tonal variation per brick — some slightly redder, some more ochre
+        final shade = 0.025 + random.nextDouble() * 0.04;
+        stonePaint.color = stoneColor.withOpacity(shade);
+        canvas.drawRect(rect, stonePaint);
+        canvas.drawRect(rect, mortarPaint);
+
+        x += widthJitter;
+      }
+      row++;
+    }
+
+    // ---- 2. Warm directional sunlight glow (from top-right corner) ----
+    final sunlightRect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final sunGradient = RadialGradient(
+      center: const Alignment(0.85, -0.85),
+      radius: 1.3,
+      colors: [
+        sunColor.withOpacity(0.18),
+        sunColor.withOpacity(0.06),
+        Colors.transparent,
+      ],
+      stops: const [0.0, 0.4, 1.0],
+    );
+    final sunPaint = Paint()..shader = sunGradient.createShader(sunlightRect);
+    canvas.drawRect(sunlightRect, sunPaint);
+
+    // ---- 3. Faint light-ray streaks radiating from the sun corner ----
+    final rayOrigin = Offset(size.width * 0.92, size.height * -0.05);
+    final rayPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.2
+      ..strokeCap = StrokeCap.round;
+
+    for (int i = 0; i < 6; i++) {
+      final angle = pi * (0.55 + i * 0.06);
+      final length = size.longestSide * 1.1;
+      final end = Offset(
+        rayOrigin.dx + length * cos(angle),
+        rayOrigin.dy + length * sin(angle),
+      );
+
+      rayPaint.shader = LinearGradient(
+        colors: [
+          sunColor.withOpacity(0.11),
+          sunColor.withOpacity(0.0),
+        ],
+      ).createShader(Rect.fromPoints(rayOrigin, end));
+
+      canvas.drawLine(rayOrigin, end, rayPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CastleWallPainter oldDelegate) => false;
+}
+</file>
+
+<file path="lib/main.dart">
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'app/app.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    const ProviderScope(
+      child: HangoutSalesManagerApp(),
+    ),
+  );
+}
+</file>
+
+<file path="test/order_draft_notifier_test.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../lib/features/orders/models/menu_data.dart';
+import '../lib/features/orders/models/pizza_size.dart';
+import '../lib/features/orders/providers/order_draft_provider.dart';
+
+void main() {
+  final deal4 = MenuData.deals.firstWhere(
+    (deal) => deal.id == 'deal_4',
+  );
+
+  test('adds Deal 4 twice and a standalone pizza', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final notifier = container.read(orderDraftProvider.notifier);
+
+    notifier.addDeal(deal4);
+    notifier.addDeal(deal4);
+    notifier.addStandalonePizza(PizzaSize.small);
+
+    final entries = container.read(orderDraftProvider).entries;
+
+    expect(entries, hasLength(3));
+
+    expect(entries[0].deal?.id, 'deal_4');
+    expect(entries[0].flavorIds, [null, null, null]);
+
+    expect(entries[1].deal?.id, 'deal_4');
+    expect(entries[1].flavorIds, [null, null, null]);
+
+    expect(entries[2].standalonePizzaSize, PizzaSize.small);
+    expect(entries[2].flavorIds, [null]);
+
+    expect(entries[0].id, isNot(equals(entries[1].id)));
+  });
+
+  test('setFlavor updates only the selected entry', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final notifier = container.read(orderDraftProvider.notifier);
+
+    notifier.addDeal(deal4);
+    notifier.addDeal(deal4);
+    notifier.addStandalonePizza(PizzaSize.small);
+
+    final initialEntries = container.read(orderDraftProvider).entries;
+    final firstEntry = initialEntries[0];
+    final secondEntry = initialEntries[1];
+    final thirdEntry = initialEntries[2];
+
+    notifier.setFlavor(
+      firstEntry.id,
+      1,
+      'chicken_fajita',
+    );
+
+    final entries = container.read(orderDraftProvider).entries;
+
+    expect(entries[0].flavorIds, [null, 'chicken_fajita', null]);
+    expect(entries[1].flavorIds, [null, null, null]);
+    expect(entries[2].flavorIds, [null]);
+
+    expect(entries[1].id, secondEntry.id);
+    expect(entries[2].id, thirdEntry.id);
+  });
+
+  test('removeEntry removes only the selected entry', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final notifier = container.read(orderDraftProvider.notifier);
+
+    notifier.addDeal(deal4);
+    notifier.addDeal(deal4);
+    notifier.addStandalonePizza(PizzaSize.small);
+
+    final initialEntries = container.read(orderDraftProvider).entries;
+    final firstEntryId = initialEntries[0].id;
+    final secondEntryId = initialEntries[1].id;
+    final thirdEntryId = initialEntries[2].id;
+
+    notifier.removeEntry(firstEntryId);
+
+    final entries = container.read(orderDraftProvider).entries;
+
+    expect(entries, hasLength(2));
+    expect(entries.any((entry) => entry.id == firstEntryId), isFalse);
+    expect(entries.any((entry) => entry.id == secondEntryId), isTrue);
+    expect(entries.any((entry) => entry.id == thirdEntryId), isTrue);
+  });
+
+  test('setFlavor ignores invalid entry IDs and pizza indexes', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final notifier = container.read(orderDraftProvider.notifier);
+
+    notifier.addStandalonePizza(PizzaSize.large);
+
+    final before = container.read(orderDraftProvider).entries.first;
+
+    notifier.setFlavor(
+      'invalid_entry_id',
+      0,
+      'spicy_bbq',
+    );
+
+    expect(
+      container.read(orderDraftProvider).entries.first.flavorIds,
+      [null],
+    );
+
+    notifier.setFlavor(
+      before.id,
+      99,
+      'spicy_bbq',
+    );
+
+    expect(
+      container.read(orderDraftProvider).entries.first.flavorIds,
+      [null],
+    );
+  });
+
+  test('every added entry receives a unique ID', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+  notifier.addDeal(deal4);
+  notifier.addStandalonePizza(PizzaSize.small);
+  notifier.addStandalonePizza(PizzaSize.large);
+
+  final entries = container.read(orderDraftProvider).entries;
+
+  final ids = entries.map((entry) => entry.id).toSet();
+
+  expect(ids, hasLength(entries.length));
+});
+}
+</file>
+
+<file path=".metadata">
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess capabilities and perform upgrades etc.
+#
+# This file should be version controlled and should not be manually edited.
+
+version:
+  revision: "8b872868494e429d94fa06dca855c306438b22c0"
+  channel: "stable"
+
+project_type: app
+
+# Tracks metadata for the flutter migrate command
+migration:
+  platforms:
+    - platform: root
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+    - platform: android
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+    - platform: ios
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+    - platform: linux
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+    - platform: macos
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+    - platform: web
+      create_revision: 8b872868494e429d94fa06dca855c306438b22c0
+      base_revision: 8b872868494e429d94fa06dca855c306438b22c0
+
+  # User provided section
+
+  # List of Local paths (relative to this file) that should be
+  # ignored by the migrate tool.
+  #
+  # Files that are not part of the templates will be ignored by default.
+  unmanaged_files:
+    - 'lib/main.dart'
+    - 'ios/Runner.xcodeproj/project.pbxproj'
+</file>
+
+<file path="firebase.json">
+{"flutter":{"platforms":{"android":{"default":{"projectId":"hangout-sales-app","appId":"1:475953012346:android:7b2d861ba14c365623a5c3","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"hangout-sales-app","configurations":{"android":"1:475953012346:android:7b2d861ba14c365623a5c3","ios":"1:475953012346:ios:10cb597c5982d64c23a5c3","macos":"1:475953012346:ios:10cb597c5982d64c23a5c3","web":"1:475953012346:web:3aec2fac70c7742423a5c3"}}}}}}
+</file>
+
+<file path="pubspec.yaml">
+name: hangout_sales_app
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.7
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.9
+  flutter_riverpod: ^2.6.1
+  go_router: ^16.0.0
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.0
+  cloud_firestore: ^6.0.0
+  intl: ^0.20.2
+  uuid: ^4.5.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+</file>
+
+<file path="README.md">
+# hangout_sales_app
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+</file>
+
+<file path="lib/app/app.dart">
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'router.dart';
+import 'theme.dart';
+
+class HangoutSalesManagerApp extends ConsumerWidget {
+  const HangoutSalesManagerApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      title: 'Hangout Sales Manager',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      routerConfig: router,
+    );
+  }
+}
+</file>
+
+<file path="lib/app/router.dart">
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../core/constants/app_routes.dart';
+import '../features/auth/providers/auth_state_provider.dart';
+import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/splash_screen.dart';
+import '../features/customers/screens/customer_screen.dart';
+import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/expenses/screens/expense_screen.dart';
+import '../features/orders/screens/new_order_screen.dart';
+import '../features/reports/screens/report_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
+
+final routerProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authStateProvider);
+
+  return GoRouter(
+    initialLocation: AppRoutes.splash,
+
+    redirect: (context, state) {
+      final isAuthenticated = authState.valueOrNull != null;
+
+      final isGoingToLogin = state.matchedLocation == AppRoutes.login;
+      final isGoingToSplash = state.matchedLocation == AppRoutes.splash;
+
+      if (authState.isLoading) {
+        return AppRoutes.splash;
+      }
+
+      if (!isAuthenticated && !isGoingToLogin) {
+        return AppRoutes.login;
+      }
+
+      if (isAuthenticated && (isGoingToLogin || isGoingToSplash)) {
+        return AppRoutes.dashboard;
+      }
+
+      return null;
+    },
+
+    routes: [
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.dashboard,
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.orders,
+        builder: (context, state) => const NewOrderScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.customers,
+        builder: (context, state) => const CustomerScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.expenses,
+        builder: (context, state) => const ExpenseScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.reports,
+        builder: (context, state) => const ReportScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+    ],
+  );
+});
+</file>
+
+<file path="lib/features/auth/screens/login_screen.dart">
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/auth_provider.dart';
+import '../../../app/theme.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnack('Please enter your email and password.');
+      return;
+    }
+
+    try {
+      await ref.read(authProvider.notifier).signIn(
+            email: email,
+            password: password,
+          );
+    } catch (e) {
+      if (!mounted) return;
+      _showSnack('Login failed. Please check your credentials.');
+    }
+  }
+
+  void _showSnack(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.black87,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isLoading = ref.watch(authProvider);
+
+    return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 380),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // "Receipt" card
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.10),
+                          blurRadius: 30,
+                          offset: const Offset(0, 12),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Header block
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(28, 32, 28, 20),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 56,
+                                height: 56,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.local_pizza_rounded,
+                                  color: AppTheme.primaryColor,
+                                  size: 28,
+                                ),
+                              ),
+                              const SizedBox(height: 18),
+                              const Text(
+                                'HANGOUT',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 4,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'SALES  MANAGER',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 3,
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Dashed divider — receipt tear line
+                        const _DashedDivider(),
+
+                        // Form block
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(28, 24, 28, 28),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              _ReceiptField(
+                                label: 'EMAIL',
+                                controller: _emailController,
+                                hint: 'admin@hangout.com',
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 20),
+                              _ReceiptField(
+                                label: 'PASSWORD',
+                                controller: _passwordController,
+                                hint: 'Enter password',
+                                obscureText: _obscurePassword,
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (_) {
+                                  if (!isLoading) _login();
+                                },
+                                trailing: GestureDetector(
+                                  onTap: () => setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  ),
+                                  child: Text(
+                                    _obscurePassword ? 'SHOW' : 'HIDE',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.5,
+                                      color: AppTheme.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              SizedBox(
+                                height: 52,
+                                child: ElevatedButton(
+                                  onPressed: isLoading ? null : _login,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black,
+                                    foregroundColor: AppTheme.primaryColor,
+                                    disabledBackgroundColor:
+                                        Colors.black.withOpacity(0.3),
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                  child: isLoading
+                                      ? const SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.2,
+                                            valueColor: AlwaysStoppedAnimation(
+                                              AppTheme.primaryColor,
+                                            ),
+                                          ),
+                                        )
+                                      : const Text(
+                                          'SIGN IN',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14,
+                                            letterSpacing: 2,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Center(
+                    child: Text(
+                      'Authorized staff only',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black.withOpacity(0.32),
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DashedDivider extends StatelessWidget {
+  const _DashedDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 1,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final dashCount = (constraints.maxWidth / 10).floor();
+          return Row(
+            children: List.generate(
+              dashCount,
+              (_) => Expanded(
+                child: Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  color: Colors.black.withOpacity(0.12),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ReceiptField extends StatelessWidget {
+  final String label;
+  final TextEditingController controller;
+  final String hint;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onSubmitted;
+  final Widget? trailing;
+
+  const _ReceiptField({
+    required this.label,
+    required this.controller,
+    required this.hint,
+    this.obscureText = false,
+    this.keyboardType,
+    this.textInputAction,
+    this.onSubmitted,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.5,
+                  color: Colors.black.withOpacity(0.4),
+                ),
+              ),
+            ),
+            if (trailing != null) trailing!,
+          ],
+        ),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          onSubmitted: onSubmitted,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+          cursorColor: AppTheme.primaryColor,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.black.withOpacity(0.22),
+            ),
+            isDense: true,
+            contentPadding: const EdgeInsets.only(bottom: 10),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black.withOpacity(0.15)),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black.withOpacity(0.15)),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.primaryColor, width: 2),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+</file>
+
+<file path="lib/features/auth/screens/splash_screen.dart">
+import 'package:flutter/material.dart';
+
+import '../../../shared/widgets/marble_background_painter.dart';
+import '../../../app/theme.dart';
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF6EC),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: CustomPaint(
+              painter: CastleWallPainter(),
+            ),
+          ),
+
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.08),
+                    Colors.black.withOpacity(0.18),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          SafeArea(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black,
+                        border: Border.all(
+                          color: AppTheme.primaryColor,
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.primaryColor.withOpacity(0.28),
+                            blurRadius: 30,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.local_pizza_outlined,
+                        color: AppTheme.primaryColor,
+                        size: 48,
+                      ),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    const Text(
+                      'HANGOUT PIZZA CLASSIC',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'serif',
+                        fontSize: 23,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 2.2,
+                        color: Colors.black,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      'SALES MANAGER',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 4,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    const _OrnamentalDivider(),
+
+                    const SizedBox(height: 30),
+
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppTheme.primaryColor,
+                      ),
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    Text(
+                      'Preparing your workspace...',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black.withOpacity(0.45),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OrnamentalDivider extends StatelessWidget {
+  const _OrnamentalDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 1,
+            color: AppTheme.primaryColor.withOpacity(0.4),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Transform.rotate(
+            angle: 0.785398,
+            child: Container(
+              width: 7,
+              height: 7,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 1,
+            color: AppTheme.primaryColor.withOpacity(0.4),
+          ),
+        ),
+      ],
+    );
+  }
+}
+</file>
+
+<file path="lib/features/settings/screens/settings_screen.dart">
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../auth/providers/auth_provider.dart';
+import '../../../app/theme.dart';
+import '../../../shared/widgets/marble_background_painter.dart';
+
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
+  Future<void> _signOut(BuildContext context, WidgetRef ref) async {
+    try {
+      await ref.read(authProvider.notifier).signOut();
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Unable to sign out. Please try again.'),
+          backgroundColor: Colors.black87,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          margin: const EdgeInsets.all(16),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF6EC),
+      appBar: AppBar(
+  elevation: 0,
+  centerTitle: true,
+  automaticallyImplyLeading: false,
+  flexibleSpace: Container(
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: [
+          const Color(0xFF2B1B10), // dark terracotta-black blend
+          Colors.black,
+        ],
+      ),
+    ),
+  ),
+  title: const Text(
+    'SETTINGS',
+    style: TextStyle(
+      fontFamily: 'serif',
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 4,
+      color: Color(0xFFD4AF37),
+    ),
+  ),
+  bottom: PreferredSize(
+    preferredSize: const Size.fromHeight(1),
+    child: Container(
+      height: 1,
+      color: const Color(0xFFD4AF37).withOpacity(0.35),
+    ),
+  ),
+),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: CustomPaint(painter: CastleWallPainter()),
+          ),
+          ListView(
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 40),
+            children: [
+              Center(
+                child: Container(
+                  width: 96,
+                  height: 96,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black,
+                    border: Border.all(color: AppTheme.primaryColor, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primaryColor.withOpacity(0.25),
+                        blurRadius: 26,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.admin_panel_settings_outlined,
+                    color: AppTheme.primaryColor,
+                    size: 40,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Center(
+                child: Text(
+                  'Hangout Pizza Classic',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'serif',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Center(
+                child: Text(
+                  'Administrator',
+                  style: TextStyle(
+                    fontSize: 13,
+                    letterSpacing: 2,
+                    color: Colors.black.withOpacity(0.45),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 36),
+              const _OrnamentalDivider(),
+              const SizedBox(height: 32),
+              const _SectionLabel('ACCOUNT'),
+              const SizedBox(height: 14),
+              _SettingsTile(
+                icon: Icons.shield_outlined,
+                title: 'Account & Security',
+                subtitle: 'Manage administrator access',
+                onTap: () {},
+              ),
+              const SizedBox(height: 30),
+              const _SectionLabel('SESSION'),
+              const SizedBox(height: 14),
+              _SettingsTile(
+                icon: Icons.logout_rounded,
+                title: 'Sign out',
+                subtitle: 'End the current administrator session',
+                onTap: () => _signOut(context, ref),
+                destructive: true,
+              ),
+              const SizedBox(height: 48),
+              const _OrnamentalDivider(),
+              const SizedBox(height: 24),
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      'HANGOUT SALES MANAGER',
+                      style: TextStyle(
+                        fontFamily: 'serif',
+                        fontSize: 11,
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black.withOpacity(0.55),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Built for the business.',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black.withOpacity(0.35),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OrnamentalDivider extends StatelessWidget {
+  const _OrnamentalDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(height: 1, color: AppTheme.primaryColor.withOpacity(0.4)),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Transform.rotate(
+            angle: 0.785398,
+            child: Container(width: 7, height: 7, color: AppTheme.primaryColor),
+          ),
+        ),
+        Expanded(
+          child: Container(height: 1, color: AppTheme.primaryColor.withOpacity(0.4)),
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String title;
+  const _SectionLabel(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 2.2,
+        color: Colors.black.withOpacity(0.4),
+      ),
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+  final bool destructive;
+
+  const _SettingsTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    this.destructive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final Color accent = destructive ? const Color(0xFF7A1F1F) : Colors.black;
+
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(4),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              color: destructive
+                  ? const Color(0xFF7A1F1F).withOpacity(0.35)
+                  : AppTheme.primaryColor.withOpacity(0.35),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: destructive
+                        ? const Color(0xFF7A1F1F).withOpacity(0.4)
+                        : AppTheme.primaryColor.withOpacity(0.5),
+                    width: 1.2,
+                  ),
+                ),
+                child: Icon(icon, color: accent, size: 20),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontFamily: 'serif',
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w700,
+                        color: accent,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      style: TextStyle(fontSize: 12.5, color: Colors.black.withOpacity(0.45)),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right_rounded, color: Colors.black.withOpacity(0.25)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="test/widget_test.dart">
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:hangout_sales_app/app/app.dart';
+
+void main() {
+  testWidgets('App starts and shows Hangout Sales Manager', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: HangoutSalesManagerApp(),
+      ),
+    );
+
+    expect(find.text('Hangout Sales Manager'), findsOneWidget);
+  });
+}
+</file>
+
+<file path=".gitignore">
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+# Firebase secrets
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+</file>
+
+<file path="analysis_options.yaml">
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at https://dart.dev/lints.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="lib/features/dashboard/screens/dashboard_screen.dart">
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/constants/app_routes.dart';
+
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8F3E8),
+      appBar: AppBar(
+  backgroundColor: Colors.black,
+  elevation: 0,
+  titleSpacing: 20,
+  title: const Text(
+    'Hangout Pizza Classic',
+    style: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 1.2,
+    ),
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.settings_outlined, color: Color(0xFFD4AF37)),
+      tooltip: 'Settings',
+      onPressed: () => context.go(AppRoutes.settings),
+    ),
+    const SizedBox(width: 8),
+  ],
+),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _DashboardHeader(),
+
+              const SizedBox(height: 24),
+
+              const _SectionLabel(
+                title: "TODAY'S OVERVIEW",
+              ),
+
+              const SizedBox(height: 12),
+
+              const _OverviewGrid(),
+
+              const SizedBox(height: 28),
+
+              const _SectionLabel(
+                title: 'QUICK ACTIONS',
+              ),
+
+              const SizedBox(height: 12),
+
+              const _QuickActions(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DashboardHeader extends StatelessWidget {
+  const _DashboardHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: const Color(0xFFD4AF37).withOpacity(0.55),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'TODAY\'S OVERVIEW',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 2.4,
+              color: Colors.black.withOpacity(0.55),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          const Text(
+            'Thursday, 14 August',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.3,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Row(
+            children: [
+              Container(
+                width: 7,
+                height: 7,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFD4AF37),
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              Text(
+                'Business day • 5:00 PM – 5:00 AM',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black.withOpacity(0.52),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 18),
+
+          const Divider(
+            height: 1,
+            color: Color(0xFFE7DDC8),
+          ),
+
+          const SizedBox(height: 14),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Live overview',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black.withOpacity(0.42),
+                ),
+              ),
+
+              IconButton(
+                onPressed: () {
+                  // Refresh functionality will be connected later.
+                },
+                tooltip: 'Refresh',
+                visualDensity: VisualDensity.compact,
+                icon: const Icon(
+                  Icons.refresh_rounded,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String title;
+
+  const _SectionLabel({
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 2.4,
+        color: Colors.black.withOpacity(0.55),
+      ),
+    );
+  }
+}
+class _OverviewGrid extends StatelessWidget {
+  const _OverviewGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      childAspectRatio: 1.25,
+      children: const [
+        _OverviewCard(
+          label: 'SALES',
+          value: 'No sales yet today',
+          icon: Icons.payments_outlined,
+        ),
+        _OverviewCard(
+          label: 'EXPENSES',
+          value: 'No expenses yet',
+          icon: Icons.receipt_long_outlined,
+        ),
+        _OverviewCard(
+          label: 'ORDERS',
+          value: 'No orders yet',
+          icon: Icons.shopping_bag_outlined,
+        ),
+        _OverviewCard(
+          label: 'PROFIT',
+          value: '—',
+          subtitle: 'Waiting for sales',
+          icon: Icons.trending_up_rounded,
+        ),
+      ],
+    );
+  }
+}
+
+class _OverviewCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final String? subtitle;
+  final IconData icon;
+
+  const _OverviewCard({
+    required this.label,
+    required this.value,
+    this.subtitle,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final gold = const Color(0xFFD4AF37);
+
+    return Container(
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: gold.withOpacity(0.42),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.045),
+            blurRadius: 12,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.8,
+                  color: Colors.black.withOpacity(0.55),
+                ),
+              ),
+              Icon(
+                icon,
+                size: 20,
+                color: gold,
+              ),
+            ],
+          ),
+
+          const Spacer(),
+
+          Text(
+            value,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+            ),
+          ),
+
+         const SizedBox(height: 5),
+Text(
+  subtitle ?? '',
+  maxLines: 1,
+  overflow: TextOverflow.ellipsis,
+  style: TextStyle(
+    fontSize: 10,
+    color: subtitle != null
+        ? Colors.black.withOpacity(0.45)
+        : Colors.transparent,
+  ),
+),
+        ],
+      ),
+    );
+  }
+}
+class _QuickActions extends StatelessWidget {
+  const _QuickActions();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _QuickActionTile(
+          icon: Icons.add_circle_outline_rounded,
+          title: 'New Order',
+          subtitle: 'Record a new customer order',
+          onTap: () => context.go(AppRoutes.orders),
+        ),
+
+        const SizedBox(height: 10),
+
+        _QuickActionTile(
+          icon: Icons.receipt_long_outlined,
+          title: 'Add Expense',
+          subtitle: 'Record a shop expense',
+          onTap: () => context.go(AppRoutes.expenses),
+        ),
+      ],
+    );
+  }
+}
+class _QuickActionTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const _QuickActionTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const gold = Color(0xFFD4AF37);
+
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 17,
+            vertical: 15,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: gold.withOpacity(0.38),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: gold.withOpacity(0.10),
+                  border: Border.all(
+                    color: gold.withOpacity(0.35),
+                  ),
+                ),
+                child: Icon(
+                  icon,
+                  color: gold,
+                  size: 21,
+                ),
+              ),
+
+              const SizedBox(width: 14),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+
+                    const SizedBox(height: 3),
+
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.black.withOpacity(0.48),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: Colors.black.withOpacity(0.35),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+</files>

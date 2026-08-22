@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/features/orders/models/menu_data.dart';
 import '../lib/features/orders/models/pizza_size.dart';
 import '../lib/features/orders/providers/order_draft_provider.dart';
-
+import '../lib/features/orders/models/order.dart';
 void main() {
   final deal4 = MenuData.deals.firstWhere(
     (deal) => deal.id == 'deal_4',
@@ -143,4 +143,221 @@ void main() {
 
   expect(ids, hasLength(entries.length));
 });
+test('validation rejects an order with an unselected flavor', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+
+  expect(notifier.canComplete, isFalse);
+  expect(notifier.validationErrors, isNotEmpty);
+});
+
+test('validation rejects an order with an unselected flavor', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+
+  expect(notifier.canComplete, isFalse);
+  expect(notifier.validationErrors, isNotEmpty);
+});
+
+test('completed draft converts into an Order', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+
+  final entry = container.read(orderDraftProvider).entries.first;
+
+  notifier.setFlavor(
+    entry.id,
+    0,
+    'chicken_fajita',
+  );
+
+  notifier.setFlavor(
+    entry.id,
+    1,
+    'malai_boti',
+  );
+
+  notifier.setFlavor(
+    entry.id,
+    2,
+    'chicken_tikka',
+  );
+
+  notifier.setDeliveryCharge(150);
+
+  final order = notifier.buildOrder(
+    orderNumber: 'ORD-0001',
+    businessDate: DateTime(2026, 8, 22),
+    createdAt: DateTime(2026, 8, 22, 18, 30),
+  );
+
+  expect(order, isA<Order>());
+  expect(order.orderNumber, 'ORD-0001');
+  expect(order.deals, hasLength(1));
+  expect(order.deals.first.id, 'deal_4');
+  expect(order.items, hasLength(3));
+  expect(order.deliveryCharge, 150);
+  expect(order.total, 2350);
+  expect(order.status, OrderStatus.pending);
+});
+test('standalone pizza converts with its base price', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addStandalonePizza(PizzaSize.large);
+
+  final entry = container.read(orderDraftProvider).entries.first;
+
+  notifier.setFlavor(
+    entry.id,
+    0,
+    'chicken_fajita',
+  );
+
+  final order = notifier.buildOrder(
+    orderNumber: 'ORD-0002',
+    businessDate: DateTime(2026, 8, 22),
+  );
+
+  expect(order.items, hasLength(1));
+  expect(order.items.first.size, PizzaSize.large);
+  expect(order.items.first.flavorId, 'chicken_fajita');
+  expect(order.items.first.unitPrice, 700);
+  expect(order.total, 700);
+});
+test('toppings remain attached to the correct pizza during conversion', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+
+  final entry = container.read(orderDraftProvider).entries.first;
+
+  notifier.setFlavor(
+    entry.id,
+    0,
+    'chicken_fajita',
+  );
+
+  notifier.setFlavor(
+    entry.id,
+    1,
+    'malai_boti',
+  );
+
+  notifier.setFlavor(
+    entry.id,
+    2,
+    'chicken_tikka',
+  );
+
+  notifier.addTopping(
+    entry.id,
+    1,
+    'meat',
+    'Add Meat',
+  );
+
+  final order = notifier.buildOrder(
+    orderNumber: 'ORD-0003',
+    businessDate: DateTime(2026, 8, 22),
+  );
+
+  expect(order.items[0].toppings, isEmpty);
+  expect(order.items[1].toppings, hasLength(1));
+  expect(order.items[1].toppings!.first.toppingId, 'meat');
+  expect(order.items[2].toppings, isEmpty);
+});
+test('additional drinks and dip sauces survive conversion', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addStandalonePizza(PizzaSize.large);
+
+  final entry = container.read(orderDraftProvider).entries.first;
+
+  notifier.setFlavor(
+    entry.id,
+    0,
+    'chicken_fajita',
+  );
+
+  notifier.addAdditionalDrink('drink_1.5ltr');
+  notifier.addAdditionalDrink('drink_1.5ltr');
+
+  notifier.setAdditionalDipSauceCount(2);
+
+  final order = notifier.buildOrder(
+    orderNumber: 'ORD-0004',
+    businessDate: DateTime(2026, 8, 22),
+  );
+
+  expect(
+    order.additionalDrinks['drink_1.5ltr'],
+    2,
+  );
+
+  expect(
+    order.additionalDipSauceCount,
+    2,
+  );
+
+  expect(order.total, 1200);
+});
+test('one order can contain multiple deals and standalone pizza', () {
+  final container = ProviderContainer();
+  addTearDown(container.dispose);
+
+  final notifier = container.read(orderDraftProvider.notifier);
+
+  notifier.addDeal(deal4);
+  notifier.addDeal(deal4);
+  notifier.addStandalonePizza(PizzaSize.small);
+
+  final entries = container.read(orderDraftProvider).entries;
+
+  for (final entry in entries) {
+    for (var index = 0;
+        index < entry.flavorIds.length;
+        index++) {
+      notifier.setFlavor(
+        entry.id,
+        index,
+        'chicken_fajita',
+      );
+    }
+  }
+
+  final order = notifier.buildOrder(
+    orderNumber: 'ORD-0005',
+    businessDate: DateTime(2026, 8, 22),
+  );
+
+  expect(order.deals, hasLength(2));
+  expect(order.items, hasLength(7));
+
+  expect(
+    order.total,
+    4730,
+  );
+});
+
 }

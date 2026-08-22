@@ -16,6 +16,8 @@ Map<String, dynamic> _orderToMap(order_model.Order order) {
     'customerAddress': order.customerAddress,
     'items': order.items.map(_orderItemToMap).toList(),
     'deals': order.deals.map(_dealToMap).toList(),
+    'additionalDrinks': order.additionalDrinks,
+    'additionalDipSauceCount': order.additionalDipSauceCount,
     'deliveryCharge': order.deliveryCharge,
     'total': order.total,
     'status': order.status.name,
