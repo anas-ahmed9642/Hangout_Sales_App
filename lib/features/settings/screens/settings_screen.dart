@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../../app/theme.dart';
 import '../../../shared/widgets/marble_background_painter.dart';
+import '../../../core/constants/app_routes.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -30,44 +32,42 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFAF6EC),
       appBar: AppBar(
-  elevation: 0,
-  centerTitle: true,
-  automaticallyImplyLeading: false,
-  flexibleSpace: Container(
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [
-          const Color(0xFF2B1B10), // dark terracotta-black blend
-          Colors.black,
-        ],
+        elevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                const Color(0xFF2B1B10), // dark terracotta-black blend
+                Colors.black,
+              ],
+            ),
+          ),
+        ),
+        title: const Text(
+          'SETTINGS',
+          style: TextStyle(
+            fontFamily: 'serif',
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 4,
+            color: Color(0xFFD4AF37),
+          ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: const Color(0xFFD4AF37).withOpacity(0.35),
+          ),
+        ),
       ),
-    ),
-  ),
-  title: const Text(
-    'SETTINGS',
-    style: TextStyle(
-      fontFamily: 'serif',
-      fontSize: 18,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 4,
-      color: Color(0xFFD4AF37),
-    ),
-  ),
-  bottom: PreferredSize(
-    preferredSize: const Size.fromHeight(1),
-    child: Container(
-      height: 1,
-      color: const Color(0xFFD4AF37).withOpacity(0.35),
-    ),
-  ),
-),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: CustomPaint(painter: CastleWallPainter()),
-          ),
+          Positioned.fill(child: CustomPaint(painter: CastleWallPainter())),
           ListView(
             padding: const EdgeInsets.fromLTRB(24, 28, 24, 40),
             children: [
@@ -133,6 +133,15 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () {},
               ),
               const SizedBox(height: 30),
+              const _SectionLabel('CATALOG'),
+              const SizedBox(height: 14),
+              _SettingsTile(
+                icon: Icons.inventory_2_outlined,
+                title: 'Manage Catalog',
+                subtitle: 'Add, edit, activate, or deactivate expense items',
+                onTap: () => context.push(AppRoutes.manageCatalog),
+              ),
+              const SizedBox(height: 30),
               const _SectionLabel('SESSION'),
               const SizedBox(height: 14),
               _SettingsTile(
@@ -186,7 +195,10 @@ class _OrnamentalDivider extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Container(height: 1, color: AppTheme.primaryColor.withOpacity(0.4)),
+          child: Container(
+            height: 1,
+            color: AppTheme.primaryColor.withOpacity(0.4),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -196,7 +208,10 @@ class _OrnamentalDivider extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(height: 1, color: AppTheme.primaryColor.withOpacity(0.4)),
+          child: Container(
+            height: 1,
+            color: AppTheme.primaryColor.withOpacity(0.4),
+          ),
         ),
       ],
     );
@@ -299,12 +314,18 @@ class _SettingsTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 12.5, color: Colors.black.withOpacity(0.45)),
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: Colors.black.withOpacity(0.45),
+                      ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right_rounded, color: Colors.black.withOpacity(0.25)),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: Colors.black.withOpacity(0.25),
+              ),
             ],
           ),
         ),

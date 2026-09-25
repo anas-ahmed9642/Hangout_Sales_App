@@ -11,6 +11,7 @@ import '../features/expenses/screens/expense_screen.dart';
 import '../features/orders/screens/new_order_screen.dart';
 import '../features/reports/screens/report_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
+import '../features/settings/screens/manage_catalog_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -71,6 +72,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.settings,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.manageCatalog,
+        builder: (context, state) => const ManageCatalogScreen(),
       ),
     ],
   );

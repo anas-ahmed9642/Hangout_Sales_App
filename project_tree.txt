@@ -1,0 +1,202 @@
+C:\flutter projects\Hangout Sales Counter\hangout_sales_app
+├── analysis_options.yaml
+├── firebase.json
+├── graphify-out
+|  ├── 2026-08-24
+|  |  ├── graph.json
+|  |  ├── GRAPH_REPORT.md
+|  |  └── manifest.json
+|  ├── cache
+|  |  ├── ast
+|  |  |  └── v0.9.48-s2
+|  |  |     ├── 0108955b5e6ddb1b1f43d4e87d7a9ef6bd802d775004b1064fc3a10d8b7a9a82.json
+|  |  |     ├── 050df646786c3bae1b90910cb11044db78daa0fc8f261028998d67cc7430a233.json
+|  |  |     ├── 0572ca9b4711d86384217bc96ae26392fd3aa20c52c89731c1827b62b44cb55f.json
+|  |  |     ├── 079194f82ed24a4333bd6cb36ad1eb82c989f8d4e658f29d8b9420658688b71a.json
+|  |  |     ├── 08ef97f2fad0ca3f0137dc596d42826523ba13aee0d8f2a483dbd1b514c48cbd.json
+|  |  |     ├── 1107f2e452d1ae8fea85ccad69b2816835e40e87b57bd7a35d08ef74bc550b1c.json
+|  |  |     ├── 15ddf4bd258fa33482b446f85177d6adfad0c4c6e828f4a6af41ceba8cf5bc16.json
+|  |  |     ├── 163b6353c6b6acddadb2b6266c9578ac35909c2c400f32370c2eff28441a7a0c.json
+|  |  |     ├── 16b86c4c1508383acbbf81d67814ac8b2ff0734123c06e6762de12067a410917.json
+|  |  |     ├── 21f59684e283b25f3c0d9919726a331f0bc7ae4930a426d9014feaca9a7588a0.json
+|  |  |     ├── 240cbf1f51c6a48cf0ea2a9710f67e28d79c688d0922f372f7bc9e21333bfc9b.json
+|  |  |     ├── 2420076ad0708d74c7cc5ff2b7d090e1475a2fb4a78edcdfc027e6c5150d7a9d.json
+|  |  |     ├── 2915546c620810b429f802904a95d264e851cb3f02ed9487368409fcf62d8fd1.json
+|  |  |     ├── 2aec3775b8a07a181f4df98393f62e07a6872e23cff08ec4de75edfbfd2cccf2.json
+|  |  |     ├── 2f0acd62e98f7d1478614300f9d980c03eaebc9fb2a73e5f7ebae46c070899d2.json
+|  |  |     ├── 3481d426336fb7a3991801f9d9d1a247ecddc8ebbeb82567c8b2e39285020e10.json
+|  |  |     ├── 3593e95ae9e006f10330da0bada1a75d3616f33e8d65fbec4e34301e12305db1.json
+|  |  |     ├── 3a179e88e68d0a47df98e411020cf3fed071fde7c2d24154079bd3c3610bd8a0.json
+|  |  |     ├── 3b6f9e65bda9e00442158a0541f6ff8faecaf3e6159ce7a32869a4bc4e0362d7.json
+|  |  |     ├── 3e9bd43bfcabaaf53019dba962aef81083235b4a3a574a84675d6b62b4e88432.json
+|  |  |     ├── 44a5e3f1aa6f6a75cccc2620cae553504c3133ecab96cdde6c2c7e0f3563709e.json
+|  |  |     ├── 4558519f952006c94914d456412b541211042808e737588ddf21666777af72fa.json
+|  |  |     ├── 57f17d673b12662281b83d2b1f36e6322f9c83c40d9cb382fa757b31a92d6d3e.json
+|  |  |     ├── 5822cf7ab2d00d2070d28cb6691295bce0ca51a7d33bc074fca1fb65f69ee495.json
+|  |  |     ├── 5a04332fb732d262d839095c3c656ab5133c031d269494fa9376990fc9a9517a.json
+|  |  |     ├── 5f4c7bd148c98aee784484af1ecadddfa9d6e4bf1114741637a08dc09a161038.json
+|  |  |     ├── 6652f0f273b40f9f19dbb015de1c87cf846f0ab2267aefe513dd9162b3f2ed89.json
+|  |  |     ├── 6a2ccd12dc1aa8d980479cfcb57712d13f90b897286b4b219649e36898fe1c01.json
+|  |  |     ├── 6d4ba78b74b53007a3b8b9ddce444f1846205aaa33ef7408e4c82f5c954b05e6.json
+|  |  |     ├── 6ebef28c4f0c3d00391df86831dbf66273faac3e85cd3fca6737c02762af1433.json
+|  |  |     ├── 7584615887cd76a3ad77c0d0019b2790d324683819eaeb53600687556e28ae26.json
+|  |  |     ├── 75e8f91aac45854e3b1c810c31a71d4db4165aa4556d1da4ec8b0d056889a04c.json
+|  |  |     ├── 8574918050061b181ecc34db00633ce300c7217c4e4b4a9b48e7b6aa06de76e1.json
+|  |  |     ├── 862f860da93e10a82af4cb8201e3fb91596a110357d65bd66ec8a071eaea16b9.json
+|  |  |     ├── 896b111edec2b125ba45e9c393e6ed65a9cc8679c6e81e885ed70d0d9ab9443b.json
+|  |  |     ├── 8c43b848350328e735c6baac837bbdb6a650d47c195fa614c4e5aaaf017170b1.json
+|  |  |     ├── 8e3f29b2daa5be1a2bbbd47c8a4f7c6f3107e57c8346d24f75c2ed43d64816a9.json
+|  |  |     ├── 8f0df384fd654b2927bedf20bdf983b8c441e018a734c8aab0388c7d3d32ba06.json
+|  |  |     ├── 8f3ad867cb5168cd1e41df9fe3ef9b2845f065e3bf1ca204add403039580a996.json
+|  |  |     ├── 8f5ec0b722df6a730b4f84cb00c9aa9e195acf7a992a62f6c86bf646a6df4c77.json
+|  |  |     ├── 93c8e569383a51505cabb76915f31c2e71a26261dcec9644f74ad188357f7658.json
+|  |  |     ├── 98cac6bffda8a3287a0ddeb14c479a6f941501568111f6131fcc3d04c1437fff.json
+|  |  |     ├── 9fa25519a07d9530909e28e04a9d6e14447d5ad0ce9134ac3234962efd82da0b.json
+|  |  |     ├── a3847fa331e5cb068ed06d26344de71a6ad9655f2021af09e90fe90585bab214.json
+|  |  |     ├── a5895690f9691f89e66a07339ea00aeb70e546767774f3b8d3ce4fdc7505132c.json
+|  |  |     ├── aa1fa9f5b1f44c5d44f5e5aac1d77d3dbeea74be905028ccc3f32a47adee5721.json
+|  |  |     ├── acd5e7171f0ec2b45d52b9e8a6e4540154c46380e9ab86b79fc39ab5c4149ea1.json
+|  |  |     ├── b46538facc38fd2d71130a0285437ea348d37cab20778c1c8728ce68b58bb748.json
+|  |  |     ├── b8f86ec0302c4b3246ea24e86cd978adde355efffb6bc34bf5def29f9c1f1661.json
+|  |  |     ├── c0b04b3d83fe47cce4a1efd7f06b990dd23b96bcd5daefab725c9ed68a5b20d7.json
+|  |  |     ├── ca786021b982cdd25591b631bf899504b4d84771773141304814c7638f33a7c7.json
+|  |  |     ├── d4c152ddfc092b303c2685bc3eaae465d44b8edbf11dd73b4460c392913fcfd2.json
+|  |  |     ├── de034742869420494cc98ed35e2a2feba232bd6742a816f2341a2ae31a0047ba.json
+|  |  |     ├── e24a150aea84feb904087979582fdb30d9f152043b317c56db6c0555e9eda07f.json
+|  |  |     ├── e583bc15b30adb4cef2e9037e5ba91d5724033f9fcdacb2719a314b21a9472ad.json
+|  |  |     ├── e5f38b88d25faf9a55038f68b0a3dc35f8bc0996eb28e2ffece03735ab42c5ea.json
+|  |  |     ├── e78cb7baeb575ff79464f27d99d62e0de8e3b2bf5ff5a0f5e517b603dcc4d0d5.json
+|  |  |     ├── e7fc5fea9bb51d17d14bf55b8873d5fe4cf9da73bde0fa3f9b7b1bc34de68bae.json
+|  |  |     ├── e85eaa08217c055a5eff94daf87500175527cbdc8eca010458701755e0431de6.json
+|  |  |     ├── e9e23536410220047548ee4a98d760de4b6d50e2ddca8d8656144102dbea1a53.json
+|  |  |     ├── f457d8ae825bcf2b5843f1c733176da7bdc0620c4e43888bbc7fb4ee72a2dbf1.json
+|  |  |     ├── f663b8d421b8743c523de90102125d925a1feeaf3e73402a17721679f1898e96.json
+|  |  |     ├── f70a8dc23816bb4bc7cd58dca63b9ebe965a9d8c395764124b92ec63203e26c0.json
+|  |  |     ├── f90295638167522b5158d1886918694f789ea26016e710159cd0ce6a22d181b0.json
+|  |  |     ├── fc1d1d7849a7d44723d39d6d164276f87d465075f5305c70fbbc6a6861e10c5e.json
+|  |  |     ├── fe9b1ed0f5ce4a4575b34a4688b1c8b04f05e736fcd99855067504cb4e6b9474.json
+|  |  |     └── feb4064d12a987ec8b2e93e89e590bc8a61ef4d0624e57417fd4d01a8292e450.json
+|  |  └── stat-index.json
+|  ├── graph.html
+|  ├── graph.json
+|  ├── GRAPH_REPORT.md
+|  └── manifest.json
+├── hangout_sales_app.iml
+├── lib
+|  ├── app
+|  |  ├── app.dart
+|  |  ├── router.dart
+|  |  └── theme.dart
+|  ├── core
+|  |  ├── constants
+|  |  |  └── app_routes.dart
+|  |  ├── services
+|  |  |  └── business_day_service.dart
+|  |  └── utils
+|  ├── features
+|  |  ├── auth
+|  |  |  ├── models
+|  |  |  ├── providers
+|  |  |  |  ├── auth_provider.dart
+|  |  |  |  ├── auth_repository_provider.dart
+|  |  |  |  ├── auth_state_provider.dart
+|  |  |  |  └── firebase_auth_provider.dart
+|  |  |  ├── repositories
+|  |  |  |  └── auth_repository.dart
+|  |  |  ├── screens
+|  |  |  |  ├── login_screen.dart
+|  |  |  |  └── splash_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  ├── customers
+|  |  |  ├── models
+|  |  |  ├── providers
+|  |  |  ├── repositories
+|  |  |  ├── screens
+|  |  |  |  └── customer_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  ├── dashboard
+|  |  |  ├── models
+|  |  |  ├── providers
+|  |  |  ├── repositories
+|  |  |  ├── screens
+|  |  |  |  └── dashboard_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  ├── expenses
+|  |  |  ├── models
+|  |  |  ├── providers
+|  |  |  ├── repositories
+|  |  |  ├── screens
+|  |  |  |  └── expense_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  ├── orders
+|  |  |  ├── models
+|  |  |  |  ├── deal.dart
+|  |  |  |  ├── flavor.dart
+|  |  |  |  ├── menu_data.dart
+|  |  |  |  ├── order.dart
+|  |  |  |  ├── order_draft.dart
+|  |  |  |  ├── order_draft_entry.dart
+|  |  |  |  ├── order_item.dart
+|  |  |  |  ├── pizza_size.dart
+|  |  |  |  └── topping_selection.dart
+|  |  |  ├── providers
+|  |  |  |  └── order_draft_provider.dart
+|  |  |  ├── repositories
+|  |  |  |  ├── firebase_order_repository.dart
+|  |  |  |  └── order_repository.dart
+|  |  |  ├── screens
+|  |  |  |  └── new_order_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  |     ├── additional_items_section.dart
+|  |  |     ├── customer_form.dart
+|  |  |     ├── delivery_picker.dart
+|  |  |     ├── flavor_selector.dart
+|  |  |     ├── order_category_selector.dart
+|  |  |     ├── order_entries_section.dart
+|  |  |     ├── order_summary.dart
+|  |  |     └── topping_selector.dart
+|  |  ├── reports
+|  |  |  ├── models
+|  |  |  ├── providers
+|  |  |  ├── repositories
+|  |  |  ├── screens
+|  |  |  |  └── report_screen.dart
+|  |  |  ├── services
+|  |  |  └── widgets
+|  |  └── settings
+|  |     ├── models
+|  |     ├── providers
+|  |     ├── repositories
+|  |     ├── screens
+|  |     |  └── settings_screen.dart
+|  |     ├── services
+|  |     └── widgets
+|  ├── firebase_options.dart
+|  ├── main.dart
+|  └── shared
+|     ├── models
+|     └── widgets
+|        ├── hangout_app_bar.dart
+|        └── marble_background_painter.dart
+├── phase6_widgets.xml
+├── project_tree.txt
+├── pubspec.lock
+├── pubspec.yaml
+├── README.md
+├── repomix-orders.xml
+├── repomix-output.xml
+├── repomix-phase7.xml
+└── test
+|  ├── helpers
+|  |  └── test_container.dart
+|  ├── order_draft_notifier_test.dart
+|  └── widget_test.dart
+
+directory: 142 file: 275
+
+ignored: directory (9)

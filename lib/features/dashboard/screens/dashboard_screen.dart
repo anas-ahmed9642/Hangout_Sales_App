@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hangout_sales_app/shared/widgets/hangout_app_bar.dart';
 
 import '../../../core/constants/app_routes.dart';
 
@@ -10,27 +11,19 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F3E8),
-      appBar: AppBar(
-  backgroundColor: Colors.black,
-  elevation: 0,
-  titleSpacing: 20,
-  title: const Text(
-    'Hangout Pizza Classic',
-    style: TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 1.2,
-    ),
-  ),
-  actions: [
-    IconButton(
-      icon: const Icon(Icons.settings_outlined, color: Color(0xFFD4AF37)),
-      tooltip: 'Settings',
-      onPressed: () => context.go(AppRoutes.settings),
-    ),
-    const SizedBox(width: 8),
-  ],
-),
+      // Make sure to import 'hangout_app_bar.dart' at the top of your file!
+      appBar: HangoutAppBar(
+        title: 'Hangout Pizza Classic',
+        showBackButton: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined, color: Color(0xFFD4AF37)),
+            tooltip: 'Settings',
+            onPressed: () => context.go(AppRoutes.settings),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),

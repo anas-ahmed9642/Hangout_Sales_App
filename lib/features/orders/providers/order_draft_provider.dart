@@ -8,7 +8,7 @@ import '../models/topping_selection.dart';
 import '../models/menu_data.dart';
 import '../models/order.dart';
 import '../models/order_item.dart';
-
+import 'order_repository_provider.dart';
 final orderDraftProvider =
     NotifierProvider<OrderDraftNotifier, OrderDraft>(
   OrderDraftNotifier.new,
@@ -135,6 +135,9 @@ void setCustomerAddress(String? address) {
     customerAddress: address,
   );
 }
+
+
+
 void addTopping(
   String entryId,
   int pizzaIndex,
@@ -264,12 +267,33 @@ double _getPizzaExtras(
 
   return total;
 }
+double entryTotal(OrderDraftEntry entry) {
+  return _getEntryTotal(entry);
+}
 
 void addAdditionalDrink(String drinkId) {
   final updatedDrinks = {
     ...state.additionalDrinks,
     drinkId: (state.additionalDrinks[drinkId] ?? 0) + 1,
   };
+
+  state = state.copyWith(
+    additionalDrinks: updatedDrinks,
+  );
+}
+void removeAdditionalDrink(String drinkId) {
+  final currentQty = state.additionalDrinks[drinkId] ?? 0;
+  
+  if (currentQty == 0) return; // Nothing to remove
+
+  // Create a fresh copy of the map for Riverpod immutability
+  final updatedDrinks = Map<String, int>.from(state.additionalDrinks);
+
+  if (currentQty == 1) {
+    updatedDrinks.remove(drinkId); // Remove the key entirely if it hits 0
+  } else {
+    updatedDrinks[drinkId] = currentQty - 1; // Otherwise, just decrement
+  }
 
   state = state.copyWith(
     additionalDrinks: updatedDrinks,
@@ -481,6 +505,7 @@ Order buildOrder({
     deliveryCharge: state.deliveryCharge,
     total: grandTotal,
     status: OrderStatus.pending,
+    paymentStatus: state.paymentStatus,
   );
 }
 OrderItem _buildOrderItem(
@@ -522,7 +547,35 @@ OrderItem _buildOrderItem(
     unitPrice: basePrice + extrasTotal,
   );
 }
-bool get canComplete {
+bool get canConfirm {
   return validationErrors.isEmpty;
 }
+void clearDraft() {
+  state = const OrderDraft();
+}
+
+Future<void> saveOrder({
+  required String orderNumber,
+  required DateTime businessDate,
+  DateTime? createdAt,
+}) async {
+  final order = buildOrder(
+    orderNumber: orderNumber,
+    businessDate: businessDate,
+    createdAt: createdAt,
+  );
+
+  final repository = ref.read(orderRepositoryProvider);
+
+  await repository.createOrder(order);
+}
+
+void setPaymentStatus(PaymentStatus paymentStatus) {
+  state = state.copyWith(
+    paymentStatus: paymentStatus,
+  );
+}
+
+
+
 }

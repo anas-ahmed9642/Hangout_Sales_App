@@ -33,6 +33,10 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Generated analysis/export artifacts
+/graphify-out/
+*.xml
+
 # Symbolication related
 app.*.symbols
 

@@ -7,6 +7,11 @@ enum OrderStatus {
   cancelled,
 }
 
+enum PaymentStatus {
+  unpaid,
+  paid,
+}
+
 class Order {
   final String id;
   final String orderNumber;
@@ -27,8 +32,12 @@ class Order {
   final double deliveryCharge;
   final double total;
 
+  /// Describes the fulfillment/lifecycle state of the order.
   final OrderStatus status;
 
+  /// Describes whether the customer has paid.
+  final PaymentStatus paymentStatus;
+  final int editCount;
   const Order({
     required this.id,
     required this.orderNumber,
@@ -44,5 +53,7 @@ class Order {
     required this.deliveryCharge,
     required this.total,
     required this.status,
+    required this.paymentStatus,
+    this.editCount = 0,
   });
 }
