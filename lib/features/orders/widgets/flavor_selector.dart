@@ -27,7 +27,7 @@ class FlavorSelector extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: DropdownButtonFormField<String>(
-              value: selectedFlavorId,
+              initialValue: selectedFlavorId,
               decoration: InputDecoration(
                 labelText: 'Pizza ${pizzaIndex + 1} Flavor',
                 border: const OutlineInputBorder(),

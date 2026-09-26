@@ -46,7 +46,7 @@ class HangoutAppBar extends StatelessWidget implements PreferredSizeWidget {
         preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          color: const Color(0xFFD4AF37).withOpacity(0.35),
+          color: const Color(0xFFD4AF37).withValues(alpha: 0.35),
         ),
       ),
     );

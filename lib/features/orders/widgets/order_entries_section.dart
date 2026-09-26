@@ -28,7 +28,7 @@ if (draft.entries.isEmpty) {
                 Icon(
                   Icons.shopping_basket_outlined,
                   size: 48,
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(

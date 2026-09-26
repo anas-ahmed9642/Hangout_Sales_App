@@ -71,12 +71,12 @@ class _DashboardHeader extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFD4AF37).withOpacity(0.55),
+          color: const Color(0xFFD4AF37).withValues(alpha: 0.55),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -91,7 +91,7 @@ class _DashboardHeader extends StatelessWidget {
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 2.4,
-              color: Colors.black.withOpacity(0.55),
+              color: Colors.black.withValues(alpha: 0.55),
             ),
           ),
 
@@ -125,7 +125,7 @@ class _DashboardHeader extends StatelessWidget {
                 'Business day • 5:00 PM – 5:00 AM',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.black.withOpacity(0.52),
+                  color: Colors.black.withValues(alpha: 0.52),
                 ),
               ),
             ],
@@ -148,7 +148,7 @@ class _DashboardHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontStyle: FontStyle.italic,
-                  color: Colors.black.withOpacity(0.42),
+                  color: Colors.black.withValues(alpha: 0.42),
                 ),
               ),
 
@@ -186,7 +186,7 @@ class _SectionLabel extends StatelessWidget {
         fontSize: 12,
         fontWeight: FontWeight.w700,
         letterSpacing: 2.4,
-        color: Colors.black.withOpacity(0.55),
+        color: Colors.black.withValues(alpha: 0.55),
       ),
     );
   }
@@ -253,12 +253,12 @@ class _OverviewCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: gold.withOpacity(0.42),
+          color: gold.withValues(alpha: 0.42),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.045),
+            color: Colors.black.withValues(alpha: 0.045),
             blurRadius: 12,
             offset: const Offset(0, 5),
           ),
@@ -276,7 +276,7 @@ class _OverviewCard extends StatelessWidget {
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 1.8,
-                  color: Colors.black.withOpacity(0.55),
+                  color: Colors.black.withValues(alpha: 0.55),
                 ),
               ),
               Icon(
@@ -308,7 +308,7 @@ Text(
   style: TextStyle(
     fontSize: 10,
     color: subtitle != null
-        ? Colors.black.withOpacity(0.45)
+        ? Colors.black.withValues(alpha: 0.45)
         : Colors.transparent,
   ),
 ),
@@ -374,7 +374,7 @@ class _QuickActionTile extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
-              color: gold.withOpacity(0.38),
+              color: gold.withValues(alpha: 0.38),
             ),
           ),
           child: Row(
@@ -384,9 +384,9 @@ class _QuickActionTile extends StatelessWidget {
                 height: 42,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: gold.withOpacity(0.10),
+                  color: gold.withValues(alpha: 0.10),
                   border: Border.all(
-                    color: gold.withOpacity(0.35),
+                    color: gold.withValues(alpha: 0.35),
                   ),
                 ),
                 child: Icon(
@@ -416,7 +416,7 @@ class _QuickActionTile extends StatelessWidget {
                       subtitle,
                       style: TextStyle(
                         fontSize: 11,
-                        color: Colors.black.withOpacity(0.48),
+                        color: Colors.black.withValues(alpha: 0.48),
                       ),
                     ),
                   ],
@@ -426,7 +426,7 @@ class _QuickActionTile extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 14,
-                color: Colors.black.withOpacity(0.35),
+                color: Colors.black.withValues(alpha: 0.35),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,22 +33,22 @@ void main() {
     await repository.createOrder(order);
     
     final snapshot = await firestore.collection('orders').get();
-    print('--- RAW DATABASE CHECK ---');
-    print('Total documents in orders collection: ${snapshot.docs.length}');
+    debugPrint('--- RAW DATABASE CHECK ---');
+    debugPrint('Total documents in orders collection: ${snapshot.docs.length}');
     
     if (snapshot.docs.isNotEmpty) {
        final savedData = snapshot.docs.first.data();
-       print('Saved Business Date (Timestamp): ${savedData['businessDate']}');
+        debugPrint('Saved Business Date (Timestamp): ${savedData['businessDate']}');
     }
 
     final queryTimestamp = Timestamp.fromDate(testBusinessDate);
-    print('--- QUERY CHECK ---');
-    print('Attempting to stream orders where businessDate == $queryTimestamp');
+    debugPrint('--- QUERY CHECK ---');
+    debugPrint('Attempting to stream orders where businessDate == $queryTimestamp');
     
     final stream = repository.streamOrders(testBusinessDate);
     final results = await stream.first;
     
-    print('Orders successfully returned by stream: ${results.length}');
+    debugPrint('Orders successfully returned by stream: ${results.length}');
     
     expect(
       results.length, 

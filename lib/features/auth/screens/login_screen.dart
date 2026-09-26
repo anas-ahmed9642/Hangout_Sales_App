@@ -77,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(4),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.10),
+                          color: Colors.black.withValues(alpha: 0.10),
                           blurRadius: 30,
                           offset: const Offset(0, 12),
                         ),
@@ -122,7 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   letterSpacing: 3,
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withValues(alpha: 0.4),
                                 ),
                               ),
                             ],
@@ -179,7 +179,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     backgroundColor: Colors.black,
                                     foregroundColor: AppTheme.primaryColor,
                                     disabledBackgroundColor:
-                                        Colors.black.withOpacity(0.3),
+                                        Colors.black.withValues(alpha: 0.3),
                                     elevation: 0,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6),
@@ -218,7 +218,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       'Authorized staff only',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.black.withOpacity(0.32),
+                        color: Colors.black.withValues(alpha: 0.32),
                         letterSpacing: 0.3,
                       ),
                     ),
@@ -250,7 +250,7 @@ class _DashedDivider extends StatelessWidget {
                 child: Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(horizontal: 2),
-                  color: Colors.black.withOpacity(0.12),
+                  color: Colors.black.withValues(alpha: 0.12),
                 ),
               ),
             ),
@@ -297,11 +297,11 @@ class _ReceiptField extends StatelessWidget {
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.5,
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                 ),
               ),
             ),
-            if (trailing != null) trailing!,
+            ?trailing,
           ],
         ),
         const SizedBox(height: 6),
@@ -322,15 +322,15 @@ class _ReceiptField extends StatelessWidget {
             hintStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.black.withOpacity(0.22),
+              color: Colors.black.withValues(alpha: 0.22),
             ),
             isDense: true,
             contentPadding: const EdgeInsets.only(bottom: 10),
             border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black.withOpacity(0.15)),
+              borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.15)),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black.withOpacity(0.15)),
+              borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.15)),
             ),
             focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppTheme.primaryColor, width: 2),

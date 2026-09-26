@@ -12,9 +12,6 @@ import '../services/order_receipt_service.dart';
 import '../providers/order_edit_history_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/order_repository_provider.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
-
-import '../services/tcp_printer_transport.dart';
 import '../services/thermal_printer_transport.dart'; // for BluetoothThermalPrinterTransport
 
 class OrderDetailScreen extends ConsumerWidget {

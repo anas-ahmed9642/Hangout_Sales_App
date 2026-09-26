@@ -61,7 +61,7 @@ class SettingsScreen extends ConsumerWidget {
           preferredSize: const Size.fromHeight(1),
           child: Container(
             height: 1,
-            color: const Color(0xFFD4AF37).withOpacity(0.35),
+            color: const Color(0xFFD4AF37).withValues(alpha: 0.35),
           ),
         ),
       ),
@@ -82,7 +82,7 @@ class SettingsScreen extends ConsumerWidget {
                     border: Border.all(color: AppTheme.primaryColor, width: 2),
                     boxShadow: [
                       BoxShadow(
-                        color: AppTheme.primaryColor.withOpacity(0.25),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.25),
                         blurRadius: 26,
                         spreadRadius: 1,
                       ),
@@ -116,7 +116,7 @@ class SettingsScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 13,
                     letterSpacing: 2,
-                    color: Colors.black.withOpacity(0.45),
+                    color: Colors.black.withValues(alpha: 0.45),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -164,7 +164,7 @@ class SettingsScreen extends ConsumerWidget {
                         fontSize: 11,
                         letterSpacing: 3,
                         fontWeight: FontWeight.w700,
-                        color: Colors.black.withOpacity(0.55),
+                        color: Colors.black.withValues(alpha: 0.55),
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -173,7 +173,7 @@ class SettingsScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 11.5,
                         fontStyle: FontStyle.italic,
-                        color: Colors.black.withOpacity(0.35),
+                        color: Colors.black.withValues(alpha: 0.35),
                       ),
                     ),
                   ],
@@ -197,7 +197,7 @@ class _OrnamentalDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: AppTheme.primaryColor.withOpacity(0.4),
+            color: AppTheme.primaryColor.withValues(alpha: 0.4),
           ),
         ),
         Padding(
@@ -210,7 +210,7 @@ class _OrnamentalDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: AppTheme.primaryColor.withOpacity(0.4),
+            color: AppTheme.primaryColor.withValues(alpha: 0.4),
           ),
         ),
       ],
@@ -230,7 +230,7 @@ class _SectionLabel extends StatelessWidget {
         fontSize: 12,
         fontWeight: FontWeight.w700,
         letterSpacing: 2.2,
-        color: Colors.black.withOpacity(0.4),
+        color: Colors.black.withValues(alpha: 0.4),
       ),
     );
   }
@@ -266,13 +266,13 @@ class _SettingsTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
               color: destructive
-                  ? const Color(0xFF7A1F1F).withOpacity(0.35)
-                  : AppTheme.primaryColor.withOpacity(0.35),
+                  ? const Color(0xFF7A1F1F).withValues(alpha: 0.35)
+                  : AppTheme.primaryColor.withValues(alpha: 0.35),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 14,
                 offset: const Offset(0, 6),
               ),
@@ -289,8 +289,8 @@ class _SettingsTile extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: destructive
-                        ? const Color(0xFF7A1F1F).withOpacity(0.4)
-                        : AppTheme.primaryColor.withOpacity(0.5),
+                        ? const Color(0xFF7A1F1F).withValues(alpha: 0.4)
+                        : AppTheme.primaryColor.withValues(alpha: 0.5),
                     width: 1.2,
                   ),
                 ),
@@ -316,7 +316,7 @@ class _SettingsTile extends StatelessWidget {
                       subtitle,
                       style: TextStyle(
                         fontSize: 12.5,
-                        color: Colors.black.withOpacity(0.45),
+                        color: Colors.black.withValues(alpha: 0.45),
                       ),
                     ),
                   ],
@@ -324,7 +324,7 @@ class _SettingsTile extends StatelessWidget {
               ),
               Icon(
                 Icons.chevron_right_rounded,
-                color: Colors.black.withOpacity(0.25),
+                color: Colors.black.withValues(alpha: 0.25),
               ),
             ],
           ),

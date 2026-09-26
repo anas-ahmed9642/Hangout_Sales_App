@@ -469,7 +469,7 @@ class _EditEntryCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     DropdownButtonFormField<String>(
-                      value: selected,
+                      initialValue: selected,
                       decoration: const InputDecoration(
                         labelText: 'Flavor',
                         border: OutlineInputBorder(),
@@ -735,7 +735,7 @@ class _DeliveryEditor extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: DropdownButtonFormField<double>(
-          value: options.contains(charge) ? charge : null,
+          initialValue: options.contains(charge) ? charge : null,
           decoration: const InputDecoration(
             labelText: 'Delivery Charge',
             border: OutlineInputBorder(),

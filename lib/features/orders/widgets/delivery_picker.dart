@@ -40,7 +40,7 @@ class DeliveryPicker extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<double>(
-          value: draft.deliveryCharge,
+          initialValue: draft.deliveryCharge,
           decoration: const InputDecoration(
             labelText: 'Delivery Charge',
             border: OutlineInputBorder(),

@@ -79,8 +79,8 @@ class CastleWallPainter extends CustomPainter {
         center: const Alignment(0.85, -0.85),
         radius: 1.3,
         colors: [
-          sunColor.withOpacity(0.07),
-          sunColor.withOpacity(0.02),
+          sunColor.withValues(alpha: 0.07),
+          sunColor.withValues(alpha: 0.02),
           Colors.transparent,
         ],
         stops: const [0.0, 0.4, 1.0],

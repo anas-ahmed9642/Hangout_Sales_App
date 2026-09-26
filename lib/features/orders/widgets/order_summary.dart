@@ -40,7 +40,7 @@ class OrderSummary extends ConsumerWidget {
                       Icon(
                         Icons.shopping_basket_outlined,
                         size: 40,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 12),
                       Text(

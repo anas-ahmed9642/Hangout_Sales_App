@@ -245,7 +245,7 @@ class ManageCatalogScreen extends ConsumerWidget {
                         padding:
                             const EdgeInsets.fromLTRB(16, 18, 16, 8),
                         child: DropdownButtonFormField<ExpenseCategory>(
-                          value: selectedCategory,
+                          initialValue: selectedCategory,
                           dropdownColor: _Palette.surface,
                           borderRadius: BorderRadius.circular(2),
                           iconEnabledColor: _Palette.gold,
@@ -320,7 +320,7 @@ class ManageCatalogScreen extends ConsumerWidget {
                                   96,
                                 ),
                                 itemCount: items.length,
-                                separatorBuilder: (_, __) =>
+                                separatorBuilder: (_, _) =>
                                     const SizedBox(height: 12),
                                 itemBuilder: (context, index) {
                                   final item = items[index];
@@ -1023,7 +1023,7 @@ class _CatalogEditorDialogState
               const _MeanderBand(height: 14),
               const SizedBox(height: 20),
               DropdownButtonFormField<ExpenseCategory>(
-                value: widget.category,
+                initialValue: widget.category,
                 dropdownColor: _Palette.surface,
                 borderRadius: BorderRadius.circular(2),
                 iconEnabledColor: _Palette.gold,

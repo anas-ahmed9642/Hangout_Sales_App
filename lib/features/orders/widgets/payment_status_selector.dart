@@ -24,7 +24,7 @@ class PaymentStatusSelector extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withOpacity(0.5),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
         ),
       ),
       child: Padding(
@@ -37,7 +37,7 @@ class PaymentStatusSelector extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer.withOpacity(0.6),
+                    color: colorScheme.primaryContainer.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
@@ -129,7 +129,7 @@ class _PaymentSegmentedControl extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: (isPaid ? _paidColor : _unpaidColor)
-                            .withOpacity(0.35),
+                            .withValues(alpha: 0.35),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),

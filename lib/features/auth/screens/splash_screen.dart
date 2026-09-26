@@ -25,8 +25,8 @@ class SplashScreen extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.08),
-                    Colors.black.withOpacity(0.18),
+                    Colors.black.withValues(alpha: 0.08),
+                    Colors.black.withValues(alpha: 0.18),
                   ],
                 ),
               ),
@@ -52,7 +52,7 @@ class SplashScreen extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryColor.withOpacity(0.28),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.28),
                             blurRadius: 30,
                             spreadRadius: 2,
                           ),
@@ -87,7 +87,7 @@ class SplashScreen extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 4,
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                       ),
                     ),
 
@@ -113,7 +113,7 @@ class SplashScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontStyle: FontStyle.italic,
-                        color: Colors.black.withOpacity(0.45),
+                        color: Colors.black.withValues(alpha: 0.45),
                       ),
                     ),
                   ],
@@ -137,7 +137,7 @@ class _OrnamentalDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: AppTheme.primaryColor.withOpacity(0.4),
+            color: AppTheme.primaryColor.withValues(alpha: 0.4),
           ),
         ),
         Padding(
@@ -154,7 +154,7 @@ class _OrnamentalDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: AppTheme.primaryColor.withOpacity(0.4),
+            color: AppTheme.primaryColor.withValues(alpha: 0.4),
           ),
         ),
       ],

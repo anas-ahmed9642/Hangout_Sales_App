@@ -8,23 +8,6 @@ import 'package:hangout_sales_app/features/orders/models/topping_selection.dart'
 import 'package:hangout_sales_app/features/orders/screens/order_detail_screen.dart';
 
 void main() {
-  Order _buildPendingOrder() {
-    return Order(
-      id: 'order-test-pending',
-      orderNumber: 'ORD-0040',
-      createdAt: DateTime(2026, 8, 24, 20, 30),
-      businessDate: DateTime(2026, 8, 24),
-      customerName: 'Pending Customer',
-      items: const [],
-      deals: const [],
-      additionalDrinks: const {},
-      additionalDipSauceCount: 0,
-      deliveryCharge: 0,
-      total: 500,
-      status: OrderStatus.pending,
-      paymentStatus: PaymentStatus.unpaid,
-    );
-  }
   testWidgets(
     'OrderDetailScreen displays the supplied saved order',
     (tester) async {

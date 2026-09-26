@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hangout_sales_app/features/orders/models/deal.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/models/order_item.dart';
 import 'package:hangout_sales_app/features/orders/models/pizza_size.dart';

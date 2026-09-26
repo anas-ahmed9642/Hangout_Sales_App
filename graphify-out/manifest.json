@@ -126,16 +126,16 @@
     "semantic_hash": "f4e2f84d8a43a1ee646e57058d4dceff"
   },
   "lib/features/auth/screens/login_screen.dart": {
-    "mtime": 1786610782.9051464,
-    "seen": 1787347200.5922878,
-    "ast_hash": "5b6f3a6c91fed1c49eafa92f4821d51b",
-    "semantic_hash": "5b6f3a6c91fed1c49eafa92f4821d51b"
+    "mtime": 1790384974.806175,
+    "seen": 1790385180.0905223,
+    "ast_hash": "e80856e6a34bb13ab5a37190a0dc6372",
+    "semantic_hash": ""
   },
   "lib/features/auth/screens/splash_screen.dart": {
-    "mtime": 1786610316.8170319,
-    "seen": 1787347200.5922892,
-    "ast_hash": "1824ac18cf38ddf8b8f245b12045e2b6",
-    "semantic_hash": "1824ac18cf38ddf8b8f245b12045e2b6"
+    "mtime": 1790384996.556307,
+    "seen": 1790385180.090526,
+    "ast_hash": "28fbc4c328f6f7f50d92e5ab1bff76e0",
+    "semantic_hash": ""
   },
   "lib/features/customers/screens/customer_screen.dart": {
     "mtime": 1785392334.7696044,
@@ -144,9 +144,9 @@
     "semantic_hash": "32f978560aeb653ad3ba801655eae254"
   },
   "lib/features/dashboard/screens/dashboard_screen.dart": {
-    "mtime": 1787483894.2742684,
-    "seen": 1787565485.4387767,
-    "ast_hash": "0d0f5dd070cffd20e9c86ab67b977ee0",
+    "mtime": 1790385015.1431055,
+    "seen": 1790385180.090532,
+    "ast_hash": "e9a7d0681542144c621dde2b9323a1ea",
     "semantic_hash": ""
   },
   "lib/features/expenses/screens/expense_screen.dart": {
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/delivery_picker.dart": {
-    "mtime": 1787561588.832625,
-    "seen": 1787565485.4388003,
-    "ast_hash": "1ebede0be55997a314f911baff79ca1b",
+    "mtime": 1790385039.6674535,
+    "seen": 1790385180.090688,
+    "ast_hash": "71172c218734e372a2ba4c296470b423",
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/flavor_selector.dart": {
-    "mtime": 1787393783.350635,
-    "seen": 1787565485.4388015,
-    "ast_hash": "f240134fa52518311d4df83666ea1b41",
+    "mtime": 1790385061.8395264,
+    "seen": 1790385180.0906906,
+    "ast_hash": "c9573e00543e74d8358815d65e2ec4e4",
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/order_category_selector.dart": {
@@ -366,9 +366,9 @@
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/order_entries_section.dart": {
-    "mtime": 1787560813.6602926,
-    "seen": 1787565485.4388034,
-    "ast_hash": "5fa525c54d259a2c8b10abc07ed4f1fe",
+    "mtime": 1790385172.371991,
+    "seen": 1790385180.0906968,
+    "ast_hash": "e12a1220b0ed5657812712fc9b281993",
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/order_summary.dart": {
@@ -684,9 +684,9 @@
     "semantic_hash": ""
   },
   "lib/features/orders/widgets/order_history_item.dart": {
-    "mtime": 1788090423.6889503,
-    "seen": 1788187045.1328115,
-    "ast_hash": "77c129631729031d5be8bfddee8b71a1",
+    "mtime": 1790385188.043028,
+    "seen": 1790385228.167114,
+    "ast_hash": "af93543fb030a561097ac97c1b12bb3d",
     "semantic_hash": ""
   },
   "test/order_history_provider_test.dart": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   "lib/features/orders/screens/order_detail_screen.dart": {
-    "mtime": 1789221517.4073,
-    "seen": 1789853174.1666532,
-    "ast_hash": "52fe79edba44dae72bb4a970101b2009",
+    "mtime": 1790385153.463282,
+    "seen": 1790385180.0906546,
+    "ast_hash": "135d8cd58fbb76a2964cbc81c196cf64",
     "semantic_hash": ""
   },
   "test/history_diagnostic_test.dart": {
@@ -798,9 +798,9 @@
     "semantic_hash": ""
   },
   "lib/features/orders/screens/edit_order_screen.dart": {
-    "mtime": 1788389019.5394034,
-    "seen": 1789220480.0853524,
-    "ast_hash": "5e73fab67804d33674902e70e4eac874",
+    "mtime": 1790384944.9958272,
+    "seen": 1790385180.090649,
+    "ast_hash": "f31098974d4ae9dc348c49d5d94af655",
     "semantic_hash": ""
   },
   "lib/features/orders/services/printer_device.dart": {
@@ -1113,6 +1113,48 @@
     "mtime": 1790017487.2265706,
     "seen": 1790115141.7527363,
     "ast_hash": "074bb33f88a8feaaecb212caa8b03d9f",
+    "semantic_hash": ""
+  },
+  "lib/features/expenses/providers/expense_history_provider.dart": {
+    "mtime": 1790381669.3212235,
+    "seen": 1790385180.0905623,
+    "ast_hash": "33a25072908a3c823d36d9f2fc7dd77d",
+    "semantic_hash": ""
+  },
+  "lib/features/expenses/providers/expense_repository_provider.dart": {
+    "mtime": 1790381669.3212235,
+    "seen": 1790385180.0905652,
+    "ast_hash": "c5e5004a50f334c7c8c4c70dd4cb79ae",
+    "semantic_hash": ""
+  },
+  "lib/features/expenses/repositories/expense_repository.dart": {
+    "mtime": 1790381669.3212235,
+    "seen": 1790385180.090571,
+    "ast_hash": "d0c1de7bbac9f010c30a4cbdb9040d4d",
+    "semantic_hash": ""
+  },
+  "lib/features/expenses/repositories/firebase_expense_repository.dart": {
+    "mtime": 1790383544.436257,
+    "seen": 1790385180.0905774,
+    "ast_hash": "c2498978316087aef730cefb1b826524",
+    "semantic_hash": ""
+  },
+  "test/features/expenses/expense_audit_test.dart": {
+    "mtime": 1790381779.984479,
+    "seen": 1790385180.0907736,
+    "ast_hash": "10c4a1aba826d7a7816f9a401026a283",
+    "semantic_hash": ""
+  },
+  "test/features/expenses/expense_firestore_mapping_test.dart": {
+    "mtime": 1790381779.9886937,
+    "seen": 1790385180.0907762,
+    "ast_hash": "591421b693ca74d663bab25b1006a5ee",
+    "semantic_hash": ""
+  },
+  "test/features/expenses/expense_providers_test.dart": {
+    "mtime": 1790381779.993693,
+    "seen": 1790385180.090778,
+    "ast_hash": "1a49553fd0e56b099a4aaa7dd0ab461a",
     "semantic_hash": ""
   }
 }
