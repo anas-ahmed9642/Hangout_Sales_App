@@ -205,7 +205,7 @@ class ManageCatalogScreen extends ConsumerWidget {
     final selectedCategory =
         ref.watch(selectedCatalogCategoryProvider);
 
-    final catalogAsync = ref.watch(catalogItemsProvider);
+    final catalogAsync = ref.watch(catalogItemsProvider(selectedCategory));
 
     // Captured before the local theme is applied, so the app bar can keep
     // the app's own look and stay identical to the Settings screen.
@@ -290,7 +290,9 @@ class ManageCatalogScreen extends ConsumerWidget {
                           ),
                           error: (error, stackTrace) => _CatalogError(
                             onRetry: () {
-                              ref.invalidate(catalogItemsProvider);
+                              ref.invalidate(
+                                catalogItemsProvider(selectedCategory),
+                              );
                             },
                           ),
                           data: (items) {
@@ -308,9 +310,13 @@ class ManageCatalogScreen extends ConsumerWidget {
                               color: _Palette.gold,
                               backgroundColor: _Palette.surface,
                               onRefresh: () async {
-                                ref.invalidate(catalogItemsProvider);
-                                await ref
-                                    .read(catalogItemsProvider.future);
+                                ref.invalidate(
+                                  catalogItemsProvider(selectedCategory),
+                                );
+                                await ref.read(
+                                  catalogItemsProvider(selectedCategory)
+                                      .future,
+                                );
                               },
                               child: ListView.separated(
                                 padding: const EdgeInsets.fromLTRB(
@@ -389,7 +395,7 @@ class ManageCatalogScreen extends ConsumerWidget {
             !item.active,
           );
 
-      ref.invalidate(catalogItemsProvider);
+      ref.invalidate(catalogItemsProvider(item.category));
 
       if (!context.mounted) {
         return;
@@ -465,7 +471,7 @@ class ManageCatalogScreen extends ConsumerWidget {
         );
       }
 
-      ref.invalidate(catalogItemsProvider);
+      ref.invalidate(catalogItemsProvider(result.category));
 
       if (!context.mounted) {
         return;

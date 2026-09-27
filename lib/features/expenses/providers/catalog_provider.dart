@@ -9,9 +9,14 @@ final selectedCatalogCategoryProvider =
   (ref) => ExpenseCategory.marketBills,
 );
 
-final catalogItemsProvider =
-    StreamProvider.autoDispose<List<CatalogItem>>((ref) {
-  final category = ref.watch(selectedCatalogCategoryProvider);
+/// Catalog items for a single [ExpenseCategory], keyed by the caller.
+///
+/// A family — instead of reading [selectedCatalogCategoryProvider]
+/// internally — so screens that derive the category from their own state
+/// (the add-expense form reads it from the draft) never depend on the
+/// timing of a shared filter provider.
+final catalogItemsProvider = StreamProvider.autoDispose
+  .family<List<CatalogItem>, ExpenseCategory>((ref, category) {
   final repository = ref.watch(catalogRepositoryProvider);
 
   return repository.streamCatalog(
