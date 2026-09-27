@@ -1,0 +1,8 @@
+﻿# Tell GitHub to ignore graphify output for language stats
+graphify-out/** linguist-generated=true
+
+# Tell GitHub to ignore Flutter web build files for language stats
+web/** linguist-generated=true
+
+# Ignore other common generated files
+*.html linguist-generated=true
