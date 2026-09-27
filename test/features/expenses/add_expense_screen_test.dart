@@ -190,6 +190,10 @@ void main() {
     },
   );
 
+  // Integration-style: covers the Phase 7 save flow end-to-end through the
+  // Phase 8 confirmation dialog (Save → dialog → Confirm → write).
+  // Phase-8-specific behaviors (dialog content, cancel, in-flight guard,
+  // failure) live in expense_save_confirmation_test.dart.
   testWidgets(
     'valid chicken expense saves, clears the draft, and confirms',
     (tester) async {
@@ -238,6 +242,17 @@ void main() {
 
       await tester.ensureVisible(saveButton);
       await tester.tap(saveButton);
+      await tester.pumpAndSettle();
+
+      // Phase 8: tapping Save opens the confirmation dialog; nothing is
+      // written until Confirm is tapped.
+      expect(
+        find.byKey(const Key('save_confirmation_dialog')),
+        findsOneWidget,
+      );
+      expect(expenses.created, isEmpty);
+
+      await tester.tap(find.byKey(const Key('confirm_save_button')));
       await tester.pumpAndSettle();
 
       expect(expenses.created, hasLength(1));

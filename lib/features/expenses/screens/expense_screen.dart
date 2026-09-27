@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../core/services/business_day_service.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
+import '../models/expense_category_display.dart';
 import '../models/expense_draft.dart';
 import '../providers/expense_draft_provider.dart';
 import '../widgets/expense_catalog_section.dart';
@@ -21,11 +22,21 @@ import '../widgets/expense_wages_section.dart';
 /// Every input writes into [expenseDraftProvider]; the shape section is
 /// switched on the draft's [ExpenseEntryShape]; the save button follows
 /// the notifier's [canConfirm].
-class ExpenseScreen extends ConsumerWidget {
+class ExpenseScreen extends ConsumerStatefulWidget {
   const ExpenseScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ExpenseScreen> createState() => _ExpenseScreenState();
+}
+
+class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
+  /// True while a confirmed save is in flight. Guards against double
+  /// writes (e.g. Save → Confirm → back button → Save → Confirm again
+  /// while the first write is still running).
+  bool _isSaving = false;
+
+  @override
+  Widget build(BuildContext context) {
     final canConfirm = ref.watch(
       expenseDraftProvider.select(
         (draft) => ref.read(expenseDraftProvider.notifier).canConfirm,
@@ -82,8 +93,9 @@ class ExpenseScreen extends ConsumerWidget {
               backgroundColor: const Color(0xFFD4AF37),
               foregroundColor: Colors.black,
             ),
-            onPressed:
-                canConfirm ? () => _saveExpense(context, ref) : null,
+            onPressed: canConfirm && !_isSaving
+                ? () => _onSavePressed()
+                : null,
             child: const Text(
               'Save Expense',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -152,10 +164,74 @@ class ExpenseScreen extends ConsumerWidget {
     context.go(AppRoutes.dashboard);
   }
 
-  Future<void> _saveExpense(BuildContext context, WidgetRef ref) async {
+  /// Entry point for the Save button. Computes the business date ONCE,
+  /// shows it in the confirmation dialog, and passes that same value
+  /// into [_saveExpense] so the displayed and saved dates can never
+  /// disagree around the 5:00 AM cutoff.
+  Future<void> _onSavePressed() async {
     final notifier = ref.read(expenseDraftProvider.notifier);
     final businessDate =
         const BusinessDayService().businessDate(DateTime.now());
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final draft = ref.read(expenseDraftProvider);
+        return AlertDialog(
+          key: const Key('save_confirmation_dialog'),
+          title: const Text('Confirm Expense'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _SummaryRow(label: 'Title', value: draft.title),
+              _SummaryRow(
+                label: 'Category',
+                value: draft.category?.displayName ?? '—',
+              ),
+              _SummaryRow(
+                label: 'Amount',
+                value: 'Rs. ${notifier.computedAmount.toStringAsFixed(0)}',
+              ),
+              _SummaryRow(
+                label: 'Business date',
+                value: _formatDate(businessDate),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              key: const Key('cancel_save_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              key: const Key('confirm_save_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: const Text('Confirm & Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true || !mounted) {
+      return;
+    }
+
+    await _saveExpense(businessDate: businessDate);
+  }
+
+  String _formatDate(DateTime date) =>
+      '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+  Future<void> _saveExpense({required DateTime businessDate}) async {
+    if (_isSaving) {
+      return;
+    }
+    setState(() => _isSaving = true);
+
+    final notifier = ref.read(expenseDraftProvider.notifier);
 
     try {
       showDialog(
@@ -167,11 +243,11 @@ class ExpenseScreen extends ConsumerWidget {
 
       await notifier.saveExpense(businessDate: businessDate);
 
-      if (context.mounted) Navigator.of(context).pop();
+      if (mounted) Navigator.of(context).pop();
 
       notifier.clearDraft();
 
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Expense saved successfully!'),
@@ -180,14 +256,20 @@ class ExpenseScreen extends ConsumerWidget {
         );
       }
     } catch (e) {
-      if (context.mounted) Navigator.of(context).pop();
-      if (context.mounted) {
+      if (mounted) Navigator.of(context).pop();
+      // Draft is deliberately NOT cleared here: the user keeps everything
+      // they entered and can retry after fixing the problem.
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to save expense: $e'),
             backgroundColor: Colors.red,
           ),
         );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
       }
     }
   }
@@ -214,5 +296,39 @@ class _ShapeSection extends StatelessWidget {
       case null:
         return const Text('Select a category above to start.');
     }
+  }
+}
+
+/// One label/value row inside the save-confirmation dialog.
+class _SummaryRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _SummaryRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
+          const SizedBox(width: 16),
+          Flexible(
+            child: Text(
+              value,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
