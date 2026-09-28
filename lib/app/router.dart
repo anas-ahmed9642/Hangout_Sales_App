@@ -7,6 +7,7 @@ import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/customers/screens/customer_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/expenses/screens/expense_history_screen.dart';
 import '../features/expenses/screens/expense_screen.dart';
 import '../features/orders/screens/new_order_screen.dart';
 import '../features/reports/screens/report_screen.dart';
@@ -64,6 +65,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.expenses,
         builder: (context, state) => const ExpenseScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.expenseHistory,
+        builder: (context, state) => const ExpenseHistoryScreen(),
       ),
       GoRoute(
         path: AppRoutes.reports,

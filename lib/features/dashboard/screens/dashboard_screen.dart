@@ -339,6 +339,15 @@ class _QuickActions extends StatelessWidget {
           subtitle: 'Record a shop expense',
           onTap: () => context.go(AppRoutes.expenses),
         ),
+
+        const SizedBox(height: 10),
+
+        _QuickActionTile(
+          icon: Icons.history_rounded,
+          title: 'Expense History',
+          subtitle: 'View past expenses',
+              onTap: () => context.push(AppRoutes.expenseHistory),
+        ),
       ],
     );
   }
