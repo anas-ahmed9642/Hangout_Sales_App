@@ -348,6 +348,15 @@ class _QuickActions extends StatelessWidget {
           subtitle: 'View past expenses',
               onTap: () => context.push(AppRoutes.expenseHistory),
         ),
+
+        const SizedBox(height: 10),
+
+        _QuickActionTile(
+          icon: Icons.shopping_cart_outlined,
+          title: 'Market List',
+          subtitle: 'Estimate, print and reconcile a market run',
+          onTap: () => context.push(AppRoutes.marketList),
+        ),
       ],
     );
   }

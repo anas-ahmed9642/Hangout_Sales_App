@@ -11,6 +11,7 @@ import '../features/expenses/screens/expense_detail_screen.dart';
 import '../features/expenses/screens/expense_edit_screen.dart';
 import '../features/expenses/screens/expense_history_screen.dart';
 import '../features/expenses/screens/expense_screen.dart';
+import '../features/expenses/screens/market_list_screen.dart';
 import '../features/orders/screens/new_order_screen.dart';
 import '../features/reports/screens/report_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
@@ -79,6 +80,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.expenseEdit,
         builder: (context, state) => ExpenseEditScreen(expenseId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.marketList,
+        builder: (context, state) => const MarketListScreen(),
       ),
       GoRoute(
         path: AppRoutes.reports,

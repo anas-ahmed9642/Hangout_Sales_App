@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/models/order_item.dart';
@@ -257,6 +258,39 @@ void main() {
         store.savedDevice?.name,
         'Speed-X BT500M',
       );
+    },
+  );
+
+  test(
+    'Windows print paths reject printing before using the transport',
+    () async {
+      debugDefaultTargetPlatformOverride =
+          TargetPlatform.windows;
+      addTearDown(() {
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      final transport =
+          FakePrinterTransport(devices: const []);
+      final builder = FakeReceiptBuilder();
+      final service = OrderReceiptService(
+        builder: builder,
+        transport: transport,
+        deviceStore: FakePrinterDeviceStore(),
+      );
+
+      await expectLater(
+        service.reprint(createTestOrder()),
+        throwsA(isA<PrinterUnavailableException>()),
+      );
+      await expectLater(
+        service.printBytes([27, 64]),
+        throwsA(isA<PrinterUnavailableException>()),
+      );
+
+      expect(builder.called, isFalse);
+      expect(transport.connectedAddress, isNull);
+      expect(transport.writtenBytes, isNull);
     },
   );
 

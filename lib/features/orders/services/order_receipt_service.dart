@@ -89,11 +89,7 @@ class OrderReceiptService {
         _deviceStore = deviceStore;
 
   Future<void> reprint(Order order) async {
-    if (kIsWeb) {
-      throw const PrinterUnavailableException(
-        'Bluetooth receipt printing is not available in the web build. Use the Android app with a paired thermal printer.',
-      );
-    }
+    _ensurePrintingSupported();
 
     final permissionGranted =
         await _transport.permissionGranted;
@@ -143,13 +139,23 @@ class OrderReceiptService {
   /// Writes raw ESC/POS [bytes] to the printer using the same
   /// connection logic as order reprints.
   Future<void> printBytes(List<int> bytes) async {
+    _ensurePrintingSupported();
+
+    await _writeBytes(bytes);
+  }
+
+  void _ensurePrintingSupported() {
     if (kIsWeb) {
       throw const PrinterUnavailableException(
         'Bluetooth receipt printing is not available in the web build. Use the Android app with a paired thermal printer.',
       );
     }
 
-    await _writeBytes(bytes);
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      throw const PrinterUnavailableException(
+        'Receipt printing needs the Android app with a paired thermal printer.',
+      );
+    }
   }
 
   Future<void> _writeBytes(List<int> bytes) async {
