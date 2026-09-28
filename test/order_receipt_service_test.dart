@@ -10,7 +10,7 @@ import 'package:hangout_sales_app/features/orders/services/receipt_builder.dart'
 import 'package:hangout_sales_app/features/orders/services/thermal_printer_transport.dart';
 
 class FakePrinterTransport
-    implements ThermalPrinterTransport {
+  implements ThermalPrinterTransport {
   bool bluetoothIsEnabled = true;
   bool permissionIsGranted = true;
   bool connected = false;
@@ -81,7 +81,7 @@ class FakePrinterTransport
 }
 
 class FakePrinterDeviceStore
-    implements PrinterDeviceStore {
+  implements PrinterDeviceStore {
   PrinterDevice? savedDevice;
 
   @override
@@ -118,9 +118,9 @@ Order createTestOrder() {
     id: 'order-1',
     orderNumber: 'ORD-0042',
     createdAt:
-        DateTime(2026, 9, 3, 15, 0),
+      DateTime(2026, 9, 3, 15, 0),
     businessDate:
-        DateTime(2026, 9, 3),
+      DateTime(2026, 9, 3),
     customerName: 'Test Customer',
     items: const [
       OrderItem(
@@ -216,6 +216,46 @@ void main() {
       expect(
         store.savedDevice?.macAddress,
         '00:11:22:33:44:55',
+      );
+    },
+  );
+
+  test(
+    'printBytes connects to the configured printer and writes raw bytes',
+    () async {
+      final transport =
+          FakePrinterTransport();
+
+      final store =
+          FakePrinterDeviceStore()
+            ..savedDevice =
+                const PrinterDevice(
+              name: 'Speed-X BT500M',
+              macAddress:
+                  '00:11:22:33:44:55',
+            );
+
+      final service =
+          OrderReceiptService(
+        transport: transport,
+        deviceStore: store,
+      );
+
+      await service.printBytes(
+        [27, 64],
+      );
+
+      expect(
+        transport.connectedAddress,
+        '00:11:22:33:44:55',
+      );
+      expect(
+        transport.writtenBytes,
+        [27, 64],
+      );
+      expect(
+        store.savedDevice?.name,
+        'Speed-X BT500M',
       );
     },
   );

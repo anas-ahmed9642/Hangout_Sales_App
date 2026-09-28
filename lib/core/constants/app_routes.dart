@@ -8,6 +8,7 @@
   static const String orders = '/orders';
   static const String expenses = '/expenses';
   static const String expenseHistory = '/expenses/history';
+  static const String marketList = '/expenses/market-list';
   static const String expenseDetail = '/expenses/detail/:id';
   static const String expenseEdit = '/expenses/detail/:id/edit';
   static String expenseDetailPath(String id) => '/expenses/detail/$id';

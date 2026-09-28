@@ -137,6 +137,58 @@ class OrderReceiptService {
     final bytes =
         await _builder.build(receiptData);
 
+    await _writeBytes(bytes);
+  }
+
+  /// Writes raw ESC/POS [bytes] to the printer using the same
+  /// connection logic as order reprints.
+  Future<void> printBytes(List<int> bytes) async {
+    if (kIsWeb) {
+      throw const PrinterUnavailableException(
+        'Bluetooth receipt printing is not available in the web build. Use the Android app with a paired thermal printer.',
+      );
+    }
+
+    await _writeBytes(bytes);
+  }
+
+  Future<void> _writeBytes(List<int> bytes) async {
+    final permissionGranted =
+        await _transport.permissionGranted;
+
+    if (!permissionGranted) {
+      throw const PrinterPermissionException();
+    }
+
+    final bluetoothEnabled =
+        await _transport.bluetoothEnabled;
+
+    if (!bluetoothEnabled) {
+      throw const PrinterBluetoothDisabledException();
+    }
+
+    final device =
+        await _resolvePrinterDevice();
+
+    if (device == null) {
+      throw const PrinterNotConfiguredException();
+    }
+
+    var connected =
+        await _transport.connectionStatus;
+
+    if (!connected) {
+      connected = await _transport.connect(
+        device.macAddress,
+      );
+    }
+
+    if (!connected) {
+      throw PrinterConnectionException(
+        device.name,
+      );
+    }
+
     final printed =
         await _transport.writeBytes(bytes);
 

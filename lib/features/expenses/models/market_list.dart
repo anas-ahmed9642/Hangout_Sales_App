@@ -11,6 +11,16 @@ class MarketListItem {
     required this.itemName,
     required this.price,
   });
+
+  MarketListItem copyWith({
+    String? itemName,
+    double? price,
+  }) {
+    return MarketListItem(
+      itemName: itemName ?? this.itemName,
+      price: price ?? this.price,
+    );
+  }
 }
 
 class MarketList {
@@ -33,4 +43,26 @@ class MarketList {
     required this.businessDate,
     required this.createdAt,
   });
+
+  MarketList copyWith({
+    String? id,
+    List<MarketListItem>? items,
+    double? total,
+    MarketListStatus? status,
+    bool? handedToWorker,
+    String? reconciledExpenseId,
+    DateTime? businessDate,
+    DateTime? createdAt,
+  }) {
+    return MarketList(
+      id: id ?? this.id,
+      items: items ?? this.items,
+      total: total ?? this.total,
+      status: status ?? this.status,
+      handedToWorker: handedToWorker ?? this.handedToWorker,
+      reconciledExpenseId: reconciledExpenseId ?? this.reconciledExpenseId,
+      businessDate: businessDate ?? this.businessDate,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

@@ -186,7 +186,6 @@ void main() {
     });
   });
 
-
     group('MarketListItem', () {
     test('stores catalog snapshot name and price', () {
       const item = MarketListItem(
@@ -196,6 +195,18 @@ void main() {
 
       expect(item.itemName, 'Onion');
       expect(item.price, 450);
+    });
+
+    test('copyWith replaces selected values', () {
+      const item = MarketListItem(
+        itemName: 'Onion',
+        price: 450,
+      );
+
+      final updated = item.copyWith(price: 500);
+
+      expect(updated.itemName, 'Onion');
+      expect(updated.price, 500);
     });
   });
 
@@ -253,6 +264,25 @@ void main() {
       expect(marketList.status, MarketListStatus.confirmed);
       expect(marketList.handedToWorker, isTrue);
       expect(marketList.reconciledExpenseId, 'expense-market-1');
+    });
+
+    test('copyWith replaces selected values and preserves the rest', () {
+      final marketList = MarketList(
+        id: 'market-list-2',
+        items: const [],
+        total: 0,
+        handedToWorker: true,
+        reconciledExpenseId: 'expense-market-1',
+        businessDate: DateTime(2026, 9, 21),
+        createdAt: DateTime(2026, 9, 21, 19),
+      );
+
+      final updated = marketList.copyWith(total: 250, handedToWorker: false);
+
+      expect(updated.id, 'market-list-2');
+      expect(updated.total, 250);
+      expect(updated.handedToWorker, isFalse);
+      expect(updated.reconciledExpenseId, 'expense-market-1');
     });
   });
 }
