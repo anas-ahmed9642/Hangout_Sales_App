@@ -1,4 +1,4 @@
-class AppRoutes {
+﻿class AppRoutes {
   AppRoutes._();
 
   static const String splash = '/';
@@ -8,6 +8,11 @@ class AppRoutes {
   static const String orders = '/orders';
   static const String expenses = '/expenses';
   static const String expenseHistory = '/expenses/history';
+  static const String expenseDetail = '/expenses/detail/:id';
+  static const String expenseEdit = '/expenses/detail/:id/edit';
+  static String expenseDetailPath(String id) => '/expenses/detail/$id';
+  static String expenseEditPath(String id) => '/expenses/detail/$id/edit';
+
   static const String customers = '/customers';
   static const String reports = '/reports';
   static const String settings = '/settings';

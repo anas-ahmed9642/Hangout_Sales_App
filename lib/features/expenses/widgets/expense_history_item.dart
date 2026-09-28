@@ -5,22 +5,29 @@ import '../models/expense_category_display.dart';
 
 /// One row in the Expense History list.
 ///
-/// Display-only on purpose: there is no tap handling. Detail/edit/void
-/// navigation is Phase 10's job, so Phase 9 ships no dead routes.
+/// Phase 10: tappable when [onTap] is provided (the history screen opens
+/// the expense detail screen). With a null [onTap] the row is display-only.
 class ExpenseHistoryItem extends StatelessWidget {
   final Expense expense;
+  final VoidCallback? onTap;
 
-  const ExpenseHistoryItem({super.key, required this.expense});
+  const ExpenseHistoryItem({super.key, required this.expense, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        key: ValueKey('expense_history_item_${expense.id}'),
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: const Color(0xFFD4AF37).withValues(alpha: 0.35),
@@ -99,6 +106,8 @@ class ExpenseHistoryItem extends StatelessWidget {
           ),
         ],
       ),
+        ),
+      ),
     );
   }
 
@@ -138,3 +147,4 @@ class _CategoryTag extends StatelessWidget {
     );
   }
 }
+

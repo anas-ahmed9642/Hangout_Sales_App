@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/constants/app_routes.dart';
 import '../../../core/services/business_day_service.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
 import '../models/expense.dart';
@@ -21,7 +23,7 @@ import '../widgets/expense_history_item.dart';
 /// Firestore. Totals are computed from the visible list so the number on
 /// screen always matches the rows.
 ///
-/// Rows are display-only: detail/edit/void navigation is Phase 10.
+/// Tapping a row opens the Phase 10 expense detail screen.
 class ExpenseHistoryScreen extends ConsumerWidget {
   const ExpenseHistoryScreen({super.key});
 
@@ -123,9 +125,15 @@ class ExpenseHistoryScreen extends ConsumerWidget {
                           itemCount: visible.length,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 8),
-                          itemBuilder: (context, index) =>
-                              ExpenseHistoryItem(
-                                  expense: visible[index]),
+                          itemBuilder: (context, index) {
+                            final expense = visible[index];
+                            return ExpenseHistoryItem(
+                              expense: expense,
+                              onTap: () => context.push(
+                                AppRoutes.expenseDetailPath(expense.id),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -527,3 +535,4 @@ class _HistoryError extends StatelessWidget {
     );
   }
 }
+

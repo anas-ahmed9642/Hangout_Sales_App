@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/constants/app_routes.dart';
@@ -7,6 +7,8 @@ import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/customers/screens/customer_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/expenses/screens/expense_detail_screen.dart';
+import '../features/expenses/screens/expense_edit_screen.dart';
 import '../features/expenses/screens/expense_history_screen.dart';
 import '../features/expenses/screens/expense_screen.dart';
 import '../features/orders/screens/new_order_screen.dart';
@@ -71,6 +73,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ExpenseHistoryScreen(),
       ),
       GoRoute(
+        path: AppRoutes.expenseDetail,
+        builder: (context, state) => ExpenseDetailScreen(expenseId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.expenseEdit,
+        builder: (context, state) => ExpenseEditScreen(expenseId: state.pathParameters['id']!),
+      ),
+      GoRoute(
         path: AppRoutes.reports,
         builder: (context, state) => const ReportScreen(),
       ),
@@ -85,3 +95,4 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
