@@ -48,7 +48,13 @@ class ExpenseCatalogSection extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         catalogAsync.when(
-          data: (items) {
+          data: (allItems) {
+            // Deactivated catalog items stop appearing in the picker for
+            // NEW lines. Lines already added are plain-text snapshots and
+            // are unaffected. Manage Catalog shares catalogItemsProvider
+            // and must keep seeing inactive items, so the filter lives
+            // here rather than in the provider.
+            final items = allItems.where((item) => item.active).toList();
             if (items.isEmpty) {
               return const Text(
                 'No catalog items in this category yet.',
