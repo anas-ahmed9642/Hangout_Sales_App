@@ -5,7 +5,10 @@ import 'package:hangout_sales_app/shared/widgets/hangout_app_bar.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../expenses/models/expense.dart';
+import '../../expenses/providers/expense_history_provider.dart';
 import '../../orders/models/order.dart';
+import '../../orders/providers/order_history_provider.dart';
+import '../../orders/screens/order_history_screen.dart';
 import '../models/dashboard_summary.dart';
 import '../providers/dashboard_providers.dart';
 import '../widgets/dashboard_formatters.dart';
@@ -321,12 +324,26 @@ class _OverviewGrid extends ConsumerWidget {
           value: expenses.value,
           subtitle: expenses.subtitle,
           icon: Icons.receipt_long_outlined,
+          onTap: () {
+            ref.read(selectedExpenseDateProvider.notifier).state =
+                ref.read(dashboardBusinessDateProvider);
+            context.push(AppRoutes.expenseHistory);
+          },
         ),
         _OverviewCard(
           label: 'ORDERS',
           value: orders.value,
           subtitle: orders.subtitle,
           icon: Icons.shopping_bag_outlined,
+          onTap: () {
+            ref.read(selectedDateProvider.notifier).state =
+                ref.read(dashboardBusinessDateProvider);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const OrderHistoryScreen(),
+              ),
+            );
+          },
         ),
         _OverviewCard(
           label: 'PROFIT',
@@ -344,19 +361,21 @@ class _OverviewCard extends StatelessWidget {
   final String value;
   final String? subtitle;
   final IconData icon;
+  final VoidCallback? onTap;
 
   const _OverviewCard({
     required this.label,
     required this.value,
     this.subtitle,
     required this.icon,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final gold = const Color(0xFFD4AF37);
 
-    return Container(
+    final card = Container(
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -422,6 +441,19 @@ Text(
   ),
 ),
         ],
+      ),
+    );
+
+    final onTap = this.onTap;
+    if (onTap == null) return card;
+
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: card,
       ),
     );
   }

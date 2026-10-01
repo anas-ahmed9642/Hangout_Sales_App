@@ -3,17 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:hangout_sales_app/core/constants/app_routes.dart';
 import 'package:hangout_sales_app/core/services/business_day_service.dart';
 import 'package:hangout_sales_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:hangout_sales_app/features/dashboard/widgets/dashboard_formatters.dart';
 import 'package:hangout_sales_app/features/expenses/models/expense.dart';
 import 'package:hangout_sales_app/features/expenses/models/expense_category.dart';
+import 'package:hangout_sales_app/features/expenses/providers/expense_history_provider.dart';
 import 'package:hangout_sales_app/features/expenses/providers/expense_repository_provider.dart';
 import 'package:hangout_sales_app/features/expenses/repositories/expense_repository.dart';
+import 'package:hangout_sales_app/features/expenses/screens/expense_history_screen.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
+import 'package:hangout_sales_app/features/orders/providers/order_history_provider.dart';
 import 'package:hangout_sales_app/features/orders/providers/order_repository_provider.dart';
 import 'package:hangout_sales_app/features/orders/repositories/order_repository.dart';
+import 'package:hangout_sales_app/features/orders/screens/order_history_screen.dart';
 
 final _day = DateTime(2026, 9, 30);
 
@@ -199,6 +205,45 @@ Future _pumpDashboard(
   );
 }
 
+Future<void> _pumpDashboardWithRouter(
+  WidgetTester tester,
+  _FakeOrderRepository orderRepo,
+  _FakeExpenseRepository expenseRepo,
+) async {
+  tester.view.physicalSize = const Size(520, 1200);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(() {
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
+  addTearDown(orderRepo.dispose);
+  addTearDown(expenseRepo.dispose);
+
+  final router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.expenseHistory,
+        builder: (context, state) => const ExpenseHistoryScreen(),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        orderRepositoryProvider.overrideWithValue(orderRepo),
+        expenseRepositoryProvider.overrideWithValue(expenseRepo),
+      ],
+      child: MaterialApp.router(routerConfig: router),
+    ),
+  );
+}
+
 void main() {
   testWidgets('shows loading placeholders while streams are pending',
       (tester) async {
@@ -302,5 +347,62 @@ void main() {
 
     expect(orderRepo.streamCalls, 2);
     expect(expenseRepo.streamCalls, 2);
+  });
+
+  testWidgets(
+      'tapping ORDERS opens order history at today\'s business date',
+      (tester) async {
+    await _pumpDashboard(
+      tester,
+      _FakeOrderRepository(
+        orders: [_order(id: '1', total: 500)],
+      ),
+      _FakeExpenseRepository(),
+    );
+    await tester.pumpAndSettle();
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(DashboardScreen)),
+    );
+
+    container.read(selectedDateProvider.notifier).state = DateTime(2026, 9, 29);
+    tester.view.physicalSize = const Size(640, 1200);
+    await tester.pump();
+
+    await tester.tap(find.text('1 order'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(OrderHistoryScreen), findsOneWidget);
+    expect(
+      container.read(selectedDateProvider),
+      const BusinessDayService().businessDate(DateTime.now()),
+    );
+  });
+
+  testWidgets(
+      'tapping EXPENSES opens expense history at today\'s business date',
+      (tester) async {
+    await _pumpDashboardWithRouter(
+      tester,
+      _FakeOrderRepository(),
+      _FakeExpenseRepository(
+        expenses: [_expense(id: 'e1', amount: 250)],
+      ),
+    );
+    await tester.pumpAndSettle();
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(DashboardScreen)),
+    );
+
+    container.read(selectedExpenseDateProvider.notifier).state =
+        DateTime(2026, 9, 29);
+
+    await tester.tap(find.text('Rs. 250'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ExpenseHistoryScreen), findsOneWidget);
+    expect(
+      container.read(selectedExpenseDateProvider),
+      const BusinessDayService().businessDate(DateTime.now()),
+    );
   });
 }
