@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hangout_sales_app/shared/widgets/hangout_app_bar.dart';
 
 import '../../../core/constants/app_routes.dart';
+import '../../expenses/models/expense.dart';
+import '../../orders/models/order.dart';
+import '../models/dashboard_summary.dart';
+import '../providers/dashboard_providers.dart';
+import '../widgets/dashboard_formatters.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -59,11 +65,12 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-class _DashboardHeader extends StatelessWidget {
+class _DashboardHeader extends ConsumerWidget {
   const _DashboardHeader();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final businessDate = ref.watch(dashboardBusinessDateProvider);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -97,9 +104,9 @@ class _DashboardHeader extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          const Text(
-            'Thursday, 14 August',
-            style: TextStyle(
+          Text(
+            formatDashboardHeaderDate(businessDate),
+            style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.3,
@@ -154,7 +161,11 @@ class _DashboardHeader extends StatelessWidget {
 
               IconButton(
                 onPressed: () {
-                  // Refresh functionality will be connected later.
+                  // Re-reads the business date (5:00 AM rollover on a
+                  // long-open screen) and re-subscribes both live streams.
+                  ref.invalidate(dashboardBusinessDateProvider);
+                  ref.invalidate(dashboardOrdersProvider);
+                  ref.invalidate(dashboardExpensesProvider);
                 },
                 tooltip: 'Refresh',
                 visualDensity: VisualDensity.compact,
@@ -191,11 +202,106 @@ class _SectionLabel extends StatelessWidget {
     );
   }
 }
-class _OverviewGrid extends StatelessWidget {
+/// What one overview card displays: value text plus optional subtitle.
+///
+/// Each card is built from its own stream's AsyncValue, so a failing stream
+/// never blanks the other cards, and previous values stay visible through
+/// valueOrNull while a stream reloads (no loading flash on refresh).
+class _CardData {
+  final String value;
+  final String? subtitle;
+
+  const _CardData(this.value, {this.subtitle});
+}
+
+_CardData _salesCard(AsyncValue<List<Order>> ordersAsync) {
+  if (ordersAsync.hasError) {
+    return const _CardData("Couldn't load", subtitle: 'Tap refresh to retry');
+  }
+
+  final orders = ordersAsync.valueOrNull;
+  if (orders == null) {
+    return const _CardData('…');
+  }
+
+  if (DashboardSummary.activeOrderCount(orders) == 0) {
+    return const _CardData('No sales yet today');
+  }
+
+  return _CardData(formatDashboardRs(DashboardSummary.salesOf(orders)));
+}
+
+_CardData _expensesCard(AsyncValue<List<Expense>> expensesAsync) {
+  if (expensesAsync.hasError) {
+    return const _CardData("Couldn't load", subtitle: 'Tap refresh to retry');
+  }
+
+  final expenses = expensesAsync.valueOrNull;
+  if (expenses == null) {
+    return const _CardData('…');
+  }
+
+  if (DashboardSummary.expensesOf(expenses) <= 0) {
+    return const _CardData('No expenses yet');
+  }
+
+  return _CardData(formatDashboardRs(DashboardSummary.expensesOf(expenses)));
+}
+
+_CardData _ordersCard(AsyncValue<List<Order>> ordersAsync) {
+  if (ordersAsync.hasError) {
+    return const _CardData("Couldn't load", subtitle: 'Tap refresh to retry');
+  }
+
+  final orders = ordersAsync.valueOrNull;
+  if (orders == null) {
+    return const _CardData('…');
+  }
+
+  final count = DashboardSummary.activeOrderCount(orders);
+  if (count == 0) {
+    return const _CardData('No orders yet');
+  }
+
+  return _CardData('$count ${count == 1 ? 'order' : 'orders'}');
+}
+
+_CardData _profitCard(
+  AsyncValue<List<Order>> ordersAsync,
+  AsyncValue<List<Expense>> expensesAsync,
+) {
+  if (ordersAsync.hasError || expensesAsync.hasError) {
+    return const _CardData("Couldn't load", subtitle: 'Tap refresh to retry');
+  }
+
+  final orders = ordersAsync.valueOrNull;
+  final expenses = expensesAsync.valueOrNull;
+  if (orders == null || expenses == null) {
+    return const _CardData('…');
+  }
+
+  final summary =
+      DashboardSummary.fromLists(orders: orders, expenses: expenses);
+  if (!summary.hasData) {
+    return const _CardData('—', subtitle: 'Waiting for sales');
+  }
+
+  return _CardData(formatDashboardProfit(summary.profit));
+}
+
+class _OverviewGrid extends ConsumerWidget {
   const _OverviewGrid();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ordersAsync = ref.watch(dashboardOrdersProvider);
+    final expensesAsync = ref.watch(dashboardExpensesProvider);
+
+    final sales = _salesCard(ordersAsync);
+    final expenses = _expensesCard(expensesAsync);
+    final orders = _ordersCard(ordersAsync);
+    final profit = _profitCard(ordersAsync, expensesAsync);
+
     return GridView.count(
       crossAxisCount: 2,
       crossAxisSpacing: 12,
@@ -203,26 +309,29 @@ class _OverviewGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       childAspectRatio: 1.25,
-      children: const [
+      children: [
         _OverviewCard(
           label: 'SALES',
-          value: 'No sales yet today',
+          value: sales.value,
+          subtitle: sales.subtitle,
           icon: Icons.payments_outlined,
         ),
         _OverviewCard(
           label: 'EXPENSES',
-          value: 'No expenses yet',
+          value: expenses.value,
+          subtitle: expenses.subtitle,
           icon: Icons.receipt_long_outlined,
         ),
         _OverviewCard(
           label: 'ORDERS',
-          value: 'No orders yet',
+          value: orders.value,
+          subtitle: orders.subtitle,
           icon: Icons.shopping_bag_outlined,
         ),
         _OverviewCard(
           label: 'PROFIT',
-          value: '—',
-          subtitle: 'Waiting for sales',
+          value: profit.value,
+          subtitle: profit.subtitle,
           icon: Icons.trending_up_rounded,
         ),
       ],
