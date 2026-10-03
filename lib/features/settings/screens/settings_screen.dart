@@ -142,6 +142,15 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push(AppRoutes.manageCatalog),
               ),
               const SizedBox(height: 30),
+              const _SectionLabel('DELIVERY'),
+              const SizedBox(height: 14),
+              _SettingsTile(
+                icon: Icons.local_shipping_outlined,
+                title: 'Manage Delivery Areas',
+                subtitle: 'Add, edit, or deactivate delivery sectors',
+                onTap: () => context.push(AppRoutes.manageDeliveryAreas),
+              ),
+              const SizedBox(height: 30),
               const _SectionLabel('SESSION'),
               const SizedBox(height: 14),
               _SettingsTile(

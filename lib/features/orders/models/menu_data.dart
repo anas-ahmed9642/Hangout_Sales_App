@@ -121,6 +121,7 @@ static const List<double> deliveryCharges = [
   100,
   130,
   150,
+  180,
   200,
   250,
   300,

@@ -18,4 +18,5 @@
   static const String reports = '/reports';
   static const String settings = '/settings';
   static const String manageCatalog = '/settings/catalog';
+  static const String manageDeliveryAreas = '/settings/delivery-areas';
 }
