@@ -1,4 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hangout_sales_app/core/utils/phone_normalizer.dart';
+import 'package:hangout_sales_app/features/customers/models/customer.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_address.dart';
+import 'package:hangout_sales_app/features/customers/providers/customer_repository_provider.dart';
+import 'package:hangout_sales_app/features/delivery_areas/models/delivery_area.dart';
+import 'package:hangout_sales_app/features/delivery_areas/providers/delivery_areas_provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/deal.dart';
 import '../models/order_draft.dart';
@@ -16,8 +24,15 @@ final orderDraftProvider =
 
 class OrderDraftNotifier extends Notifier<OrderDraft> {
   static const _uuid = Uuid();
+
+  /// Debounce for the customer phone lookup (~400 ms, plan 8.1).
+  Timer? _lookupTimer;
+
   @override
   OrderDraft build() {
+    ref.onDispose(() {
+      _lookupTimer?.cancel();
+    });
     return const OrderDraft();
   }
   void addStandalonePizza(PizzaSize size) {
@@ -114,13 +129,22 @@ void removeEntry(String entryId) {
 }
 
 void setDeliveryCharge(double charge) {
+  // Pickup (charge 0) hides and clears the area; switching back to a
+  // delivery charge does not resurrect it (plan 8.3). A hand-edited
+  // charge never clears the area.
+  final isPickup = charge == MenuData.pickupCharge;
+
   state = state.copyWith(
     deliveryCharge: charge,
+    clearDeliveryAreaId: isPickup,
+    clearDeliveryAreaName: isPickup,
   );
 }
 void setCustomerName(String? name) {
   state = state.copyWith(
     customerName: name,
+    // Hand-typed: a later autofill must not overwrite it.
+    autofilledFields: state.autofilledFields.difference(const {'name'}),
   );
 }
 
@@ -130,9 +154,42 @@ void setCustomerPhone(String? phone) {
   );
 }
 
+/// Entry point for the phone field: keeps the draft in sync and runs the
+/// debounced customer lookup (plan 8.1). An empty phone clears the
+/// autofill state immediately, without waiting for the debounce.
+void onCustomerPhoneChanged(String rawPhone) {
+  setCustomerPhone(rawPhone);
+  _lookupTimer?.cancel();
+
+  if (rawPhone.trim().isEmpty) {
+    _clearAutofilledFields();
+    return;
+  }
+
+  _lookupTimer = Timer(const Duration(milliseconds: 400), () {
+    _performLookup(rawPhone);
+  });
+}
+
 void setCustomerAddress(String? address) {
   state = state.copyWith(
     customerAddress: address,
+    autofilledFields: state.autofilledFields.difference(const {'address'}),
+  );
+}
+
+void setCustomerMapLink(String? mapLink) {
+  state = state.copyWith(
+    customerMapLink: mapLink,
+    autofilledFields: state.autofilledFields.difference(const {'mapLink'}),
+  );
+}
+
+void setDeliveryNotes(String? notes) {
+  state = state.copyWith(
+    deliveryNotes: notes,
+    autofilledFields:
+        state.autofilledFields.difference(const {'deliveryNotes'}),
   );
 }
 
@@ -575,7 +632,265 @@ void setPaymentStatus(PaymentStatus paymentStatus) {
     paymentStatus: paymentStatus,
   );
 }
+  // ------------------------------------------------------------------
+  // Customer autofill, area and address (Phase 4, plan 8.1-8.3)
+  // ------------------------------------------------------------------
 
+  /// Runs ~400 ms after the last keystroke: normalizes the phone, looks
+  /// the customer up, and applies the autofill state machine (plan 8.1).
+  /// An invalid or unknown phone clears the autofill state; the order
+  /// stays saveable either way. Never throws.
+  Future<void> _performLookup(String rawPhone) async {
+    try {
+      final normalized = PhoneNormalizer.normalize(rawPhone);
 
+      if (normalized == null) {
+        _clearAutofilledFields();
+        return;
+      }
+
+      final Customer? customer =
+          await ref.read(customerRepositoryProvider).getByPhone(normalized);
+
+      // The phone changed while the lookup was in flight: drop this result.
+      if (state.customerPhone != rawPhone) {
+        return;
+      }
+
+      if (customer == null) {
+        _clearAutofilledFields();
+        return;
+      }
+
+      state = state.copyWith(matchedCustomerPhone: customer.phone);
+      await _applyAutofill(customer);
+    } catch (_) {
+      // A failed lookup (e.g. network) must never break order entry.
+      _clearAutofilledFields();
+    }
+  }
+
+  /// True when autofill may write [key]: the field is empty or it already
+  /// holds an autofilled value. Typed values are never overwritten.
+  bool _canAutofill(String key, String? current) {
+    return current == null ||
+        current.isEmpty ||
+        state.autofilledFields.contains(key);
+  }
+
+  /// Applies a found customer to the draft: name (only when empty or
+  /// already autofilled), the default (or first) address with its link
+  /// and area, the area's default charge, and the delivery notes.
+  Future<void> _applyAutofill(Customer customer) async {
+    final nextMarked = <String>{};
+
+    var name = state.customerName;
+    var address = state.customerAddress;
+    var mapLink = state.customerMapLink;
+    var areaId = state.deliveryAreaId;
+    var areaName = state.deliveryAreaName;
+    var notes = state.deliveryNotes;
+    var charge = state.deliveryCharge;
+    String? selectedAddressId;
+
+    if (_canAutofill('name', name)) {
+      name = customer.name;
+      nextMarked.add('name');
+    }
+
+    final addresses = customer.addresses;
+    if (addresses.isNotEmpty) {
+      CustomerAddress? selected;
+      for (final a in addresses) {
+        if (a.id == customer.defaultAddressId) {
+          selected = a;
+          break;
+        }
+      }
+      selected ??= addresses.first;
+      selectedAddressId = selected.id;
+
+      if (_canAutofill('address', address)) {
+        address = selected.text;
+        nextMarked.add('address');
+      }
+      if (_canAutofill('mapLink', mapLink)) {
+        mapLink = selected.mapLink;
+        nextMarked.add('mapLink');
+      }
+      if (_canAutofill('area', areaId)) {
+        final area = selected.areaId == null
+            ? null
+            : await _findArea(selected.areaId!);
+        areaId = selected.areaId;
+        areaName = area?.name;
+        if (area != null) {
+          charge = area.defaultCharge;
+        }
+        nextMarked.add('area');
+      }
+    } else {
+      // The new customer has no saved addresses: drop any autofilled
+      // address, link, or area left over from the previous customer.
+      // Hand-typed values are never cleared.
+      if (_canAutofill('address', address)) {
+        address = null;
+      }
+      if (_canAutofill('mapLink', mapLink)) {
+        mapLink = null;
+      }
+      if (_canAutofill('area', areaId)) {
+        areaId = null;
+        areaName = null;
+      }
+    }
+
+    if (_canAutofill('deliveryNotes', notes)) {
+      notes = customer.deliveryNotes;
+      nextMarked.add('deliveryNotes');
+    }
+
+    state = state.copyWith(
+      customerName: name,
+      clearCustomerName: name == null,
+      customerAddress: address,
+      clearCustomerAddress: address == null,
+      customerMapLink: mapLink,
+      clearCustomerMapLink: mapLink == null,
+      deliveryAreaId: areaId,
+      clearDeliveryAreaId: areaId == null,
+      deliveryAreaName: areaName,
+      clearDeliveryAreaName: areaName == null,
+      deliveryNotes: notes,
+      clearDeliveryNotes: notes == null,
+      deliveryCharge: charge,
+      selectedAddressId: selectedAddressId,
+      clearSelectedAddressId: selectedAddressId == null,
+      autofilledFields: nextMarked,
+    );
+  }
+  /// Resolves an area id using ALL areas (not only active), so a saved
+  /// address referencing a deactivated area still resolves. Returns null
+  /// when areas fail to load or the id is unknown; callers then keep the
+  /// id with no name and leave the charge as-is.
+  Future<DeliveryArea?> _findArea(String areaId) async {
+    try {
+      final areas = await ref.read(deliveryAreasProvider.future);
+      for (final area in areas) {
+        if (area.id == areaId) {
+          return area;
+        }
+      }
+    } catch (_) {
+      // Offline/cache failure: the order stays saveable; the cashier can
+      // still pick the area by hand.
+    }
+    return null;
+  }
+
+  /// Clears every field that currently holds an autofilled value.
+  /// Hand-typed values are kept. The delivery charge is left untouched.
+  void _clearAutofilledFields() {
+    final marked = state.autofilledFields;
+    state = state.copyWith(
+      clearMatchedCustomerPhone: true,
+      clearSelectedAddressId: true,
+      clearCustomerName: marked.contains('name'),
+      clearCustomerAddress: marked.contains('address'),
+      clearCustomerMapLink: marked.contains('mapLink'),
+      clearDeliveryAreaId: marked.contains('area'),
+      clearDeliveryAreaName: marked.contains('area'),
+      clearDeliveryNotes: marked.contains('deliveryNotes'),
+      autofilledFields: const {},
+    );
+  }
+
+  /// Applies a saved address chosen from the chooser chips (plan 8.2):
+  /// re-fills address, location link, area and charge. Chip values come
+  /// from the saved record, so a later phone change may replace them; a
+  /// hand edit removes the keys again.
+  Future<void> selectCustomerAddress(String addressId) async {
+    try {
+      final phone = state.matchedCustomerPhone;
+      if (phone == null) {
+        return;
+      }
+
+      final customer =
+          await ref.read(customerRepositoryProvider).getByPhone(phone);
+
+      CustomerAddress? selected;
+      for (final a in customer?.addresses ?? const <CustomerAddress>[]) {
+        if (a.id == addressId) {
+          selected = a;
+          break;
+        }
+      }
+      if (selected == null) {
+        return;
+      }
+
+      final area =
+          selected.areaId == null ? null : await _findArea(selected.areaId!);
+
+      state = state.copyWith(
+        selectedAddressId: selected.id,
+        customerAddress: selected.text,
+        customerMapLink: selected.mapLink,
+        clearCustomerMapLink: selected.mapLink == null,
+        deliveryAreaId: selected.areaId,
+        clearDeliveryAreaId: selected.areaId == null,
+        deliveryAreaName: area?.name,
+        clearDeliveryAreaName: area == null,
+        deliveryCharge: area?.defaultCharge ?? state.deliveryCharge,
+        autofilledFields: {
+          ...state.autofilledFields,
+          'address',
+          'mapLink',
+          'area',
+        },
+      );
+    } catch (_) {
+      // A failed lookup must never break order entry.
+    }
+  }
+  /// Sets the delivery area from the picker sheet (plan 8.3). Choosing an
+  /// area presets the charge; calling with no area ("Not listed / other")
+  /// clears the area and keeps the charge as-is. A hand-picked area is
+  /// never overwritten by a later autofill.
+  void setDeliveryArea({
+    String? areaId,
+    String? areaName,
+    double? defaultCharge,
+  }) {
+    state = state.copyWith(
+      deliveryAreaId: areaId,
+      clearDeliveryAreaId: areaId == null,
+      deliveryAreaName: areaName,
+      clearDeliveryAreaName: areaName == null,
+      deliveryCharge: defaultCharge ?? state.deliveryCharge,
+      autofilledFields: state.autofilledFields.difference(const {'area'}),
+    );
+  }
+
+  /// Phase 5 companions: the "New customer" switch and the "address
+  /// changed" sheet write here.
+  void setSaveCustomer(bool value) {
+    state = state.copyWith(saveCustomer: value);
+  }
+
+  void setAddressDecision(AddressDecision? decision) {
+    state = state.copyWith(
+      addressDecision: decision,
+      clearAddressDecision: decision == null,
+    );
+  }
+
+  void setNewAddressLabel(String? label) {
+    state = state.copyWith(
+      newAddressLabel: label,
+      clearNewAddressLabel: label == null,
+    );
+  }
 
 }

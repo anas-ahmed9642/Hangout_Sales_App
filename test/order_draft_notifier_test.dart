@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hangout_sales_app/features/orders/models/order_draft.dart';
 
 // Test helpers (relative path is fine since it's also inside the test/ folder)
 import '../test/helpers/test_container.dart'; // Or just 'helpers/test_container.dart' depending on your exact path
@@ -1402,8 +1403,99 @@ test(
     expect(order.status, OrderStatus.pending);
   },
 );
-}
+  group('customer fields (Phase 4)', () {
+    test('saveCustomer defaults to true', () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
 
+      expect(container.read(orderDraftProvider).saveCustomer, isTrue);
+    });
+
+    test(
+        'setDeliveryArea presets the charge; a manual charge edit keeps the area',
+        () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(orderDraftProvider.notifier);
+
+      notifier.setDeliveryArea(
+        areaId: 'a1',
+        areaName: 'Sector 11B',
+        defaultCharge: 180,
+      );
+
+      var draft = container.read(orderDraftProvider);
+      expect(draft.deliveryAreaId, 'a1');
+      expect(draft.deliveryAreaName, 'Sector 11B');
+      expect(draft.deliveryCharge, 180);
+
+      notifier.setDeliveryCharge(250);
+
+      draft = container.read(orderDraftProvider);
+      expect(draft.deliveryAreaId, 'a1');
+      expect(draft.deliveryAreaName, 'Sector 11B');
+      expect(draft.deliveryCharge, 250);
+    });
+
+    test('setDeliveryArea() with no area clears it and keeps the charge',
+        () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(orderDraftProvider.notifier);
+
+      notifier.setDeliveryArea(
+        areaId: 'a1',
+        areaName: 'Sector 11B',
+        defaultCharge: 180,
+      );
+      notifier.setDeliveryCharge(250);
+      notifier.setDeliveryArea();
+
+      final draft = container.read(orderDraftProvider);
+      expect(draft.deliveryAreaId, isNull);
+      expect(draft.deliveryAreaName, isNull);
+      expect(draft.deliveryCharge, 250);
+    });
+
+    test('setDeliveryCharge(0) clears the area for Pickup', () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(orderDraftProvider.notifier);
+
+      notifier.setDeliveryArea(
+        areaId: 'a1',
+        areaName: 'Sector 11B',
+        defaultCharge: 180,
+      );
+      notifier.setDeliveryCharge(MenuData.pickupCharge);
+
+      final draft = container.read(orderDraftProvider);
+      expect(draft.deliveryAreaId, isNull);
+      expect(draft.deliveryAreaName, isNull);
+      expect(draft.deliveryCharge, 0);
+    });
+
+    test('address decision and label setters round-trip', () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(orderDraftProvider.notifier);
+
+      notifier.setAddressDecision(AddressDecision.saveAsNewAddress);
+      notifier.setNewAddressLabel('Office');
+
+      var draft = container.read(orderDraftProvider);
+      expect(draft.addressDecision, AddressDecision.saveAsNewAddress);
+      expect(draft.newAddressLabel, 'Office');
+
+      notifier.setAddressDecision(null);
+      notifier.setNewAddressLabel(null);
+
+      draft = container.read(orderDraftProvider);
+      expect(draft.addressDecision, isNull);
+      expect(draft.newAddressLabel, isNull);
+    });
+  });
+}
 class _TestOrderRepository implements OrderRepository {
   Order? savedOrder;
 
