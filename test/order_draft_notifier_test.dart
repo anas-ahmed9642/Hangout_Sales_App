@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/orders/models/order_draft.dart';
 
 // Test helpers (relative path is fine since it's also inside the test/ folder)
@@ -984,8 +985,8 @@ testWidgets(
     expect(find.text('Rs. 380'), findsOneWidget);
     expect(find.text('Rs. 3600'), findsOneWidget);
 
-    expect(find.text('1 × Small'), findsOneWidget);
-    expect(find.text('5 × Large'), findsOneWidget);
+    expect(find.text('1 Ã— Small'), findsOneWidget);
+    expect(find.text('5 Ã— Large'), findsOneWidget);
   },
 );
 testWidgets(
@@ -1236,7 +1237,7 @@ test(
 
     final notifier = container.read(orderDraftProvider.notifier);
 
-    // Satisfy buildOrder's own validation first —
+    // Satisfy buildOrder's own validation first â€”
     // it requires at least one fully-valid pizza/deal entry.
     notifier.addStandalonePizza(PizzaSize.regular); // pick a real size from your enum
     final entryId = container.read(orderDraftProvider).entries.first.id;
@@ -1500,7 +1501,10 @@ class _TestOrderRepository implements OrderRepository {
   Order? savedOrder;
 
   @override
-  Future<void> createOrder(Order order) async {
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {
     savedOrder = order;
   }
 

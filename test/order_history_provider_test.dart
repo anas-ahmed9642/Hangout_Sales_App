@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/providers/order_history_provider.dart';
 import 'package:hangout_sales_app/features/orders/providers/order_repository_provider.dart';
@@ -12,7 +13,10 @@ class _TestOrderRepository implements OrderRepository {
   _TestOrderRepository(this.ordersStream);
 
   @override
-  Future<void> createOrder(Order order) async {}
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {}
 
   @override
   Stream<List<Order>> streamOrders(DateTime businessDate) {

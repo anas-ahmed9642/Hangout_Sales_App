@@ -210,9 +210,7 @@ class _CustomerFormState extends ConsumerState<CustomerForm> {
     );
   }
 
-  /// Hint under the phone field, derived from draft state (plan 8.1):
-  /// invalid -> guidance; valid but unknown -> "New customer" (the
-  /// interactive switch lands in Phase 5); matched -> no hint.
+  /// Hint under the phone field, derived from draft state (plan 8.1/8.5):
   Widget _phoneHint(String phoneText, String? matchedPhone) {
     if (phoneText.isEmpty || matchedPhone != null) {
       return const SizedBox.shrink();
@@ -220,15 +218,24 @@ class _CustomerFormState extends ConsumerState<CustomerForm> {
 
     final valid = PhoneNormalizer.normalize(phoneText) != null;
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Text(
-        valid ? 'New customer — will be saved' : 'Enter a valid mobile number',
-        style: TextStyle(
-          fontSize: 12,
-          color: valid ? Colors.green.shade700 : Colors.orange.shade800,
+    if (!valid) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Text(
+          'Enter a valid mobile number',
+          style: TextStyle(fontSize: 12, color: Colors.orange.shade800),
         ),
-      ),
+      );
+    }
+    final saveCustomer = ref.watch(
+      orderDraftProvider.select((draft) => draft.saveCustomer),
+    );
+    return SwitchListTile(
+      title: const Text('New customer — will be saved'),
+      subtitle: const Text('A customer record will be created with this order.'),
+      value: saveCustomer,
+      onChanged: ref.read(orderDraftProvider.notifier).setSaveCustomer,
+      contentPadding: EdgeInsets.zero,
     );
   }
 

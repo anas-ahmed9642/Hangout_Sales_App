@@ -12,6 +12,7 @@ import '../models/order_draft_entry.dart';
 import '../models/pizza_size.dart';
 import '../providers/order_edit_provider.dart';
 import '../providers/order_repository_provider.dart';
+import '../widgets/delivery_area_sheet.dart';
 
 class EditOrderScreen extends ConsumerStatefulWidget {
   final Order order;
@@ -54,6 +55,9 @@ class _EditOrderScreenState extends ConsumerState<EditOrderScreen> {
         'customerName': editedOrder.customerName,
         'customerPhone': editedOrder.customerPhone,
         'customerAddress': editedOrder.customerAddress,
+        'deliveryAreaId': editedOrder.deliveryAreaId,
+        'deliveryAreaName': editedOrder.deliveryAreaName,
+        'deliveryNotes': editedOrder.deliveryNotes,
         'items': editedOrder.items.map(_orderItemToMap).toList(),
         'deals': editedOrder.deals.map(_dealToMap).toList(),
         'additionalDrinks': editedOrder.additionalDrinks,
@@ -239,6 +243,15 @@ Map<String, dynamic> _dealToMap(Deal deal) {
               _DeliveryEditor(
                 charge: draft.deliveryCharge,
                 onChanged: notifier.setDeliveryCharge,
+                areaName: draft.deliveryAreaName,
+                onAreaTap: () => showDeliveryAreaSheet(
+                  context,
+                  onAreaSelected: (area) => notifier.setDeliveryArea(
+                    areaId: area?.id,
+                    areaName: area?.name,
+                    defaultCharge: area?.defaultCharge,
+                  ),
+                ),
               ),
 
               const SizedBox(height: 24),
@@ -714,6 +727,16 @@ class _CustomerEditor extends StatelessWidget {
               ),
               onChanged: notifier.setCustomerAddress,
             ),
+            const SizedBox(height: 12),
+            TextFormField(
+              initialValue: draft.deliveryNotes ?? '',
+              maxLines: 2,
+              decoration: const InputDecoration(
+                labelText: 'Delivery notes',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: notifier.setDeliveryNotes,
+            ),
           ],
         ),
       ),
@@ -724,8 +747,15 @@ class _CustomerEditor extends StatelessWidget {
 class _DeliveryEditor extends StatelessWidget {
   final double charge;
   final ValueChanged<double> onChanged;
+  final String? areaName;
+  final VoidCallback onAreaTap;
 
-  const _DeliveryEditor({required this.charge, required this.onChanged});
+  const _DeliveryEditor({
+    required this.charge,
+    required this.onChanged,
+    required this.areaName,
+    required this.onAreaTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -734,24 +764,45 @@ class _DeliveryEditor extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: DropdownButtonFormField<double>(
-          initialValue: options.contains(charge) ? charge : null,
-          decoration: const InputDecoration(
-            labelText: 'Delivery Charge',
-            border: OutlineInputBorder(),
-          ),
-          items: options.map((value) {
-            final label = value == MenuData.pickupCharge
-                ? 'Pickup'
-                : 'Delivery — Rs. ${value.toStringAsFixed(0)}';
-
-            return DropdownMenuItem<double>(value: value, child: Text(label));
-          }).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              onChanged(value);
-            }
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (charge != MenuData.pickupCharge) ...[
+              TextFormField(
+                key: ValueKey(areaName),
+                readOnly: true,
+                initialValue: areaName,
+                decoration: const InputDecoration(
+                  labelText: 'Delivery area (optional)',
+                  hintText: 'Select area',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.arrow_drop_down),
+                ),
+                onTap: onAreaTap,
+              ),
+              const SizedBox(height: 12),
+            ],
+            DropdownButtonFormField<double>(
+              key: ValueKey(charge),
+              initialValue: options.contains(charge) ? charge : null,
+              decoration: const InputDecoration(
+                labelText: 'Delivery Charge',
+                border: OutlineInputBorder(),
+              ),
+              items: options.map((value) {
+                final label = value == MenuData.pickupCharge
+                    ? 'Pickup'
+                    : 'Delivery — Rs. ${value.toStringAsFixed(0)}';
+                return DropdownMenuItem<double>(
+                  value: value,
+                  child: Text(label),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) onChanged(value);
+              },
+            ),
+          ],
         ),
       ),
     );

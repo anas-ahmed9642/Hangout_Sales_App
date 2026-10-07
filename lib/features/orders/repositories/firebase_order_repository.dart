@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hangout_sales_app/features/customers/models/customer.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
+import 'package:hangout_sales_app/features/customers/repositories/customer_document_mapper.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
+import 'package:hangout_sales_app/features/orders/models/order_draft.dart';
 import 'order_repository.dart';
 import '../models/order_item.dart';
 import '../models/topping_selection.dart';
@@ -18,6 +22,9 @@ Map<String, dynamic> _orderToMap(order_model.Order order) {
     'customerName': order.customerName,
     'customerPhone': order.customerPhone,
     'customerAddress': order.customerAddress,
+    'deliveryAreaId': order.deliveryAreaId,
+    'deliveryAreaName': order.deliveryAreaName,
+    'deliveryNotes': order.deliveryNotes,
     'items': order.items.map(_orderItemToMap).toList(),
     'deals': order.deals.map(_dealToMap).toList(),
     'additionalDrinks': order.additionalDrinks,
@@ -70,6 +77,9 @@ order_model.Order _orderFromMap(Map<String, dynamic> data) {
     customerName: data['customerName'] as String?,
     customerPhone: data['customerPhone'] as String?,
     customerAddress: data['customerAddress'] as String?,
+    deliveryAreaId: data['deliveryAreaId'] as String?,
+    deliveryAreaName: data['deliveryAreaName'] as String?,
+    deliveryNotes: data['deliveryNotes'] as String?,
     items: (data['items'] as List<dynamic>)
         .map(
           (item) => _orderItemFromMap(Map<String, dynamic>.from(item as Map)),
@@ -144,10 +154,16 @@ class FirebaseOrderRepository implements OrderRepository {
       _firestore.collection('orders');
 
   @override
-  Future<void> createOrder(order_model.Order order) async {
+  Future<void> createOrder(
+    order_model.Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {
     // Define references for the transaction
     final counterRef = _firestore.collection('metadata').doc('counters');
     final orderRef = _ordersCollection.doc(order.id);
+    final customerRef = customerUpsert == null
+        ? null
+        : _firestore.collection('customers').doc(customerUpsert.phone);
 
     // Execute the atomic transaction
     await _firestore.runTransaction((transaction) async {
@@ -159,6 +175,9 @@ class FirebaseOrderRepository implements OrderRepository {
         currentNumber = counterSnapshot.data()?['order_count'] ?? 0;
       }
 
+      final DocumentSnapshot<Map<String, dynamic>>? customerSnapshot =
+          customerRef == null ? null : await transaction.get(customerRef);
+
       // 2. Increment the sequence
       final nextSequence = currentNumber + 1;
 
@@ -169,10 +188,82 @@ class FirebaseOrderRepository implements OrderRepository {
       final orderMap = _orderToMap(order);
       orderMap['orderNumber'] = formattedNumber;
 
+      final customerMap = customerUpsert == null
+          ? null
+          : _customerWriteMap(
+              customerUpsert,
+              customerSnapshot!,
+              order.createdAt,
+            );
+
       // 5. Write both documents to the database at the exact same time
       transaction.set(counterRef, {'order_count': nextSequence});
       transaction.set(orderRef, orderMap);
+      if (customerRef != null && customerMap != null) {
+        transaction.set(customerRef, customerMap);
+      }
     });
+  }
+
+  Map<String, dynamic>? _customerWriteMap(
+    CustomerUpsert upsert,
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    DateTime orderTime,
+  ) {
+    if (!snapshot.exists) {
+      if (!upsert.createIfMissing) {
+        return null;
+      }
+      final address = upsert.address;
+      final customer = Customer(
+        phone: upsert.phone,
+        name: upsert.name,
+        addresses: address == null ? const [] : [address],
+        defaultAddressId: address?.id,
+        deliveryNotes: upsert.deliveryNotes,
+        createdAt: orderTime,
+        updatedAt: orderTime,
+        lastOrderAt: orderTime,
+      );
+      return customerToMap(customer);
+    }
+
+    var customer = customerFromDocument(snapshot);
+    var addresses = customer.addresses;
+    final decision = upsert.addressDecision;
+    final placed = upsert.address;
+
+    if (placed != null &&
+        decision != null &&
+        decision != AddressDecision.useForThisOrderOnly) {
+      if (decision == AddressDecision.updateSavedAddress &&
+          upsert.addressIdToUpdate != null &&
+          addresses.any((a) => a.id == upsert.addressIdToUpdate)) {
+        addresses = [
+          for (final a in addresses)
+            if (a.id == upsert.addressIdToUpdate)
+              a.copyWith(
+                text: placed.text,
+                mapLink: placed.mapLink,
+                areaId: placed.areaId,
+              )
+            else
+              a,
+        ];
+      } else {
+        addresses = [
+          ...addresses,
+          placed.copyWith(label: upsert.newAddressLabel),
+        ];
+      }
+    }
+
+    customer = customer.copyWith(
+      addresses: addresses,
+      lastOrderAt: orderTime,
+    );
+
+    return customerUpdateMap(customer);
   }
 
   @override
@@ -262,6 +353,9 @@ Stream<List<order_model.Order>> streamUnpaidOrders() {
       'customerName',
       'customerPhone',
       'customerAddress',
+      'deliveryAreaId',
+      'deliveryAreaName',
+      'deliveryNotes',
       'items',
       'deals',
       'additionalDrinks',
@@ -319,7 +413,14 @@ final updateData = <String, dynamic>{
   ...changes,
 };
 
-if (hasContentEdit) {
+// Payment transitions are audited order mutations too: they bump the
+// counter without tripping the completed/cancelled content lock above.
+// (paymentStatus must stay out of contentFields so a completed order
+// can still be marked paid.)
+final bumpsEditCount =
+    hasContentEdit ||
+    changedEntries.any((entry) => entry.key == 'paymentStatus');
+if (bumpsEditCount) {
   updateData['editCount'] = currentEditCount + 1;
 }
 

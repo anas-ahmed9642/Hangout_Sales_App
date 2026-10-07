@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:hangout_sales_app/features/orders/models/menu_data.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/models/order_item.dart';
 import 'package:hangout_sales_app/features/orders/models/pizza_size.dart';
@@ -216,4 +217,37 @@ void main() {
       );
     },
   );
+
+  test('setDeliveryArea presets the charge; pickup clears the area', () {
+    final order = _testOrder();
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    final notifier = container.read(orderEditProvider(order).notifier);
+    notifier.setDeliveryArea(
+      areaId: 'area-1',
+      areaName: 'Sector 5C/1',
+      defaultCharge: 150,
+    );
+    expect(container.read(orderEditProvider(order)).deliveryCharge, 150);
+    notifier.setDeliveryCharge(MenuData.pickupCharge);
+    expect(container.read(orderEditProvider(order)).deliveryAreaId, isNull);
+  });
+
+  test('buildEditedOrder normalizes a valid phone', () {
+    final order = _testOrder();
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    final notifier = container.read(orderEditProvider(order).notifier);
+    notifier.setCustomerPhone('+92 300 1234567');
+    expect(notifier.buildEditedOrder().customerPhone, '03001234567');
+  });
+
+  test('buildEditedOrder keeps an invalid phone as typed', () {
+    final order = _testOrder();
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    final notifier = container.read(orderEditProvider(order).notifier);
+    notifier.setCustomerPhone('not-a-number');
+    expect(notifier.buildEditedOrder().customerPhone, 'not-a-number');
+  });
 }

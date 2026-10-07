@@ -1104,5 +1104,34 @@ test(
   },
 );
 
-
+  test('createOrder persists delivery area and notes', () async {
+    final fakeFirestore = FakeFirebaseFirestore();
+    final repository = FirebaseOrderRepository(firestore: fakeFirestore);
+    final order = _createTestOrder();
+    final withFields = Order(
+      id: order.id,
+      orderNumber: order.orderNumber,
+      createdAt: order.createdAt,
+      businessDate: order.businessDate,
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      customerAddress: order.customerAddress,
+      deliveryAreaId: 'area-1',
+      deliveryAreaName: 'Sector 5C/1',
+      deliveryNotes: 'Ring twice',
+      items: order.items,
+      deals: order.deals,
+      additionalDrinks: order.additionalDrinks,
+      additionalDipSauceCount: order.additionalDipSauceCount,
+      deliveryCharge: order.deliveryCharge,
+      total: order.total,
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+    );
+    await repository.createOrder(withFields);
+    final loaded = await repository.getOrder(order.id);
+    expect(loaded?.deliveryAreaId, 'area-1');
+    expect(loaded?.deliveryAreaName, 'Sector 5C/1');
+    expect(loaded?.deliveryNotes, 'Ring twice');
+  });
 }

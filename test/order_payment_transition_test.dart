@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/providers/order_repository_provider.dart';
 import 'package:hangout_sales_app/features/orders/repositories/order_repository.dart';
@@ -8,7 +9,10 @@ class _TestOrderRepository implements OrderRepository {
   final List<Map<String, dynamic>> updates = [];
 
   @override
-  Future<void> createOrder(Order order) async {}
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {}
 
   @override
   Stream<List<Order>> streamOrders(DateTime businessDate) {
@@ -49,7 +53,7 @@ class _TestOrderRepository implements OrderRepository {
 
 void main() {
   test(
-    'payment transition sends unpaid → paid through updateOrder',
+    'payment transition sends unpaid Ã¢â€ â€™ paid through updateOrder',
     () async {
       final repository = _TestOrderRepository();
 

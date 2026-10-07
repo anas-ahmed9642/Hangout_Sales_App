@@ -3,12 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/utils/phone_normalizer.dart';
 import '../models/customer.dart';
 import '../models/customer_address.dart';
+import 'customer_document_mapper.dart';
 import 'customer_repository.dart';
 
 /// Firestore implementation of [CustomerRepository].
 ///
-/// Document mapping is inline (no toJson/fromJson on the models),
-/// mirroring FirebaseDeliveryAreaRepository. The document id is the
+/// Document mapping lives in `customer_document_mapper.dart`, shared with
+/// the order-creation transaction (plan 8.6). The document id is the
 /// normalized phone; the repository owns createdAt/updatedAt via server
 /// timestamps, exactly like the delivery-area repository does.
 class FirebaseCustomerRepository implements CustomerRepository {
@@ -46,14 +47,14 @@ class FirebaseCustomerRepository implements CustomerRepository {
       return null;
     }
 
-    return _customerFromDocument(snapshot);
+    return customerFromDocument(snapshot);
   }
 
   @override
   Stream<List<Customer>> streamCustomers({bool includeArchived = false}) {
     return _customersCollection.snapshots().map((snapshot) {
       return snapshot.docs
-          .map(_customerFromDocument)
+          .map(customerFromDocument)
           .where((customer) => includeArchived || !customer.archived)
           .toList();
     });
@@ -69,7 +70,7 @@ class FirebaseCustomerRepository implements CustomerRepository {
       );
     }
 
-    await doc.set(_customerToMap(customer));
+    await doc.set(customerToMap(customer));
   }
 
   @override
@@ -117,13 +118,13 @@ class FirebaseCustomerRepository implements CustomerRepository {
 
     // The Customer constructor validates integrity: defaultAddressId must
     // reference an entry in addresses (ArgumentError otherwise).
-    final validated = _customerFromDocument(snapshot).copyWith(
+    final validated = customerFromDocument(snapshot).copyWith(
       addresses: addresses,
       defaultAddressId: defaultAddressId,
     );
 
     await doc.update({
-      'addresses': validated.addresses.map(_addressToMap).toList(),
+      'addresses': validated.addresses.map(customerAddressToMap).toList(),
       'defaultAddressId': validated.defaultAddressId,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -159,91 +160,4 @@ class FirebaseCustomerRepository implements CustomerRepository {
     return trimmed;
   }
 
-  Map<String, dynamic> _customerToMap(Customer customer) {
-    return {
-      'phone': customer.phone,
-      'name': customer.name,
-      'addresses': customer.addresses.map(_addressToMap).toList(),
-      'defaultAddressId': customer.defaultAddressId,
-      'deliveryNotes': customer.deliveryNotes,
-      'notes': customer.notes,
-      'archived': customer.archived,
-      'mergedInto': customer.mergedInto,
-      'createdAt': FieldValue.serverTimestamp(),
-      'updatedAt': FieldValue.serverTimestamp(),
-      'lastOrderAt': customer.lastOrderAt,
-    };
-  }
-
-  Map<String, dynamic> _addressToMap(CustomerAddress address) {
-    return {
-      'id': address.id,
-      'label': address.label,
-      'text': address.text,
-      'mapLink': address.mapLink,
-      'areaId': address.areaId,
-    };
-  }
-
-  Customer _customerFromDocument(
-    DocumentSnapshot<Map<String, dynamic>> document,
-  ) {
-    final data = document.data() ?? {};
-
-    return Customer(
-      // The document id IS the identity (plan 5.1); the stored field is
-      // only for console readability.
-      phone: document.id,
-      name: data['name'] as String?,
-      addresses: (data['addresses'] as List<dynamic>? ?? [])
-          .map((entry) => _addressFromMap(entry as Map<String, dynamic>))
-          .toList(),
-      defaultAddressId: data['defaultAddressId'] as String?,
-      deliveryNotes: data['deliveryNotes'] as String?,
-      notes: data['notes'] as String?,
-      archived: data['archived'] as bool? ?? false,
-      mergedInto: data['mergedInto'] as String?,
-      createdAt: _readDateTime(data['createdAt']),
-      updatedAt: _readDateTime(data['updatedAt']),
-      lastOrderAt: _readNullableDateTime(data['lastOrderAt']),
-    );
-  }
-
-  CustomerAddress _addressFromMap(Map<String, dynamic> map) {
-    return CustomerAddress(
-      id: map['id'] as String? ?? '',
-      label: map['label'] as String?,
-      text: map['text'] as String? ?? '',
-      mapLink: map['mapLink'] as String?,
-      areaId: map['areaId'] as String?,
-    );
-  }
-
-  DateTime _readDateTime(dynamic value) {
-    if (value is Timestamp) {
-      return value.toDate();
-    }
-
-    if (value is DateTime) {
-      return value;
-    }
-
-    return DateTime.fromMillisecondsSinceEpoch(0);
-  }
-
-  DateTime? _readNullableDateTime(dynamic value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value is Timestamp) {
-      return value.toDate();
-    }
-
-    if (value is DateTime) {
-      return value;
-    }
-
-    return null;
-  }
 }

@@ -55,7 +55,14 @@ class DeliveryPicker extends ConsumerWidget {
               border: OutlineInputBorder(),
               suffixIcon: Icon(Icons.arrow_drop_down),
             ),
-            onTap: () => showDeliveryAreaSheet(context),
+            onTap: () => showDeliveryAreaSheet(
+              context,
+              onAreaSelected: (area) => notifier.setDeliveryArea(
+                areaId: area?.id,
+                areaName: area?.name,
+                defaultCharge: area?.defaultCharge,
+              ),
+            ),
           ),
           const SizedBox(height: 12),
         ],

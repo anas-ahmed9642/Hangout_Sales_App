@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/repositories/order_repository.dart';
 
@@ -8,7 +9,10 @@ class _FailingOrderRepository implements OrderRepository {
   _FailingOrderRepository(this.failure);
 
   @override
-  Future<void> createOrder(Order order) async {
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {
     throw failure;
   }
 

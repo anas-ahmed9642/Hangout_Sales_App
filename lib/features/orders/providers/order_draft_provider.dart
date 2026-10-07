@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hangout_sales_app/core/utils/map_link_helper.dart';
 import 'package:hangout_sales_app/core/utils/phone_normalizer.dart';
 import 'package:hangout_sales_app/features/customers/models/customer.dart';
 import 'package:hangout_sales_app/features/customers/models/customer_address.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/customers/providers/customer_repository_provider.dart';
 import 'package:hangout_sales_app/features/delivery_areas/models/delivery_area.dart';
 import 'package:hangout_sales_app/features/delivery_areas/providers/delivery_areas_provider.dart';
@@ -551,8 +553,11 @@ Order buildOrder({
     createdAt: now,
     businessDate: businessDate,
     customerName: state.customerName,
-    customerPhone: state.customerPhone,
+    customerPhone: PhoneNormalizer.normalizeOrTyped(state.customerPhone),
     customerAddress: state.customerAddress,
+    deliveryAreaId: state.deliveryAreaId,
+    deliveryAreaName: state.deliveryAreaName,
+    deliveryNotes: state.deliveryNotes,
     items: items,
     deals: deals,
     additionalDrinks: Map.unmodifiable(
@@ -624,8 +629,100 @@ Future<void> saveOrder({
 
   final repository = ref.read(orderRepositoryProvider);
 
-  await repository.createOrder(order);
+  await repository.createOrder(
+    order,
+    customerUpsert: buildCustomerUpsert(),
+  );
 }
+
+CustomerUpsert? buildCustomerUpsert() {
+  final typed = state.customerPhone?.trim() ?? '';
+  final normalized = PhoneNormalizer.normalize(typed);
+
+  if (normalized == null) {
+    return null;
+  }
+
+  final name = _nullIfEmpty(state.customerName?.trim());
+  if (name != null && name.length > 60) {
+    throw ArgumentError('Customer name must be at most 60 characters.');
+  }
+
+  final notes = _nullIfEmpty(state.deliveryNotes?.trim());
+  if (notes != null && notes.length > 200) {
+    throw ArgumentError('Delivery notes must be at most 200 characters.');
+  }
+
+  final label = _nullIfEmpty(state.newAddressLabel?.trim());
+  if (label != null && label.length > 20) {
+    throw ArgumentError('Address label must be at most 20 characters.');
+  }
+
+  CustomerAddress? address;
+  final addressText = _nullIfEmpty(state.customerAddress?.trim());
+  if (addressText != null) {
+    if (addressText.length > 200) {
+      throw ArgumentError('Address must be at most 200 characters.');
+    }
+    final link = _nullIfEmpty(state.customerMapLink?.trim());
+    address = CustomerAddress.create(
+      label: label,
+      text: addressText,
+      mapLink: link != null && MapLinkHelper.parse(link) != null ? link : null,
+      areaId: state.deliveryAreaId,
+    );
+  }
+
+  return CustomerUpsert(
+    phone: normalized,
+    createIfMissing: state.saveCustomer,
+    name: name,
+    deliveryNotes: notes,
+    address: address,
+    addressDecision: state.addressDecision,
+    addressIdToUpdate: state.selectedAddressId,
+    newAddressLabel: label,
+  );
+}
+
+Future<CustomerAddress?> addressDecisionNeeded() async {
+  try {
+    if (state.addressDecision != null) {
+      return null;
+    }
+    final matchedPhone = state.matchedCustomerPhone;
+    final selectedId = state.selectedAddressId;
+    if (matchedPhone == null || selectedId == null) {
+      return null;
+    }
+    final customer = await ref
+        .read(customerRepositoryProvider)
+        .getByPhone(matchedPhone);
+    CustomerAddress? saved;
+    for (final a in customer?.addresses ?? const <CustomerAddress>[]) {
+      if (a.id == selectedId) {
+        saved = a;
+        break;
+      }
+    }
+    if (saved == null) {
+      return null;
+    }
+    String? norm(String? value) {
+      final text = value?.trim() ?? '';
+      return text.isEmpty ? null : text;
+    }
+    if (norm(state.customerAddress) != norm(saved.text)) return saved;
+    if (norm(state.customerMapLink) != norm(saved.mapLink)) return saved;
+    if (norm(state.deliveryAreaId) != norm(saved.areaId)) return saved;
+    return null;
+  } catch (_) {
+    return null;
+  }
+}
+
+String? _nullIfEmpty(String? value) =>
+    (value == null || value.isEmpty) ? null : value;
 
 void setPaymentStatus(PaymentStatus paymentStatus) {
   state = state.copyWith(

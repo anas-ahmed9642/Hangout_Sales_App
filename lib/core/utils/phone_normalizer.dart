@@ -56,4 +56,15 @@ class PhoneNormalizer {
     }
     return normalized;
   }
+
+  /// Normalized form when [raw] is a valid mobile, otherwise [raw]
+  /// unchanged. Empty input is preserved as-is so callers never
+  /// manufacture a spurious change from '' to null. Never throws.
+  static String? normalizeOrTyped(String? raw) {
+    final text = raw?.trim() ?? '';
+    if (text.isEmpty) {
+      return raw;
+    }
+    return normalize(text) ?? raw;
+  }
 }

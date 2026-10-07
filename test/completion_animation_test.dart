@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/orders/models/order.dart';
 import 'package:hangout_sales_app/features/orders/providers/order_repository_provider.dart';
 import 'package:hangout_sales_app/features/orders/repositories/order_repository.dart';
@@ -39,7 +40,11 @@ class FakeOrderRepository implements OrderRepository {
 
   // --- Unused dependencies for this test suite ---
   @override
-  Future<void> createOrder(Order order) => throw UnimplementedError();
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) =>
+      throw UnimplementedError();
 
   @override
   Future<Order?> getOrder(String orderId) => throw UnimplementedError();
@@ -72,7 +77,7 @@ void main() {
   );
 
   group('OrderDetailScreen Completion Flow', () {
-    testWidgets('Test 1 — Pending order exposes completion action', (tester) async {
+    testWidgets('Test 1 Ã¢â‚¬â€ Pending order exposes completion action', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
           child: MaterialApp(
@@ -84,7 +89,7 @@ void main() {
       expect(find.text('Complete Order'), findsOneWidget);
     });
 
-    testWidgets('Test 2 — Completion loading state', (tester) async {
+    testWidgets('Test 2 Ã¢â‚¬â€ Completion loading state', (tester) async {
       final completionCompleter = Completer<void>();
       final fakeRepository = FakeOrderRepository(completionCompleter: completionCompleter);
 
@@ -108,10 +113,10 @@ void main() {
       await tester.pump(); // Rebuild to observe the immediate loading state
 
       // Assert that the UI reflects the pending completer
-      expect(find.text('Completing…'), findsOneWidget);
+      expect(find.text('CompletingÃ¢â‚¬Â¦'), findsOneWidget);
     });
 
-    testWidgets('Test 3 — Successful completion', (tester) async {
+    testWidgets('Test 3 Ã¢â‚¬â€ Successful completion', (tester) async {
       // By omitting the Completer, the fake repository completes synchronously.
       final fakeRepository = FakeOrderRepository();
 
@@ -140,10 +145,10 @@ void main() {
 
       // Assert the button has completely disappeared
       expect(find.text('Complete Order'), findsNothing);
-      expect(find.text('Completing…'), findsNothing);
+      expect(find.text('CompletingÃ¢â‚¬Â¦'), findsNothing);
     });
 
-    testWidgets('Test 4 — Failed completion returns to retry state', (tester) async {
+    testWidgets('Test 4 Ã¢â‚¬â€ Failed completion returns to retry state', (tester) async {
       final fakeRepository = FakeOrderRepository(shouldThrow: true);
 
       await tester.pumpWidget(

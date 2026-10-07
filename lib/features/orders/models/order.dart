@@ -23,6 +23,15 @@ class Order {
   final String? customerPhone;
   final String? customerAddress;
 
+  /// Delivery area id; null = unlisted/other (plan 8.3).
+  final String? deliveryAreaId;
+
+  /// Snapshot of the area name; area renames must not rewrite history.
+  final String? deliveryAreaName;
+
+  /// Per-order delivery notes snapshot; reprints are historical.
+  final String? deliveryNotes;
+
   final List<OrderItem> items;
   final List<Deal> deals;
 
@@ -46,6 +55,9 @@ class Order {
     this.customerName,
     this.customerPhone,
     this.customerAddress,
+    this.deliveryAreaId,
+    this.deliveryAreaName,
+    this.deliveryNotes,
     required this.items,
     required this.deals,
     required this.additionalDrinks,

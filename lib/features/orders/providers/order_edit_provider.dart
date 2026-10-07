@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../core/utils/phone_normalizer.dart';
+
 import '../models/deal.dart';
 import '../models/order.dart';
 import '../models/order_draft.dart';
@@ -95,6 +97,9 @@ class OrderEditNotifier extends FamilyNotifier<OrderDraft, Order> {
       customerName: order.customerName,
       customerPhone: order.customerPhone,
       customerAddress: order.customerAddress,
+      deliveryAreaId: order.deliveryAreaId,
+      deliveryAreaName: order.deliveryAreaName,
+      deliveryNotes: order.deliveryNotes,
       paymentStatus: order.paymentStatus,
     );
   }
@@ -342,9 +347,31 @@ class OrderEditNotifier extends FamilyNotifier<OrderDraft, Order> {
   }
 
   void setDeliveryCharge(double charge) {
+    final isPickup = charge == MenuData.pickupCharge;
+
     state = state.copyWith(
       deliveryCharge: charge,
+      clearDeliveryAreaId: isPickup,
+      clearDeliveryAreaName: isPickup,
     );
+  }
+
+  void setDeliveryArea({
+    String? areaId,
+    String? areaName,
+    double? defaultCharge,
+  }) {
+    state = state.copyWith(
+      deliveryAreaId: areaId,
+      clearDeliveryAreaId: areaId == null,
+      deliveryAreaName: areaName,
+      clearDeliveryAreaName: areaName == null,
+      deliveryCharge: defaultCharge ?? state.deliveryCharge,
+    );
+  }
+
+  void setDeliveryNotes(String? notes) {
+    state = state.copyWith(deliveryNotes: notes);
   }
 
   void setCustomerName(String? value) {
@@ -616,8 +643,11 @@ class OrderEditNotifier extends FamilyNotifier<OrderDraft, Order> {
       createdAt: _originalOrder.createdAt,
       businessDate: _originalOrder.businessDate,
       customerName: state.customerName,
-      customerPhone: state.customerPhone,
+      customerPhone: PhoneNormalizer.normalizeOrTyped(state.customerPhone),
       customerAddress: state.customerAddress,
+      deliveryAreaId: state.deliveryAreaId,
+      deliveryAreaName: state.deliveryAreaName,
+      deliveryNotes: state.deliveryNotes,
       items: items,
       deals: deals,
       additionalDrinks:

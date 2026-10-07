@@ -126,4 +126,37 @@ void main() {
       );
     },
   );
+
+  test('ReceiptBuilder prints the NOTE line when delivery notes exist', () async {
+    final order = createTestOrder();
+    final data = ReceiptData.fromOrder(
+      Order(
+        id: order.id,
+        orderNumber: order.orderNumber,
+        createdAt: order.createdAt,
+        businessDate: order.businessDate,
+        customerName: order.customerName,
+        customerPhone: order.customerPhone,
+        customerAddress: order.customerAddress,
+        deliveryNotes: 'Ring twice',
+        items: order.items,
+        deals: order.deals,
+        additionalDrinks: order.additionalDrinks,
+        additionalDipSauceCount: order.additionalDipSauceCount,
+        deliveryCharge: order.deliveryCharge,
+        total: order.total,
+        status: order.status,
+        paymentStatus: order.paymentStatus,
+      ),
+    );
+    final bytes = await const ReceiptBuilder().build(data);
+    expect(String.fromCharCodes(bytes), contains('NOTE: Ring twice'));
+  });
+
+  test('ReceiptBuilder omits the NOTE line when notes are absent', () async {
+    final bytes = await const ReceiptBuilder().build(
+      ReceiptData.fromOrder(createTestOrder()),
+    );
+    expect(String.fromCharCodes(bytes), isNot(contains('NOTE:')));
+  });
 }

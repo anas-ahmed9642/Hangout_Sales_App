@@ -4,6 +4,7 @@ import 'package:hangout_sales_app/features/orders/screens/order_history_screen.d
 import '../../../core/services/business_day_service.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
 import '../providers/order_draft_provider.dart';
+import '../widgets/address_decision_sheet.dart';
 import '../widgets/additional_items_section.dart';
 import '../widgets/customer_form.dart';
 import '../widgets/delivery_picker.dart';
@@ -159,6 +160,12 @@ Future<void> _confirmDiscard(
   Future<void> _submitOrder(BuildContext context, WidgetRef ref) async {
     final notifier = ref.read(orderDraftProvider.notifier);
 
+    if (await notifier.addressDecisionNeeded() != null) {
+      if (!context.mounted) return;
+      final proceed = await showAddressDecisionSheet(context);
+      if (!proceed || !context.mounted) return;
+    }
+
     // We explicitly pass this temporary string so we don't hide the missing UI logic.
     // The repository transaction will intercept this and swap it for the real number!
     const temporaryOrderNumber = 'PENDING-INTEGRATION';
@@ -166,6 +173,9 @@ Future<void> _confirmDiscard(
     final temporaryBusinessDate = const BusinessDayService().businessDate(
       DateTime.now(),
     );
+    if (!context.mounted) {
+      return;
+    }
     try {
       // 1. Show a loading spinner
       showDialog(

@@ -105,6 +105,14 @@ class ReceiptBuilder {
       );
     }
 
+    if (data.deliveryNotes?.trim().isNotEmpty == true) {
+      bytes.addAll(
+        generator.text(
+          'NOTE: ${data.deliveryNotes!.trim()}',
+        ),
+      );
+    }
+
     bytes.addAll(
       generator.hr(),
     );

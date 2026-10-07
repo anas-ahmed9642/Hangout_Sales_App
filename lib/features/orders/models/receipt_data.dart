@@ -33,6 +33,7 @@ class ReceiptData {
   final String customerName;
   final String? customerPhone;
   final String? customerAddress;
+  final String? deliveryNotes;
 
   final List<ReceiptItemData> items;
   final List<ReceiptAdditionalItemData> additionalItems;
@@ -53,6 +54,7 @@ class ReceiptData {
     required this.customerName,
     this.customerPhone,
     this.customerAddress,
+    this.deliveryNotes,
     required this.items,
     required this.additionalItems,
     required this.pizzaSubtotal,
@@ -181,6 +183,7 @@ class ReceiptData {
               : 'Walk-in Customer',
       customerPhone: order.customerPhone,
       customerAddress: order.customerAddress,
+      deliveryNotes: order.deliveryNotes,
       items: List.unmodifiable(receiptItems),
       additionalItems: List.unmodifiable(additionalItems),
       pizzaSubtotal: pizzaSubtotal,

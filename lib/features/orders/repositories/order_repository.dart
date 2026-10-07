@@ -1,8 +1,12 @@
+import '../../customers/models/customer_upsert.dart';
 import '../models/order.dart';
 
 abstract class OrderRepository {
   /// Phase 4 / 7: Save a newly created order.
-  Future<void> createOrder(Order order);
+  ///
+  /// Phase 5: when [customerUpsert] is non-null, the customer is created
+  /// or touched inside the same Firestore transaction (plan 8.6).
+  Future<void> createOrder(Order order, {CustomerUpsert? customerUpsert});
 
   /// Phase 8: Stream orders belonging to a business date.
   Stream<List<Order>> streamOrders(DateTime businessDate);

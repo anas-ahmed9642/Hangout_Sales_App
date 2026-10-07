@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:hangout_sales_app/core/constants/app_routes.dart';
 import 'package:hangout_sales_app/core/services/business_day_service.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:hangout_sales_app/features/dashboard/widgets/dashboard_formatters.dart';
 import 'package:hangout_sales_app/features/expenses/models/expense.dart';
@@ -86,7 +87,10 @@ class _FakeOrderRepository implements OrderRepository {
   }
 
   @override
-    Future<void> createOrder(Order order) async {}
+    Future<void> createOrder(
+      Order order, {
+      CustomerUpsert? customerUpsert,
+    }) async {}
 
   @override
     Stream<List<Order>> streamUnpaidOrders() =>
@@ -254,7 +258,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('…'), findsNWidgets(4));
+    expect(find.text('Ã¢â‚¬Â¦'), findsNWidgets(4));
   });
 
   testWidgets('empty day keeps the original empty-state strings',
@@ -269,7 +273,7 @@ void main() {
     expect(find.text('No sales yet today'), findsOneWidget);
     expect(find.text('No expenses yet'), findsOneWidget);
     expect(find.text('No orders yet'), findsOneWidget);
-    expect(find.text('—'), findsOneWidget);
+    expect(find.text('Ã¢â‚¬â€'), findsOneWidget);
     expect(find.text('Waiting for sales'), findsOneWidget);
   });
 

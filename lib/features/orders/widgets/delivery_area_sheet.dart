@@ -4,15 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hangout_sales_app/features/delivery_areas/models/delivery_area.dart';
 import 'package:hangout_sales_app/features/delivery_areas/providers/delivery_areas_provider.dart';
 
-import '../providers/order_draft_provider.dart';
 
 /// Opens the searchable delivery-area bottom sheet (plan 8.3).
-Future<void> showDeliveryAreaSheet(BuildContext context) {
+Future<void> showDeliveryAreaSheet(
+  BuildContext context, {
+  required void Function(DeliveryArea?) onAreaSelected,
+}) {
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
-    builder: (context) => const _DeliveryAreaSheet(),
+    builder: (context) => _DeliveryAreaSheet(onAreaSelected: onAreaSelected),
   );
 }
 
@@ -23,7 +25,9 @@ String _searchKey(String value) =>
     value.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
 
 class _DeliveryAreaSheet extends ConsumerStatefulWidget {
-  const _DeliveryAreaSheet();
+  final void Function(DeliveryArea?) onAreaSelected;
+
+  const _DeliveryAreaSheet({required this.onAreaSelected});
 
   @override
   ConsumerState<_DeliveryAreaSheet> createState() =>
@@ -109,7 +113,7 @@ class _DeliveryAreaSheetState extends ConsumerState<_DeliveryAreaSheet> {
           subtitle: const Text('Set the charge manually'),
           onTap: () {
             // Unlisted: clear the area, keep the charge as-is (plan 8.3).
-            ref.read(orderDraftProvider.notifier).setDeliveryArea();
+            widget.onAreaSelected(null);
             Navigator.pop(context);
           },
         ),
@@ -127,11 +131,7 @@ class _DeliveryAreaSheetState extends ConsumerState<_DeliveryAreaSheet> {
                 'Rs. ${area.defaultCharge.toStringAsFixed(0)}',
               ),
               onTap: () {
-                ref.read(orderDraftProvider.notifier).setDeliveryArea(
-                      areaId: area.id,
-                      areaName: area.name,
-                      defaultCharge: area.defaultCharge,
-                    );
+                widget.onAreaSelected(area);
                 Navigator.pop(context);
               },
             ),

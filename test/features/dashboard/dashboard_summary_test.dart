@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hangout_sales_app/core/services/business_day_service.dart';
+import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/dashboard/models/dashboard_summary.dart';
 import 'package:hangout_sales_app/features/dashboard/providers/dashboard_providers.dart';
 import 'package:hangout_sales_app/features/dashboard/widgets/dashboard_formatters.dart';
@@ -66,7 +67,11 @@ class _FakeOrderRepository implements OrderRepository {
   }
 
   @override
-  Future<void> createOrder(Order order) async {}
+  @override
+  Future<void> createOrder(
+    Order order, {
+    CustomerUpsert? customerUpsert,
+  }) async {}
 
   @override
   Stream<List<Order>> streamUnpaidOrders() =>
