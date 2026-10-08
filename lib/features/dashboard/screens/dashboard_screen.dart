@@ -498,6 +498,15 @@ class _QuickActions extends StatelessWidget {
           subtitle: 'Estimate, print and reconcile a market run',
           onTap: () => context.push(AppRoutes.marketList),
         ),
+
+        const SizedBox(height: 10),
+
+        _QuickActionTile(
+          icon: Icons.people_outline,
+          title: 'Customers',
+          subtitle: 'Search, win-back and archived customers',
+          onTap: () => context.push(AppRoutes.customers),
+        ),
       ],
     );
   }
