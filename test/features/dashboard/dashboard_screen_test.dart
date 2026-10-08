@@ -97,6 +97,10 @@ class _FakeOrderRepository implements OrderRepository {
       Stream<List<Order>>.value(const <Order>[]);
 
   @override
+  Stream<List<Order>> streamOrdersByCustomerPhone(String phone) =>
+      throw UnimplementedError();
+
+  @override
     Future<List<Order>> searchOrdersByPhone(String phoneNumber) async =>
       <Order>[];
 

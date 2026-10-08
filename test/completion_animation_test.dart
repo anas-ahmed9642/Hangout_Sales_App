@@ -57,6 +57,10 @@ class FakeOrderRepository implements OrderRepository {
 
   @override
   Stream<List<Order>> streamUnpaidOrders() => Stream.value(const []);
+
+  @override
+  Stream<List<Order>> streamOrdersByCustomerPhone(String phone) =>
+      throw UnimplementedError();
 }
 
 void main() {

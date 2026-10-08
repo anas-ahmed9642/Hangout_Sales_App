@@ -28,4 +28,12 @@ abstract class OrderRepository {
   String orderId,
 );
 Stream<List<Order>> streamUnpaidOrders();
+
+  /// Phase 6: Stream one customer's orders, newest first.
+  ///
+  /// Single query: customerPhone == phone ordered by createdAt descending
+  /// (composite index in firestore.indexes.json). Feeds
+  /// customerOrdersProvider; the unpaid summary and the last-order
+  /// preview derive from it client-side.
+  Stream<List<Order>> streamOrdersByCustomerPhone(String phone);
 }

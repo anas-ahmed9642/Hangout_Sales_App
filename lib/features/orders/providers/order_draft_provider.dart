@@ -7,6 +7,7 @@ import 'package:hangout_sales_app/features/customers/models/customer.dart';
 import 'package:hangout_sales_app/features/customers/models/customer_address.dart';
 import 'package:hangout_sales_app/features/customers/models/customer_upsert.dart';
 import 'package:hangout_sales_app/features/customers/providers/customer_repository_provider.dart';
+import 'package:hangout_sales_app/features/customers/services/reorder_mapper.dart';
 import 'package:hangout_sales_app/features/delivery_areas/models/delivery_area.dart';
 import 'package:hangout_sales_app/features/delivery_areas/providers/delivery_areas_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -361,6 +362,18 @@ void removeAdditionalDrink(String drinkId) {
 void setAdditionalDipSauceCount(int count) {
   state = state.copyWith(
     additionalDipSauceCount: count,
+  );
+}
+
+/// Replaces ONLY the draft's item fields from a [ReorderResult]
+/// (plan 8.10, F7). Customer fields, delivery charge, payment status and
+/// every other draft field are left untouched — reorder never overwrites
+/// what is already on screen.
+void applyReorder(ReorderResult result) {
+  state = state.copyWith(
+    entries: result.entries,
+    additionalDrinks: Map<String, int>.from(result.additionalDrinks),
+    additionalDipSauceCount: result.additionalDipSauceCount,
   );
 }
 

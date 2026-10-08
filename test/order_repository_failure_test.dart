@@ -46,6 +46,10 @@ class _FailingOrderRepository implements OrderRepository {
   Stream<List<Order>> streamUnpaidOrders() => Stream.value(const []);
 
   @override
+  Stream<List<Order>> streamOrdersByCustomerPhone(String phone) =>
+      throw UnimplementedError();
+
+  @override
   Future<void> updateOrder(
     String orderId,
     Map<String, dynamic> changes, {

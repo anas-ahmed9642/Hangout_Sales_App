@@ -5,6 +5,8 @@ import 'package:hangout_sales_app/core/utils/map_link_helper.dart';
 import 'package:hangout_sales_app/core/utils/phone_normalizer.dart';
 import 'package:hangout_sales_app/features/customers/providers/customers_provider.dart';
 import 'package:hangout_sales_app/features/customers/services/contact_launcher.dart';
+import 'package:hangout_sales_app/features/customers/widgets/customer_unpaid_banner.dart';
+import 'package:hangout_sales_app/features/customers/widgets/last_order_preview.dart';
 import 'package:hangout_sales_app/features/delivery_areas/providers/delivery_areas_provider.dart';
 
 import '../providers/order_draft_provider.dart';
@@ -128,6 +130,13 @@ class _CustomerFormState extends ConsumerState<CustomerForm> {
           ),
           onChanged: notifier.setCustomerName,
         ),
+        // Both widgets are self-spacing (8px top margin when visible,
+        // zero when hidden) and hide themselves when there is nothing
+        // to show.
+        if (matchedPhone != null) ...[
+          LastOrderPreview(phone: matchedPhone),
+          CustomerUnpaidBanner(phone: matchedPhone),
+        ],
         if (showChips) ...[
           const SizedBox(height: 12),
           Wrap(

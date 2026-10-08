@@ -315,6 +315,20 @@ Stream<List<order_model.Order>> streamUnpaidOrders() {
   }
 
   @override
+  Stream<List<order_model.Order>> streamOrdersByCustomerPhone(String phone) {
+    // Composite index (customerPhone ASC, createdAt DESC) is declared in
+    // firestore.indexes.json (Phase 5). Do NOT create index files.
+    return _ordersCollection
+        .where('customerPhone', isEqualTo: phone)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => _orderFromMap(doc.data())).toList(),
+        );
+  }
+
+  @override
   Future<order_model.Order?> getOrder(String orderId) async {
     final snapshot = await _ordersCollection.doc(orderId).get();
 

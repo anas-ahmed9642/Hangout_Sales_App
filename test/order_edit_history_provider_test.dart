@@ -28,6 +28,10 @@ class _TestOrderRepository implements OrderRepository {
   Stream<List<Order>> streamUnpaidOrders() => Stream.value(const []);
 
   @override
+  Stream<List<Order>> streamOrdersByCustomerPhone(String phone) =>
+      throw UnimplementedError();
+
+  @override
   Future<List<Order>> searchOrdersByPhone(
     String phoneNumber,
   ) async {
