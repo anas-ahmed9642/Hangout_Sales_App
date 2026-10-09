@@ -542,6 +542,46 @@ void main() {
       expect(await notifier.addressDecisionNeeded(), isNull);
     },
   );
+
+  test(
+    'no phone at all saves the order, creates no customer, still counts',
+    () async {
+      final fake = FakeFirebaseFirestore();
+      final repository = FirebaseOrderRepository(firestore: fake);
+
+      // No upsert: a walk-in order has no phone to look a customer
+      // up by (Locked Decision 3), but the counter still advances.
+      await repository.createOrder(_testOrder(customerPhone: null));
+
+      final orderDoc =
+          await fake.collection('orders').doc('order-1').get();
+      expect(orderDoc.exists, isTrue);
+      expect(orderDoc.data()?['customerPhone'], isNull);
+      expect(orderDoc.data()?['orderNumber'], 'ORD-0001');
+
+      final customers = await fake.collection('customers').get();
+      expect(customers.docs, isEmpty);
+    },
+  );
+
+  test(
+    'buildCustomerUpsert returns null when no phone was entered',
+    () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final notifier = container.read(orderDraftProvider.notifier);
+
+      // Nothing typed yet.
+      expect(notifier.buildCustomerUpsert(), isNull);
+
+      notifier.setCustomerPhone('');
+      expect(notifier.buildCustomerUpsert(), isNull);
+
+      notifier.setCustomerPhone('   ');
+      expect(notifier.buildCustomerUpsert(), isNull);
+    },
+  );
 }
 
 /// Stub for the notifier-level tests: only getByPhone is functional.

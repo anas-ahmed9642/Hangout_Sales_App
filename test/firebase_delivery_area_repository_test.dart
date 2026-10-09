@@ -251,5 +251,25 @@ void main() {
       );
       expect(sector2.defaultCharge, 150);
     });
+
+    test('a created area round-trips every field', () async {
+      final id = await repository.createArea(
+        name: 'Sector 4',
+        defaultCharge: 150,
+      );
+
+      final areas = await repository.streamAreas().first;
+
+      expect(areas, hasLength(1));
+      final area = areas.single;
+      expect(area.id, id);
+      expect(area.name, 'Sector 4');
+      expect(area.defaultCharge, 150);
+      expect(area.active, isTrue);
+      expect(
+        area.createdAt.isAfter(DateTime.fromMillisecondsSinceEpoch(0)),
+        isTrue,
+      );
+    });
   });
 }

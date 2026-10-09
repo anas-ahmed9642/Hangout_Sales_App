@@ -213,4 +213,46 @@ void main() {
       'not a link',
     );
   });
+
+  testWidgets(
+      'a single saved address fills the fields with no chooser chips',
+      (tester) async {
+    final singleAddressCustomer = Customer(
+      phone: '03001234567',
+      name: 'Ahmed Raza',
+      addresses: [
+        CustomerAddress(
+          id: 'a1',
+          label: 'Home',
+          text: 'House 14, Street 3',
+          areaId: 'area-1',
+        ),
+      ],
+      defaultAddressId: 'a1',
+      createdAt: _t,
+      updatedAt: _t,
+    );
+    final container = createTestContainer(overrides: [
+      customerRepositoryProvider.overrideWithValue(
+        _FakeCustomerRepository({'03001234567': singleAddressCustomer}),
+      ),
+      deliveryAreaRepositoryProvider.overrideWithValue(
+        _FakeDeliveryAreaRepository(),
+      ),
+    ]);
+    await _pumpForm(tester, container);
+
+    await _typePhone(tester, '03001234567');
+
+    // One address -> no chooser (plan 8.2), just the filled fields.
+    expect(find.byType(ChoiceChip), findsNothing);
+    expect(find.text('Ahmed Raza'), findsOneWidget);
+    expect(find.text('House 14, Street 3'), findsOneWidget);
+
+    final draft = container.read(orderDraftProvider);
+    expect(draft.selectedAddressId, 'a1');
+    expect(draft.customerAddress, 'House 14, Street 3');
+    expect(draft.deliveryAreaId, 'area-1');
+    expect(draft.deliveryCharge, 180);
+  });
 }

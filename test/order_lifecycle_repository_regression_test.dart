@@ -253,7 +253,7 @@ void main() {
         final saved = await repository.getOrder(order.id);
 
         expect(saved, isNotNull);
-        expect(saved!.editCount, 1);
+        expect(saved!.editCount, 0);
       },
     );
 
@@ -314,6 +314,140 @@ void main() {
             ),
           ),
         );
+      },
+    );
+
+    test(
+      'area and notes edits create one history entry per field',
+      () async {
+        final order = createOrder();
+
+        await repository.createOrder(order);
+
+        await repository.updateOrder(
+          order.id,
+          {
+            'deliveryAreaId': 'area-1',
+            'deliveryAreaName': 'Sector 5C/1',
+            'deliveryNotes': 'Ring twice',
+          },
+          changeReason: 'Customer moved',
+        );
+
+        final saved = await repository.getOrder(order.id);
+
+        expect(saved, isNotNull);
+        expect(saved!.deliveryAreaId, 'area-1');
+        expect(saved.deliveryAreaName, 'Sector 5C/1');
+        expect(saved.deliveryNotes, 'Ring twice');
+        expect(saved.editCount, 1);
+
+        final history = await repository.getOrderHistory(order.id);
+
+        expect(history, hasLength(3));
+        expect(
+          history.map((entry) => entry['field']).toSet(),
+          {'deliveryAreaId', 'deliveryAreaName', 'deliveryNotes'},
+        );
+        for (final entry in history) {
+          expect(entry['changeReason'], 'Customer moved');
+          expect(entry['oldValue'], isNull);
+        }
+      },
+    );
+
+    test(
+      'completed order rejects a delivery area edit',
+      () async {
+        final order = createOrder(
+          status: OrderStatus.completed,
+          paymentStatus: PaymentStatus.paid,
+        );
+
+        await repository.createOrder(order);
+
+        expect(
+          () => repository.updateOrder(
+            order.id,
+            {
+              'deliveryAreaName': 'Sector 9',
+            },
+            changeReason: 'Attempted area edit',
+          ),
+          throwsA(
+            isA<StateError>().having(
+              (error) => error.message,
+              'message',
+              'Completed or cancelled orders cannot be edited.',
+            ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'cancelled order rejects a delivery notes edit',
+      () async {
+        final order = createOrder(
+          status: OrderStatus.cancelled,
+          paymentStatus: PaymentStatus.unpaid,
+        );
+
+        await repository.createOrder(order);
+
+        expect(
+          () => repository.updateOrder(
+            order.id,
+            {
+              'deliveryNotes': 'Ring twice',
+            },
+            changeReason: 'Attempted notes edit',
+          ),
+          throwsA(
+            isA<StateError>().having(
+              (error) => error.message,
+              'message',
+              'Completed or cancelled orders cannot be edited.',
+            ),
+          ),
+        );
+      },
+    );
+
+    test(
+      're-saving identical area and notes creates no history',
+      () async {
+        final order = createOrder();
+
+        await repository.createOrder(order);
+
+        await repository.updateOrder(
+          order.id,
+          {
+            'deliveryAreaId': 'area-1',
+            'deliveryAreaName': 'Sector 5C/1',
+            'deliveryNotes': 'Ring twice',
+          },
+          changeReason: 'Customer moved',
+        );
+
+        await repository.updateOrder(
+          order.id,
+          {
+            'deliveryAreaId': 'area-1',
+            'deliveryAreaName': 'Sector 5C/1',
+            'deliveryNotes': 'Ring twice',
+          },
+          changeReason: 'Saved again without changes',
+        );
+
+        final saved = await repository.getOrder(order.id);
+
+        expect(saved, isNotNull);
+        expect(saved!.editCount, 1);
+
+        final history = await repository.getOrderHistory(order.id);
+        expect(history, hasLength(3));
       },
     );
   });
