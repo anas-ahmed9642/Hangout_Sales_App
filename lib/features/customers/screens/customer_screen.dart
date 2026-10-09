@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/constants/app_routes.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
 import '../models/customer.dart';
 import '../providers/customer_repository_provider.dart';
@@ -22,8 +24,9 @@ import '../widgets/customer_card.dart';
 /// lifetime, so writing them with ref.read(...notifier).state in
 /// callbacks always has a live listener.
 ///
-/// Rows are display-only in this phase: the detail screen and its
-/// route are Phase 8, which will pass an onTap to [CustomerCard].
+/// Row taps push the Customer Detail route (Phase 8,
+/// [AppRoutes.customerDetailPath]); the stream, filters and sort
+/// are unchanged from Phase 7.
 class CustomerScreen extends ConsumerStatefulWidget {
   const CustomerScreen({super.key});
 
@@ -210,6 +213,9 @@ class _CustomerScreenState extends ConsumerState<CustomerScreen> {
                       return CustomerCard(
                         customer: customer,
                         showOrderCount: filter == CustomerFilter.winBack,
+                        onTap: () => context.push(
+                          AppRoutes.customerDetailPath(customer.phone),
+                        ),
                         onToggleArchived: () => _toggleArchived(customer),
                       );
                     },

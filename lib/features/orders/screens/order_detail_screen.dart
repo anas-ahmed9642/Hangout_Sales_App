@@ -6,7 +6,10 @@ import 'package:hangout_sales_app/features/orders/models/pizza_size.dart';
 import 'package:hangout_sales_app/features/orders/screens/edit_order_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart'; // for HapticFeedback
+import '../../../core/utils/phone_normalizer.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
+import '../../customers/providers/customers_provider.dart';
+import '../../customers/widgets/map_link_button.dart';
 import '../models/order.dart';
 import '../services/order_receipt_service.dart';
 import '../providers/order_edit_history_provider.dart';
@@ -104,6 +107,8 @@ class OrderDetailScreen extends ConsumerWidget {
               displayName: displayName,
               phone: order.customerPhone,
               address: order.customerAddress,
+              deliveryAreaName: order.deliveryAreaName,
+              deliveryNotes: order.deliveryNotes,
             ),
 
             const SizedBox(height: 16),
@@ -494,19 +499,57 @@ class _OrderInformationSection extends StatelessWidget {
 // Customer
 // ─────────────────────────────────────────────────────────────────────────
 
-class _CustomerInformationSection extends StatelessWidget {
+/// Customer block on Order Detail (plan 8.12, Phase 8).
+///
+/// Name/phone/address/area/notes are the ORDER's snapshots — history
+/// does not change when the customer record is edited later. The map
+/// button is the one live element: the customer is resolved by phone
+/// ([customerStreamByPhoneProvider]) and the saved address whose text
+/// EXACTLY matches this order's address lends its map link. A one-off
+/// address typed for this order matches nothing, deliberately: never
+/// send a driver to a different saved address. No match, no customer
+/// or a failed lookup (`valueOrNull`) means no button, and orders
+/// without a customer render exactly as before this phase.
+class _CustomerInformationSection extends ConsumerWidget {
   final String displayName;
   final String? phone;
   final String? address;
+  final String? deliveryAreaName;
+  final String? deliveryNotes;
 
   const _CustomerInformationSection({
     required this.displayName,
     required this.phone,
     required this.address,
+    required this.deliveryAreaName,
+    required this.deliveryNotes,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String? mapLink;
+    final rawPhone = phone?.trim();
+    final orderAddress = address?.trim();
+    if (rawPhone != null &&
+        rawPhone.isNotEmpty &&
+        orderAddress != null &&
+        orderAddress.isNotEmpty) {
+      final normalized = PhoneNormalizer.normalize(rawPhone);
+      if (normalized != null) {
+        final customer = ref
+            .watch(customerStreamByPhoneProvider(normalized))
+            .valueOrNull;
+        if (customer != null) {
+          for (final candidate in customer.addresses) {
+            if (candidate.text.trim() == orderAddress) {
+              mapLink = candidate.mapLink;
+              break;
+            }
+          }
+        }
+      }
+    }
+
     return _DetailCard(
       title: 'Customer',
       icon: Icons.person_outline_rounded,
@@ -521,6 +564,21 @@ class _CustomerInformationSection extends StatelessWidget {
           if (address?.trim().isNotEmpty == true) ...[
             const SizedBox(height: 10),
             _DetailRow(label: 'Address', value: address!.trim()),
+          ],
+          if (deliveryAreaName?.trim().isNotEmpty == true) ...[
+            const SizedBox(height: 10),
+            _DetailRow(label: 'Area', value: deliveryAreaName!.trim()),
+          ],
+          if (deliveryNotes?.trim().isNotEmpty == true) ...[
+            const SizedBox(height: 10),
+            _DetailRow(
+              label: 'Delivery notes',
+              value: deliveryNotes!.trim(),
+            ),
+          ],
+          if (mapLink != null) ...[
+            const SizedBox(height: 6),
+            MapLinkButton(mapLink: mapLink),
           ],
         ],
       ),

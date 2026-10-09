@@ -36,3 +36,22 @@ final customerByPhoneProvider =
 
   return repository.getByPhone(phone);
 });
+
+/// One customer by phone, LIVE (Phase 8). Derives from
+/// [allCustomersStreamProvider] — the repository's only customer
+/// stream — so profile edits, address changes and archive/restore
+/// appear on Customer Detail the moment they land, with no manual
+/// invalidation. Keyed by the NORMALIZED phone; the list screen and
+/// the route both pass it already normalized. Emits null when no
+/// customer has that phone.
+final customerStreamByPhoneProvider =
+    StreamProvider.autoDispose.family<Customer?, String>((ref, phone) async* {
+  final customers = await ref.watch(allCustomersStreamProvider.future);
+  for (final customer in customers) {
+    if (customer.phone == phone) {
+      yield customer;
+      return;
+    }
+  }
+  yield null;
+});
