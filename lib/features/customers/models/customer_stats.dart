@@ -1,9 +1,9 @@
 /// Statistics derived from a customer's orders (F19, F6, F8).
 ///
 /// Never stored — always computed on demand from orders, because orders
-/// can be edited, cancelled and re-marked paid. The computation itself
-/// lives in `customer_insights.dart` (Phase 10); this class is the shape
-/// that computation returns.
+/// can be edited, cancelled and re-marked paid. The computation lives in
+/// `computeCustomerStats` (customer_stats_provider.dart); this class is
+/// the shape that computation returns.
 class CustomerStats {
   /// Count of non-cancelled orders.
   final int orderCount;
