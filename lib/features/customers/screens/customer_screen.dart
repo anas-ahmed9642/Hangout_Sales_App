@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
 import '../models/customer.dart';
+import '../providers/customer_merge_provider.dart';
 import '../providers/customer_repository_provider.dart';
 import '../providers/customer_search_provider.dart';
 import '../providers/customers_provider.dart';
@@ -50,6 +51,7 @@ class _CustomerScreenState extends ConsumerState<CustomerScreen> {
     final sort = ref.watch(customerSortProvider);
     final customersAsync = ref.watch(allCustomersStreamProvider);
     final results = ref.watch(customerSearchResultsProvider);
+    final duplicateCount = ref.watch(duplicateCandidatesProvider).length;
 
     return Scaffold(
       appBar: const HangoutAppBar(title: 'Customers'),
@@ -157,6 +159,23 @@ class _CustomerScreenState extends ConsumerState<CustomerScreen> {
               ],
             ),
           ),
+          if (duplicateCount > 0)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: ListTile(
+                  key: const Key('possible_duplicates_entry'),
+                  leading: const Icon(Icons.merge_type_outlined),
+                  title: Text('Possible duplicates ($duplicateCount)'),
+                  subtitle: const Text(
+                    'Review customers that may be the same person',
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.push(AppRoutes.customerDuplicates),
+                ),
+              ),
+            ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {

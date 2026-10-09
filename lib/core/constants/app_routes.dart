@@ -18,6 +18,22 @@ class AppRoutes {
   static const String customerDetail = '/customers/detail/:phone';
   static String customerDetailPath(String phone) =>
       '/customers/detail/$phone';
+  static const String customerDuplicates = '/customers/duplicates';
+  static const String customerMerge = '/customers/merge';
+
+  /// Merge screen location. [sourcePhone] is the duplicate (archived after
+  /// the merge); [targetPhone] is the customer to keep. Either may be
+  /// omitted and is then chosen on the screen.
+  static String customerMergePath({String? sourcePhone, String? targetPhone}) {
+    final query = <String, String>{
+      'source': ?sourcePhone,
+      'target': ?targetPhone,
+    };
+    return Uri(
+      path: customerMerge,
+      queryParameters: query.isEmpty ? null : query,
+    ).toString();
+  }
   static const String reports = '/reports';
   static const String settings = '/settings';
   static const String manageCatalog = '/settings/catalog';

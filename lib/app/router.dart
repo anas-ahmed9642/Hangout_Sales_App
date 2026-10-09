@@ -6,6 +6,8 @@ import '../features/auth/providers/auth_state_provider.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/customers/screens/customer_detail_screen.dart';
+import '../features/customers/screens/customer_duplicates_screen.dart';
+import '../features/customers/screens/customer_merge_screen.dart';
 import '../features/customers/screens/customer_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/expenses/screens/expense_detail_screen.dart';
@@ -71,6 +73,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.customerDetail,
         builder: (context, state) => CustomerDetailScreen(
           phone: state.pathParameters['phone']!,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.customerDuplicates,
+        builder: (context, state) => const CustomerDuplicatesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.customerMerge,
+        builder: (context, state) => CustomerMergeScreen(
+          initialSourcePhone: state.uri.queryParameters['source'],
+          initialTargetPhone: state.uri.queryParameters['target'],
         ),
       ),
       GoRoute(

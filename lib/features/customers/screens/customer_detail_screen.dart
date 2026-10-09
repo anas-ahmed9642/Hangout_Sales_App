@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/constants/app_routes.dart';
 import '../../../core/utils/phone_normalizer.dart';
 import '../../../shared/widgets/hangout_app_bar.dart';
 import '../../delivery_areas/models/delivery_area.dart';
@@ -61,6 +63,10 @@ class CustomerDetailScreen extends ConsumerWidget {
               onSelected: (value) {
                 if (value == 'toggleArchived') {
                   _toggleArchived(context, ref, customer);
+                } else if (value == 'merge') {
+                  context.push(
+                    AppRoutes.customerMergePath(sourcePhone: customer.phone),
+                  );
                 }
               },
               itemBuilder: (context) => [
@@ -68,6 +74,12 @@ class CustomerDetailScreen extends ConsumerWidget {
                   value: 'toggleArchived',
                   child: Text(customer.archived ? 'Restore' : 'Archive'),
                 ),
+                if (!customer.archived)
+                  const PopupMenuItem<String>(
+                    key: Key('customer_detail_merge_item'),
+                    value: 'merge',
+                    child: Text('Merge into another customer'),
+                  ),
               ],
             ),
         ],
